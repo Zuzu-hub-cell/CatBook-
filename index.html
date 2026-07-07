@@ -122,13 +122,13 @@
           <h1 class="text-3xl font-extrabold tracking-wide drop-shadow-sm select-none">Zuzu書櫃</h1>
         </div>
         
-        <!-- 分頁切換按鈕（修正：放寬 min-w 並加上 flex-1 填滿不爆框） -->
+        <!-- 分頁切換按鈕 -->
         <div class="flex gap-1 bg-white/40 p-1 rounded-full border-2 border-inkColor min-w-[175px] justify-between">
           <button id="tab-home-btn" onclick="switchTab('home')" class="px-2.5 py-1 text-xs sm:text-sm font-semibold rounded-full bg-inkColor text-warmPink transition-all flex-1 text-center">小屋</button>
           <button id="tab-bookshelf-btn" onclick="switchTab('bookshelf')" class="px-2.5 py-1 text-xs sm:text-sm font-semibold rounded-full hover:bg-white/30 transition-all flex-1 text-center">書櫃</button>
           <button id="tab-gallery-btn" onclick="switchTab('gallery')" class="px-2.5 py-1 text-xs sm:text-sm font-semibold rounded-full hover:bg-white/30 transition-all flex-1 text-center">明信片</button>
         </div>
-      </div> <!-- 修正：之前漏閉合的 div，導致排版亂咗 -->
+      </div>
 
       <!-- 圖書狀態面板 -->
       <div class="grid grid-cols-3 gap-2 bg-warmPink/90 rounded-2xl p-3 sketch-border text-center font-bold select-none">
@@ -153,7 +153,7 @@
       </div>
     </div>
 
-    <!-- 視圖主容器（永遠貼頂靠上） -->
+    <!-- 視圖主容器 -->
     <div class="flex-grow flex flex-col justify-start pt-2 min-h-[460px]">
 
       <!-- ==================== VIEW 1: 小屋伴讀 (ACTIVE BOOK) ==================== -->
@@ -221,7 +221,7 @@
           </button>
         </div>
 
-        <!-- 狀態篩選按鈕列（修正：加大下方邊距防止剪邊陰影） -->
+        <!-- 狀態篩選按鈕列 -->
         <div class="w-full flex-shrink-0 flex gap-1.5 overflow-x-auto px-1 pb-2 no-scrollbar select-none">
           <button id="filter-bs-all" onclick="setBookshelfFilter('all')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all">全部</button>
           <button id="filter-bs-reading" onclick="setBookshelfFilter('reading')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">睇緊 📖</button>
@@ -229,8 +229,8 @@
           <button id="filter-bs-finished" onclick="setBookshelfFilter('finished')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">已睇完 🏆</button>
         </div>
 
-        <!-- 書櫃列表（交給自然高度渲染，無雙滾動條卡死問題） -->
-        <div id="bookshelf-list" class="grid grid-cols-1 gap-4 pr-1 pb-4"></div>
+        <!-- 書櫃列表 -->
+        <div id="bookshelf-list" class="w-full flex flex-col gap-4 pr-1 pb-4"></div>
       </div>
 
       <!-- ==================== VIEW 3: 明信片畫廊 (GALLERY) ==================== -->
@@ -246,7 +246,7 @@
         </div>
 
         <!-- 明信片列表 -->
-        <div id="gallery-list" class="grid grid-cols-1 gap-6 px-2 pb-12"></div>
+        <div id="gallery-list" class="w-full flex flex-col gap-6 px-1 pb-12"></div>
       </div>
 
     </div>
@@ -264,21 +264,20 @@
 
       <h3 class="text-2xl font-black text-center border-b-3 border-inkColor pb-2 flex-shrink-0">新加一本書</h3>
 
-      <!-- 只有呢個內容器會捲動 -->
       <div class="overflow-y-auto flex-grow flex flex-col gap-4 pt-3 pr-1 no-scrollbar">
         <!-- 輸入表單 -->
         <div class="flex flex-col gap-3 font-semibold text-sm">
           <div class="flex flex-col gap-1">
             <label>📖 書名</label>
-            <input id="input-book-name" type="text" placeholder="例如：福爾摩斯探案集" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
+            <input id="input-book-name" type="text" placeholder="例如：福爾摩斯探案集" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
           </div>
           <div class="flex flex-col gap-1">
             <label>✏️ 作者</label>
-            <input id="input-book-author" type="text" placeholder="example：柯南·道爾" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
+            <input id="input-book-author" type="text" placeholder="例如：柯南·道爾" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
           </div>
           <div class="flex flex-col gap-1">
             <label>🏷️ 揀個書本主題（會吸引唔同貓貓架）</label>
-            <select id="input-book-theme" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
+            <select id="input-book-theme" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
               <option value="翻譯文學">🌍 翻譯文學 (班紋優雅暹羅貓)</option>
               <option value="詩">✍️ 詩 (配羽毛筆波斯貓)</option>
               <option value="科幻/奇幻小說">🚀 科幻/奇幻小說 (流星伴讀外星貓)</option>
@@ -297,11 +296,11 @@
           <div class="grid grid-cols-2 gap-2">
             <div class="flex flex-col gap-1">
               <label>🏁 現時頁數</label>
-              <input id="input-book-current" type="number" min="0" value="0" inputmode="numeric" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+              <input id="input-book-current" type="number" min="0" value="0" inputmode="numeric" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
             </div>
             <div class="flex flex-col gap-1">
               <label>📖 總頁數</label>
-              <input id="input-book-total" type="number" min="1" value="200" inputmode="numeric" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+              <input id="input-book-total" type="number" min="1" value="200" inputmode="numeric" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
             </div>
           </div>
         </div>
@@ -331,15 +330,18 @@
         <div class="flex flex-col gap-3 font-semibold text-sm">
           <div class="flex flex-col gap-1">
             <label>📖 書名</label>
-            <input id="edit-book-name" type="text" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+            <!-- 圖2修正：底色加深（使用 bg-amber-100/50 手繪質感微深色） -->
+            <input id="edit-book-name" type="text" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
           </div>
           <div class="flex flex-col gap-1">
             <label>✏️ 作者</label>
-            <input id="edit-book-author" type="text" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+            <!-- 圖2修正：底色加深 -->
+            <input id="edit-book-author" type="text" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
           </div>
           <div class="flex flex-col gap-1">
             <label>🏷️ 書本主題</label>
-            <select id="edit-book-theme" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+            <!-- 圖2修正：底色加深 -->
+            <select id="edit-book-theme" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
               <option value="翻譯文學">🌍 翻譯文學</option>
               <option value="詩">✍️ 詩</option>
               <option value="科幻/奇幻小說">🚀 科幻/奇幻小說</option>
@@ -358,11 +360,13 @@
           <div class="grid grid-cols-2 gap-2">
             <div class="flex flex-col gap-1">
               <label>🏁 現時頁數</label>
-              <input id="edit-book-current" type="number" min="0" inputmode="numeric" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+              <!-- 圖2修正：底色加深 -->
+              <input id="edit-book-current" type="number" min="0" inputmode="numeric" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
             </div>
             <div class="flex flex-col gap-1">
               <label>📖 總頁數</label>
-              <input id="edit-book-total" type="number" min="1" inputmode="numeric" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+              <!-- 圖2修正：底色加深 -->
+              <input id="edit-book-total" type="number" min="1" inputmode="numeric" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
             </div>
           </div>
         </div>
@@ -398,12 +402,12 @@
 
           <div class="flex flex-col gap-1">
             <label class="text-sm">📖 我今日讀到第幾頁？</label>
-            <input id="input-log-new-page" type="number" inputmode="numeric" class="bg-white border-3 border-inkColor p-3 rounded-xl outline-none text-xl text-center" placeholder="輸入目標頁數">
+            <input id="input-log-new-page" type="number" inputmode="numeric" class="bg-amber-50/60 border-3 border-inkColor p-3 rounded-xl outline-none text-xl text-center" placeholder="輸入目標頁數">
           </div>
 
           <div class="flex flex-col gap-1">
             <label class="text-sm">📝 寫低今日隨筆（會記喺明信片度架）</label>
-            <textarea id="input-log-note" rows="2" placeholder="呢本書帶俾你嘅諗法，或者想同貓貓講嘅嘢..." class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold text-sm resize-none"></textarea>
+            <textarea id="input-log-note" rows="2" placeholder="呢本書帶俾你嘅諗法，或者想同貓貓講嘅嘢..." class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold text-sm resize-none"></textarea>
           </div>
         </div>
 
@@ -422,91 +426,6 @@
   </div>
 
   <script>
-    // ==================== 修改與刪除功能邏輯 ====================
-    
-    // 打開編輯視窗並自動填入原本嘅資料
-    function openEditBookModal(id) {
-      const book = state.books.find(b => b.id === id);
-      if (!book) return;
-
-      document.getElementById('edit-book-id').value = book.id;
-      document.getElementById('edit-book-name').value = book.name;
-      document.getElementById('edit-book-author').value = book.author;
-      document.getElementById('edit-book-theme').value = book.theme;
-      document.getElementById('edit-book-current').value = book.currentPage;
-      document.getElementById('edit-book-total').value = book.totalPage;
-
-      document.getElementById('modal-edit-book').classList.remove('hidden');
-    }
-
-    function closeEditBookModal() {
-      document.getElementById('modal-edit-book').classList.add('hidden');
-    }
-
-    // 儲存修改
-    function submitEditBook() {
-      const id = document.getElementById('edit-book-id').value;
-      const book = state.books.find(b => b.id === id);
-      if (!book) return;
-
-      const name = document.getElementById('edit-book-name').value.trim();
-      const author = document.getElementById('edit-book-author').value.trim();
-      const theme = document.getElementById('edit-book-theme').value;
-      const current = parseInt(document.getElementById('edit-book-current').value) || 0;
-      const total = parseInt(document.getElementById('edit-book-total').value) || 200;
-
-      if (!name) {
-        showToast("書名唔可以留空字！", "❌");
-        return;
-      }
-      if (current < 0 || total <= 0 || current > total) {
-        showToast("頁數比例好似唔多啱啵！", "❌");
-        return;
-      }
-
-      // 更新數據
-      book.name = name;
-      book.author = author;
-      book.theme = theme;
-      book.currentPage = current;
-      book.totalPage = total;
-
-      // 根據頁數自動校正狀態
-      if (current === total) {
-        book.status = "finished";
-        if (state.activeBookId === id) state.activeBookId = null; 
-      } else if (current > 0) {
-        book.status = "reading";
-      } else {
-        book.status = "wishlist";
-      }
-
-      saveState();
-      updateTopStatsUI();
-      closeEditBookModal();
-      showToast(`《${name}》資料已更新！`, "💾");
-      renderBookshelf();
-      renderActiveBookHome();
-    }
-
-    // 刪除書籍功能
-    function deleteBook(id, name) {
-      if (confirm(`你確定要將《${name}》同埋佢隻貓貓送走嗎？不留痕跡架喔... 😿`)) {
-        state.books = state.books.filter(b => b.id !== id);
-        
-        if (state.activeBookId === id) {
-          const nextInLine = state.books.find(b => b.status === 'reading');
-          state.activeBookId = nextInLine ? nextInLine.id : null;
-        }
-
-        saveState();
-        updateTopStatsUI();
-        showToast(`已成功刪除《${name}》`, "🗑️");
-        renderBookshelf();
-        renderActiveBookHome();
-      }
-    }
-    
     // 記憶體中的狀態數據
     let state = {
       books: [],
@@ -549,6 +468,7 @@
       }
     ];
 
+    // 載入狀態
     function loadState() {
       const stored = localStorage.getItem('zuzu_bookshelf_state');
       if (stored) {
@@ -567,6 +487,85 @@
 
     function saveState() {
       localStorage.setItem('zuzu_bookshelf_state', JSON.stringify(state));
+    }
+
+    // 修改與刪除功能邏輯
+    function openEditBookModal(id) {
+      const book = state.books.find(b => b.id === id);
+      if (!book) return;
+
+      document.getElementById('edit-book-id').value = book.id;
+      document.getElementById('edit-book-name').value = book.name;
+      document.getElementById('edit-book-author').value = book.author;
+      document.getElementById('edit-book-theme').value = book.theme;
+      document.getElementById('edit-book-current').value = book.currentPage;
+      document.getElementById('edit-book-total').value = book.totalPage;
+
+      document.getElementById('modal-edit-book').classList.remove('hidden');
+    }
+
+    function closeEditBookModal() {
+      document.getElementById('modal-edit-book').classList.add('hidden');
+    }
+
+    function submitEditBook() {
+      const id = document.getElementById('edit-book-id').value;
+      const book = state.books.find(b => b.id === id);
+      if (!book) return;
+
+      const name = document.getElementById('edit-book-name').value.trim();
+      const author = document.getElementById('edit-book-author').value.trim();
+      const theme = document.getElementById('edit-book-theme').value;
+      const current = parseInt(document.getElementById('edit-book-current').value) || 0;
+      const total = parseInt(document.getElementById('edit-book-total').value) || 200;
+
+      if (!name) {
+        showToast("書名唔可以留空字！", "❌");
+        return;
+      }
+      if (current < 0 || total <= 0 || current > total) {
+        showToast("頁數比例好似唔多啱啵！", "❌");
+        return;
+      }
+
+      book.name = name;
+      book.author = author;
+      book.theme = theme;
+      book.currentPage = current;
+      book.totalPage = total;
+
+      if (current === total) {
+        book.status = "finished";
+        if (state.activeBookId === id) state.activeBookId = null; 
+      } else if (current > 0) {
+        book.status = "reading";
+      } else {
+        book.status = "wishlist";
+      }
+
+      saveState();
+      updateTopStatsUI();
+      closeEditBookModal();
+      showToast(`《${name}》資料已更新！`, "💾");
+      renderBookshelf();
+      renderActiveBookHome();
+    }
+
+    function deleteBook(id, name) {
+      if (confirm(`你確定要將《${name}》同埋佢隻貓貓送走嗎？不留痕跡架喔... 😿`)) {
+        state.books = state.books.filter(b => b.id !== id);
+        
+        if (state.activeBookId === id) {
+          const nextInLine = state.books.find(b => b.status === 'reading');
+          state.activeBookId = nextInLine ? nextInLine.id : null;
+        }
+
+        saveState();
+        updateTopStatsUI();
+        showToast(`已成功刪除《${name}》`, "🗑️");
+        renderBookshelf();
+        renderActiveBookHome();
+      }
     }
 
     // 動態 SVG 貓咪生成演算法
@@ -727,6 +726,8 @@
       } else if (viewName === 'bookshelf') {
         document.getElementById('view-bookshelf').classList.remove('hidden');
         document.getElementById('tab-bookshelf-btn').className = "px-2.5 py-1 text-xs sm:text-sm font-semibold rounded-full bg-inkColor text-warmPink transition-all flex-1 text-center";
+        // 圖1修正：點入書櫃時，預設直達、初始化為「全部」篩選
+        state.bookshelfFilter = 'all';
         renderBookshelf();
       } else if (viewName === 'gallery') {
         document.getElementById('view-gallery').classList.remove('hidden');
@@ -735,16 +736,7 @@
       }
     }
 
-    function showToast(text, icon = "🐱") {
-      const toast = document.getElementById('toast');
-      document.getElementById('toast-icon').textContent = icon;
-      document.getElementById('toast-text').textContent = text;
-      toast.classList.remove('hidden');
-      setTimeout(() => {
-        toast.classList.add('hidden');
-      }, 3000);
-    }
-
+    // 小屋伴讀畫面渲染
     function renderActiveBookHome() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
       const container = document.getElementById('active-cat-svg-container');
@@ -807,7 +799,7 @@
       document.getElementById('stat-wishlist').textContent = wishlistCount;
     }
 
-    // 核心修正：保留「修改」與「刪除」功能按鈕的單一完美書櫃渲染函數
+    // 圖3修正：徹底改寫書櫃列表渲染，重整 Flexbox 同格線以防文字突出去
     function renderBookshelf() {
       const container = document.getElementById('bookshelf-list');
       container.innerHTML = "";
@@ -831,7 +823,7 @@
 
       if (filteredBooks.length === 0) {
         container.innerHTML = `
-          <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center">
+          <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full">
             <p class="font-extrabold text-lg">呢個分類暫時冇書喔 🍂</p>
           </div>
         `;
@@ -846,43 +838,43 @@
         let actionButton = "";
 
         if (book.status === 'finished') {
-          statusBadge = `<span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full border-2 border-emerald-800 font-extrabold">🏆 已睇完</span>`;
-          actionButton = `<span class="text-xs text-emerald-700 font-bold mr-2">已完讀明信片</span>`;
+          statusBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] px-2 py-0.5 rounded-full border-2 border-emerald-800 font-extrabold whitespace-nowrap">🏆 已睇完</span>`;
+          actionButton = `<span class="text-xs text-emerald-700 font-bold mr-1 whitespace-nowrap">已馴服明信片</span>`;
         } else if (book.status === 'wishlist') {
-          statusBadge = `<span class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full border-2 border-amber-800 font-extrabold">💤 想睇</span>`;
+          statusBadge = `<span class="bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full border-2 border-amber-800 font-extrabold whitespace-nowrap">💤 想睇</span>`;
           actionButton = `
-            <button onclick="adoptBook('${book.id}')" class="bg-accentOrange hover:bg-amber-400 px-2.5 py-1 rounded-xl sketch-border-sm text-xs font-black mr-2">
+            <button onclick="adoptBook('${book.id}')" class="bg-accentOrange hover:bg-amber-400 px-2.5 py-1 rounded-xl sketch-border-sm text-xs font-black mr-1 whitespace-nowrap">
               開始伴讀
             </button>
           `;
         } else {
-          statusBadge = `<span class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full border-2 border-blue-800 font-extrabold">📖 睇緊</span>`;
+          statusBadge = `<span class="bg-blue-100 text-blue-800 text-[11px] px-2 py-0.5 rounded-full border-2 border-blue-800 font-extrabold whitespace-nowrap">📖 睇緊</span>`;
           actionButton = isActive 
-            ? `<span class="text-xs text-accentOrange font-black mr-2">🏠 小屋伴讀中</span>`
+            ? `<span class="text-xs text-accentOrange font-black mr-1 whitespace-nowrap">✨ 小屋伴讀中</span>`
             : `
-              <button onclick="setActiveBook('${book.id}')" class="bg-warmPink hover:bg-pink-200 px-2.5 py-1 rounded-xl sketch-border-sm text-xs font-black mr-2">
+              <button onclick="setActiveBook('${book.id}')" class="bg-warmPink hover:bg-pink-200 px-2.5 py-1 rounded-xl sketch-border-sm text-xs font-black mr-1 whitespace-nowrap">
                 去小屋
               </button>
             `;
         }
 
         const card = document.createElement('div');
-        card.className = "w-full max-w-[385px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4.5 pb-6 sketch-border flex flex-col relative select-none animate-breath my-2";
+        card.className = `p-4 rounded-3xl sketch-border flex gap-3 items-center transition-all w-full ${isActive ? 'bg-warmPink/40' : 'bg-white'}`;
         const miniSvgHtml = getCatSVG(book.theme, false);
 
         card.innerHTML = `
           <div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-inkColor bg-grassGreen flex-shrink-0 relative">
             ${miniSvgHtml}
           </div>
-          <div class="flex-grow flex flex-col gap-1">
-            <div class="flex justify-between items-start">
-              <div>
-                <h3 class="font-extrabold text-base leading-tight">《${book.name}》</h3>
-                <p class="text-xs text-inkColor/70 font-semibold">作者：${book.author || '佚名'}</p>
+          <div class="flex-grow min-w-0 flex flex-col gap-1">
+            <div class="flex justify-between items-start gap-2">
+              <div class="min-w-0 flex-grow">
+                <h3 class="font-extrabold text-base leading-tight truncate">《${book.name}》</h3>
+                <p class="text-xs text-inkColor/70 font-semibold truncate">作者：${book.author || '佚名'}</p>
               </div>
-              <div class="flex flex-col items-end gap-1">
+              <div class="flex flex-col items-end gap-1 flex-shrink-0">
                 ${statusBadge}
-                <button onclick="deleteBook('${book.id}', '${book.name}')" class="text-xs opacity-40 hover:opacity-100 transition-opacity text-rose-600 font-bold">🗑️ 刪除</button>
+                <button onclick="deleteBook('${book.id}', '${book.name}')" class="text-[11px] opacity-40 hover:opacity-100 transition-opacity text-rose-600 font-bold">🗑️ 刪除</button>
               </div>
             </div>
             
@@ -890,14 +882,14 @@
               <div class="flex-grow h-3 bg-warmPink/30 rounded-full border-2 border-inkColor overflow-hidden">
                 <div class="h-full bg-accentOrange" style="width: ${percent}%;"></div>
               </div>
-              <span class="text-xs font-bold whitespace-nowrap">${percent}%</span>
+              <span class="text-xs font-bold whitespace-nowrap flex-shrink-0">${percent}%</span>
             </div>
 
-            <div class="flex justify-between items-center mt-2 border-t-2 border-dashed border-inkColor/20 pt-2">
-              <span class="text-[10px] bg-white border border-inkColor px-2 py-0.5 rounded text-inkColor/70 font-semibold">${book.theme}</span>
-              <div class="flex items-center">
+            <div class="flex justify-between items-center mt-1 border-t-2 border-dashed border-inkColor/20 pt-1.5 gap-2">
+              <span class="text-[10px] bg-white border border-inkColor px-1.5 py-0.5 rounded text-inkColor/70 font-semibold truncate max-w-[120px]">${book.theme}</span>
+              <div class="flex items-center flex-shrink-0">
                 ${actionButton}
-                <button onclick="openEditBookModal('${book.id}')" class="bg-white hover:bg-slate-100 p-1 rounded-lg border border-inkColor text-xs font-bold">✏️ 修改</button>
+                <button onclick="openEditBookModal('${book.id}')" class="bg-white hover:bg-slate-100 p-1 px-1.5 rounded-lg border border-inkColor text-xs font-bold flex-shrink-0">✏️ 修改</button>
               </div>
             </div>
           </div>
@@ -1041,6 +1033,7 @@
       renderActiveBookHome();
     }
 
+    // 圖4修正：優化明信片大小限制在 max-w-[360px] 內並加強 pb-6 防止任何小手機爆邊裁切
     function renderGallery() {
       const container = document.getElementById('gallery-list');
       container.innerHTML = "";
@@ -1051,7 +1044,7 @@
       if (finishedBooks.length === 0) {
         document.getElementById('gallery-filter-container').innerHTML = ""; 
         container.innerHTML = `
-          <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center">
+          <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full">
             <p class="font-extrabold text-lg">仲未有睇完嘅書架 🌟</p>
             <p class="text-xs text-inkColor/70 mt-2">當你將書睇到 100%，可愛嘅貓貓就會將你哋嘅回憶畫成明信片，儲喺呢度陪住你！</p>
           </div>
@@ -1083,7 +1076,7 @@
 
       if (filteredFinished.length === 0) {
         container.innerHTML = `
-          <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center">
+          <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full">
             <p class="font-extrabold text-lg">呢個類別暫時未有明信片 🍂</p>
           </div>
         `;
@@ -1092,7 +1085,8 @@
 
       filteredFinished.forEach(book => {
         const card = document.createElement('div');
-        card.className = "w-full max-w-[385px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4.5 sketch-border flex flex-col relative select-none animate-breath my-2";
+        // 圖4全面限制與優化：縮放 max-w 防止細屏幕破框，加強 pb-6
+        card.className = "w-full max-w-[360px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4 pb-6 sketch-border flex flex-col relative select-none animate-breath my-2";
         card.style.animationDuration = "12s";
 
         const catSvg = getCatSVG(book.theme, false);
@@ -1105,34 +1099,34 @@
           <div class="w-full aspect-[4/3] rounded-2xl overflow-hidden sketch-border bg-grassGreen relative flex items-center justify-center">
             ${catSvg}
           </div>
-          <div class="bg-[#D3A99B] border-3 border-inkColor py-1 px-3 rounded-xl flex justify-between items-center mt-3">
-            <span class="text-white font-extrabold text-sm tracking-wide">睇完啦：《${book.name}》</span>
-            <div class="flex text-amber-300 text-xs">
+          <div class="bg-[#D3A99B] border-3 border-inkColor py-1.5 px-3 rounded-xl flex justify-between items-center mt-3 gap-1">
+            <span class="text-white font-extrabold text-xs sm:text-sm tracking-wide truncate">睇完啦：《${book.name}》</span>
+            <div class="flex text-amber-300 text-xs flex-shrink-0">
               <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
             </div>
           </div>
-          <div class="bg-white mt-2 p-3 rounded-2xl border-3 border-inkColor flex flex-col gap-1">
+          <div class="bg-white mt-2 p-3 rounded-2xl border-3 border-inkColor flex flex-col gap-1 min-w-0">
             <p class="text-[10px] uppercase tracking-wider text-rose-400 font-extrabold">伴讀紀錄同諗法</p>
-            <p class="text-xs font-bold leading-relaxed text-inkColor/90">
+            <p class="text-xs font-bold leading-relaxed text-inkColor/90 break-words">
               書名：《${book.name}》 <br>
               作者：${book.author || '未知'} <br>
               讀後感：${book.notes || "奴才陪我一齊睇晒成本書！我依家元氣滿滿，等我每日都黐住你大腿發出呼嚕聲，陪你渡過人生中所有溫暖嘅好時光啦！"}
             </p>
           </div>
-          <div class="flex justify-between items-center mt-2 px-1 text-[9px] font-extrabold text-inkColor/60">
-            <span>🐾 類別：${book.theme}</span>
-            <span>溫馨伴讀・一齊成長 🍃</span>
+          <div class="flex justify-between items-center mt-3 px-1 text-[9px] font-extrabold text-inkColor/60 gap-2">
+            <span class="truncate">🐾 類別：${book.theme}</span>
+            <span class="flex-shrink-0">溫馨伴讀・一齊成長 🍃</span>
           </div>
         `;
         container.appendChild(card);
       });
     }
 
+    // 初始化 App
     window.onload = function() {
       loadState();
       renderActiveBookHome();
     };
   </script>
-  
 </body>
 </html>
