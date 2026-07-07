@@ -113,7 +113,9 @@
               <rect x="21" y="12" width="2" height="3" fill="#534340" />
             </svg>
           </div>
-          <h1 class="text-3xl font-extrabold tracking-wide drop-shadow-sm select-none">Zuzu書櫃</h1>
+          <h1 class="text-3xl font-black tracking-wide drop-shadow-sm select-none flex items-baseline gap-1">
+  Zuzu<span class="text-base font-bold text-inkColor/80">書櫃</span>
+</h1>
         </div>
         
         <div class="flex gap-1 bg-white/40 p-1 rounded-full border-2 border-inkColor min-w-[175px] justify-between">
@@ -829,9 +831,9 @@
         card.className = `p-4 rounded-3xl sketch-border flex gap-3 items-center transition-all w-full ${isActive ? 'bg-warmPink/40' : 'bg-white'}`;
 
         card.innerHTML = `
-          <div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-inkColor bg-white flex-shrink-0 relative">
-            ${getCatSVG(book.theme, false)}
-          </div>
+          <div class="w-20 h-15 aspect-[4/3] rounded-xl overflow-hidden border-2 border-inkColor bg-white flex-shrink-0 relative flex items-center justify-center">
+  ${getCatSVG(book.theme, false)}
+</div>
           <div class="flex-grow min-w-0 flex flex-col gap-1">
             <div class="flex justify-between items-start gap-2">
               <div class="min-w-0 flex-grow">
