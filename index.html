@@ -867,7 +867,7 @@
         }
 
         const card = document.createElement('div');
-        card.className = `p-4 rounded-3xl sketch-border flex gap-4 items-center transition-all ${isActive ? 'bg-warmPink/40' : 'bg-white'}`;
+        card.className = "w-full max-w-[385px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4.5 pb-6 sketch-border flex flex-col relative select-none animate-breath my-2";
         const miniSvgHtml = getCatSVG(book.theme, false);
 
         card.innerHTML = `
