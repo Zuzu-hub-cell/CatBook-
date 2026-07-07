@@ -1087,25 +1087,24 @@
         const card = document.createElement('div');
         card.className = "w-full max-w-[360px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4 pb-6 sketch-border flex flex-col relative select-none animate-breath my-2";
         
-        card.innerHTML = `
-          <div class="flex justify-between items-center mb-2 px-1">
-            <span class="text-xl font-black text-rose-400 tracking-wider">32-BIT STAGE</span>
-            <span class="text-base font-extrabold text-rose-400">+250 HP</span>
-          </div>
+                card.innerHTML = `
+          <!-- 1. [修正] 移除原本最頂部的 32-BIT STAGE / +250 HP 欄 -->
+
           <div class="w-full aspect-[4/3] rounded-2xl overflow-hidden sketch-border bg-white flex items-center justify-center">
             ${getCatSVG(book.theme, false)}
           </div>
-          <div class="bg-[#D3A99B] border-3 border-inkColor py-1.5 px-3 rounded-xl flex justify-between items-center mt-3 gap-1">
-            <span class="text-white font-extrabold text-xs sm:text-sm tracking-wide truncate">睇完啦：《${book.name}》</span>
-          </div>
-          <div class="bg-white mt-2 p-3 rounded-2xl border-3 border-inkColor flex flex-col gap-1 min-w-0">
-            <p class="text-[10px] uppercase tracking-wider text-rose-400 font-extrabold">伴讀紀錄同諗法</p>
+
+          <!-- 2. [修正] 移除原本夾在中間的深色「睇完啦：《...》」橫幅 -->
+
+          <div class="bg-white mt-4 p-4 rounded-2xl border-3 border-inkColor flex flex-col gap-1 min-w-0">
+            <!-- 3. [修正] 移除原本純文字的「伴讀紀錄同諗法」小標題 -->
             <p class="text-xs font-bold leading-relaxed text-inkColor/90 break-words">
               書名：《${book.name}》 <br>
               作者：${book.author || '未知'} <br>
               讀後感：${book.notes || "奴才陪我一齊睇晒成本書！雲端數據滿載！"}
             </p>
           </div>
+        
         `;
         container.appendChild(card);
       });
