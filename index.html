@@ -1030,23 +1030,44 @@
       document.getElementById('modal-edit-book').classList.add('hidden');
     }
 
-    window.submitEditBook = async function()
+    window.submitEditBook = async function() {
+      const id = document.getElementById('edit-book-id').value;
+      const name = document.getElementById('edit-book-name').value.trim();
+      const author = document.getElementById('edit-book-author').value.trim();
+      const theme = document.getElementById('edit-book-theme').value;
+      const current = parseInt(document.getElementById('edit-book-current').value) || 0;
+      const total = parseInt(document.getElementById('edit-book-total').value) || 200;
+      // 撈取修改後的讀後感內容
+      const notes = document.getElementById('edit-book-notes').value.trim();
 
-    }
+      if (!name) return showToast("書名唔可以留空！", "❌");
+      if (current < 0 || total <= 0 || current > total) {
+        return showToast("頁數比例好似唔多啱啵！", "❌");
+      }
 
-    window.deleteBook = async function(id, name) {
-      if (confirm(`你確定要將《${name}》同埋佢隻像素貓送走嗎？雲端紀錄會消失架... 😿`)) {
-        try {
-          showToast("正在從雲端移除...", "⏳");
-          await deleteDoc(doc(db, "books", id));
-          showToast(`已成功刪除《${name}》`, "🗑️");
-          await loadState();
-          renderBookshelf();
-        } catch (e) {
-          showToast("刪除失敗", "❌");
-        }
+      let status = current === total ? "finished" : (current > 0 ? "reading" : "wishlist");
+      showToast("儲存修改中...", "⏳");
+      try {
+        // 更新 Firebase 雲端資料，包含隨筆筆記
+        await updateDoc(doc(db, "books", id), { 
+          name, 
+          author, 
+          theme, 
+          currentPage: current, 
+          totalPage: total, 
+          status,
+          notes: notes
+        });
+        closeEditBookModal();
+        showToast("資料已更新！", "💾");
+        await loadState();
+        renderBookshelf();
+      } catch (e) {
+        console.error("修改失敗:", e);
+        showToast("修改失敗 😿", "❌");
       }
     }
+
 
     function renderGallery() {
       const container = document.getElementById('gallery-list');
