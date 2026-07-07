@@ -61,6 +61,15 @@
       box-shadow: 2px 2px 0px #534340;
     }
 
+    /* 隱藏滾動條但保留滾動功能 */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
     /* 溫馨滾動條樣式 */
     ::-webkit-scrollbar {
       width: 8px;
@@ -214,6 +223,14 @@
           </button>
         </div>
 
+        <!-- 狀態篩選按鈕列 -->
+        <div class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar select-none">
+          <button id="filter-bs-all" onclick="setBookshelfFilter('all')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all">全部</button>
+          <button id="filter-bs-reading" onclick="setBookshelfFilter('reading')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">睇緊 📖</button>
+          <button id="filter-bs-wishlist" onclick="setBookshelfFilter('wishlist')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">想睇 💤</button>
+          <button id="filter-bs-finished" onclick="setBookshelfFilter('finished')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">已睇完 🏆</button>
+        </div>
+
         <!-- 書櫃滾動列表 -->
         <div id="bookshelf-list" class="grid grid-cols-1 gap-4 max-h-[440px] overflow-y-auto pr-1 pb-4"></div>
       </div>
@@ -224,6 +241,11 @@
           <!-- 【圖3修改：標題改為成就明信片畫廊】 -->
           <h2 class="text-2xl font-black">成就明信片畫廊</h2>
           <span id="gallery-count" class="bg-white border-2 border-inkColor px-3 py-1 rounded-full text-xs font-bold">已收集: 0 張</span>
+        </div>
+
+        <!-- 動態類別篩選按鈕列 -->
+        <div id="gallery-filter-container" class="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar select-none">
+          <!-- 將由 JS 動態生成 -->
         </div>
 
         <!-- 明信片列表 (【圖3修改：增加 pb-12 以防裁剪、精細調整邊緣】) -->
@@ -339,7 +361,9 @@
     // 記憶體中的狀態數據
     let state = {
       books: [],
-      activeBookId: null
+      activeBookId: null,
+      bookshelfFilter: 'all', // 新增書櫃篩選狀態
+      galleryFilter: '全部'    // 新增明信片篩選狀態
     };
 
     // 預設書籍數據（翻譯為廣東話格式）
@@ -762,17 +786,36 @@
       const container = document.getElementById('bookshelf-list');
       container.innerHTML = "";
 
-      if (state.books.length === 0) {
+      // 更新篩選按鈕高亮樣式
+      const filters = ['all', 'reading', 'wishlist', 'finished'];
+      filters.forEach(f => {
+        const btn = document.getElementById(`filter-bs-${f}`);
+        if (btn) {
+          if (f === state.bookshelfFilter) {
+            btn.className = "px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all";
+          } else {
+            btn.className = "px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all";
+          }
+        }
+      });
+
+      // 根據篩選器過濾書籍
+      let filteredBooks = state.books;
+      if (state.bookshelfFilter !== 'all') {
+        filteredBooks = state.books.filter(b => b.status === state.bookshelfFilter);
+      }
+
+      if (filteredBooks.length === 0) {
         container.innerHTML = `
           <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center">
-            <p class="font-extrabold text-lg">書櫃仲係空擺擺架 🍂</p>
-            <p class="text-xs text-inkColor/70 mt-2">撳右上角「加新書」入第一本書，吸引溫柔嘅貓貓過嚟啦！</p>
+            <p class="font-extrabold text-lg">呢個分類暫時冇書喔 🍂</p>
+            <p class="text-xs text-inkColor/70 mt-2">撳右上角「加新書」入一本新書，吸引溫柔嘅貓貓過嚟啦！</p>
           </div>
         `;
         return;
       }
 
-      state.books.forEach(book => {
+      filteredBooks.forEach(book => {
         const percent = Math.min(100, Math.floor((book.currentPage / book.totalPage) * 100));
         const isActive = book.id === state.activeBookId;
         
@@ -856,6 +899,18 @@
         updateTopStatsUI();
         renderBookshelf();
       }
+    }
+
+    // 設定書櫃篩選狀態
+    function setBookshelfFilter(filterType) {
+      state.bookshelfFilter = filterType;
+      renderBookshelf();
+    }
+
+    // 設定明信片篩選狀態
+    function setGalleryFilter(theme) {
+      state.galleryFilter = theme;
+      renderGallery();
     }
 
     // 新增書籍視窗控制
@@ -980,6 +1035,7 @@
       document.getElementById('gallery-count').textContent = `已收集: ${finishedBooks.length} 張`;
 
       if (finishedBooks.length === 0) {
+        document.getElementById('gallery-filter-container').innerHTML = ""; // 冇書就唔顯示篩選按鈕
         container.innerHTML = `
           <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center">
             <p class="font-extrabold text-lg">仲未有睇完嘅書架 🌟</p>
@@ -989,7 +1045,41 @@
         return;
       }
 
-      finishedBooks.forEach(book => {
+      // 動態生成明信片主題篩選列
+      const filterContainer = document.getElementById('gallery-filter-container');
+      const uniqueThemes = ['全部', ...new Set(finishedBooks.map(b => b.theme))];
+      
+      // 若目前篩選的類別已經冇晒，就重設為「全部」
+      if (!uniqueThemes.includes(state.galleryFilter)) {
+        state.galleryFilter = '全部';
+      }
+
+      filterContainer.innerHTML = uniqueThemes.map(theme => {
+        const isSelected = theme === state.galleryFilter;
+        return `
+          <button onclick="setGalleryFilter('${theme}')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor transition-all whitespace-nowrap ${
+            isSelected ? 'bg-inkColor text-warmPink' : 'bg-white text-inkColor'
+          }">
+            ${theme}
+          </button>
+        `;
+      }).join('');
+
+      // 根據篩選過濾明信片
+      const filteredFinished = state.galleryFilter === '全部' 
+        ? finishedBooks 
+        : finishedBooks.filter(b => b.theme === state.galleryFilter);
+
+      if (filteredFinished.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white/90 p-8 rounded-3xl sketch-border text-center">
+            <p class="font-extrabold text-lg">呢個類別暫時未有明信片 🍂</p>
+          </div>
+        `;
+        return;
+      }
+
+      filteredFinished.forEach(book => {
         const card = document.createElement('div');
         // 【圖3修改：將寬度限制為 max-w-[340px]，微調內邊距 p-4，徹底防止邊緣裁剪問題】
         card.className = "w-full max-w-[340px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4 sketch-border flex flex-col relative select-none animate-breath my-2";
