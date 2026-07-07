@@ -308,6 +308,9 @@
               <label>📖 總頁數</label>
               <input id="edit-book-total" type="number" min="1" inputmode="numeric" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
             </div>
+          <div class="flex flex-col gap-1 mt-1">
+            <label>📝 閱讀隨筆 / 讀後感 (會同步更新明信片)</label>
+            <textarea id="edit-book-notes" rows="3" placeholder="寫低你對呢本書嘅諗法..." class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold text-sm resize-none"></textarea>
           </div>
         </div>
         <button onclick="submitEditBook()" class="bg-[#9CBD5B] hover:bg-green-500 py-3 rounded-xl sketch-border-sm font-black text-lg active:translate-y-1 transition-all">💾 儲存修改</button>
@@ -1008,43 +1011,27 @@
       }
     }
 
-    window.openEditBookModal = function(id) {
+        window.openEditBookModal = function(id) {
       const book = state.books.find(b => b.id === id);
       if (!book) return;
+
       document.getElementById('edit-book-id').value = book.id;
       document.getElementById('edit-book-name').value = book.name;
       document.getElementById('edit-book-author').value = book.author;
       document.getElementById('edit-book-theme').value = book.theme;
       document.getElementById('edit-book-current').value = book.currentPage;
       document.getElementById('edit-book-total').value = book.totalPage;
+      document.getElementById('edit-book-notes').value = book.notes || "";
       document.getElementById('modal-edit-book').classList.remove('hidden');
     }
+
 
     window.closeEditBookModal = function() {
       document.getElementById('modal-edit-book').classList.add('hidden');
     }
 
-    window.submitEditBook = async function() {
-      const id = document.getElementById('edit-book-id').value;
-      const name = document.getElementById('edit-book-name').value.trim();
-      const author = document.getElementById('edit-book-author').value.trim();
-      const theme = document.getElementById('edit-book-theme').value;
-      const current = parseInt(document.getElementById('edit-book-current').value) || 0;
-      const total = parseInt(document.getElementById('edit-book-total').value) || 200;
+    window.submitEditBook = async function()
 
-      if (!name) return showToast("書名唔可以留空！", "❌");
-
-      let status = current === total ? "finished" : (current > 0 ? "reading" : "wishlist");
-      showToast("儲存修改中...", "⏳");
-      try {
-        await updateDoc(doc(db, "books", id), { name, author, theme, currentPage: current, totalPage: total, status });
-        closeEditBookModal();
-        showToast("資料已更新！", "💾");
-        await loadState();
-        renderBookshelf();
-      } catch (e) {
-        showToast("修改失敗", "❌");
-      }
     }
 
     window.deleteBook = async function(id, name) {
