@@ -8,6 +8,9 @@
 <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
+  <!-- 引入 Firebase 模組化 SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js" type="module"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js" type="module"></script>
   <!-- 引入可愛手寫風格字體 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -429,7 +432,26 @@
     <span id="toast-text">哈囉！</span>
   </div>
 
-  <script>
+  <script type="module">
+    // 引入 Firebase SDK 模組功能
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Zuzu-Travel 專案憑證
+    const firebaseConfig = {
+      apiKey: "AIzaSyCZSj0CQc_V7LuqUurXOJndNGZwdSK8OlI",
+      authDomain: "zuzu-travel-564a8.firebaseapp.com",
+      projectId: "zuzu-travel-564a8",
+      storageBucket: "zuzu-travel-564a8.firebasestorage.app",
+      messagingSenderId: "855878475262",
+      appId: "1:855878475262:web:96079b08b653e02e7634af",
+      measurementId: "G-SHQPN4W8V7"
+    };
+
+    // 初始化 Firebase 同 Firestore 資料庫
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const booksCollection = collection(db, "books"); // 自動喺 Firebase 建立名為 books 嘅資料夾
     // 記憶體中的狀態數據
     let state = {
       books: [],
@@ -489,9 +511,28 @@
       updateTopStatsUI();
     }
 
-    function saveState() {
-      localStorage.setItem('zuzu_bookshelf_state', JSON.stringify(state));
-    }
+    async function loadState() {
+  try {
+    showToast("同步雲端中...", "⏳");
+    const querySnapshot = await getDocs(booksCollection);
+    let fetchedBooks = [];
+    querySnapshot.forEach((doc) => {
+      fetchedBooks.push({ id: doc.id, ...doc.data() });
+    });
+    
+    state.books = fetchedBooks;
+    
+    // 自動鎖定第一本「睇緊」嘅書做小屋伴讀
+    const currentReading = state.books.find(b => b.status === 'reading');
+    state.activeBookId = currentReading ? currentReading.id : (state.books.length > 0 ? state.books[0].id : null);
+    
+    updateTopStatsUI();
+    renderActiveBookHome();
+  } catch (error) {
+    console.error("Firebase 讀取失敗: ", error);
+    showToast("雲端同步失敗 😿", "❌");
+  }
+}
 
     // 修改與刪除功能邏輯
     function openEditBookModal(id) {
@@ -939,7 +980,7 @@
       document.getElementById('modal-add-book').classList.add('hidden');
     }
 
-    function submitNewBook() {
+    async function submitNewBook() {
       const name = document.getElementById('input-book-name').value.trim();
       const author = document.getElementById('input-book-author').value.trim();
       const theme = document.getElementById('input-book-theme').value;
@@ -958,32 +999,39 @@
       const id = `book-${Date.now()}`;
       const isFinished = current === total;
 
-      state.books.push({
-        id,
-        name,
-        author,
-        theme,
-        currentPage: current,
-        totalPage: total,
-        notes: "",
-        status: isFinished ? "finished" : (current > 0 ? "reading" : "wishlist")
-      });
+      const id = `book-${Date.now()}`;
+    const isFinished = current === total;
 
-      if (!isFinished) {
-        state.activeBookId = id; 
-      }
+    const newBook = {
+      name,
+      author,
+      theme,
+      currentPage: current,
+      totalPage: total,
+      notes: "",
+      status: isFinished ? "finished" : (current > 0 ? "reading" : "wishlist")
+    };
 
-      saveState();
-      updateTopStatsUI();
+    try {
+      // 🔴 寫入 Firebase 雲端
+      showToast("正在傳送雲端...", "⏳");
+      await setDoc(doc(db, "books", id), newBook);
+
       closeAddBookModal();
       showToast(`《${name}》成功入落書櫃！`, "📖");
       
+      // 清空輸入框
       document.getElementById('input-book-name').value = "";
       document.getElementById('input-book-author').value = "";
       document.getElementById('input-book-current').value = 0;
 
+      await loadState(); // 重新整理雲端數據
       switchTab('bookshelf');
+    } catch (error) {
+      console.error("雲端新增失敗:", error);
+      showToast("雲端儲存失敗 😿", "❌");
     }
+  }
 
     function openLogModal() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
@@ -1004,7 +1052,7 @@
       document.getElementById('modal-log-progress').classList.add('hidden');
     }
 
-    function submitProgress() {
+    async function submitProgress() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
       if (!activeBook) return;
 
@@ -1016,27 +1064,33 @@
         return;
       }
 
-      activeBook.currentPage = newPage;
-      if (note) {
-        activeBook.notes = note;
-      }
-
-      let alertText = `讀完啦！真係好叻！`;
-
-      if (newPage === activeBook.totalPage) {
-        activeBook.status = "finished";
-        alertText = `🎉 好好叻啊！《${activeBook.name}》全部睇完！攞到張成就明信片！`;
-        const nextInLine = state.books.find(b => b.status === 'reading' && b.id !== activeBook.id);
-        state.activeBookId = nextInLine ? nextInLine.id : null;
-      }
-
-      saveState();
-      updateTopStatsUI();
-      closeLogModal();
-      showToast(alertText, "🥫");
-      renderActiveBookHome();
+      let updatedStatus = activeBook.status;
+    if (newPage === activeBook.totalPage) {
+      updatedStatus = "finished";
     }
 
+    try {
+      // 🔴 同步更新去 Firebase 雲端
+      showToast("正在餵食肉泥罐罐...", "⏳");
+      const bookRef = doc(db, "books", activeBook.id);
+      await updateDoc(bookRef, {
+        currentPage: newPage,
+        notes: note ? note : activeBook.notes,
+        status: updatedStatus
+      });
+
+      let alertText = newPage === activeBook.totalPage 
+        ? `🎉 好好叻啊！《${activeBook.name}》全部睇完！攞到張成就明信片！` 
+        : `讀完啦！真係好叻！`;
+
+      closeLogModal();
+      showToast(alertText, "🥫");
+      await loadState(); // 重新整理雲端數據，自動刷新畫面
+    } catch (error) {
+      console.error("雲端更新進度失敗:", error);
+      showToast("雲端儲存失敗 😿", "❌");
+    }
+  }
     // 圖4修正：優化明信片大小限制在 max-w-[360px] 內並加強 pb-6 防止任何小手機爆邊裁切
     function renderGallery() {
       const container = document.getElementById('gallery-list');
