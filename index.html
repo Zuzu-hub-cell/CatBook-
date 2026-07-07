@@ -37,31 +37,23 @@
     }
   </script>
   <style>
-    /* 64-bit 高精細度像素貓咪呼吸與搖尾巴動畫 */
+    /* 32-bit 貓咪像素呼吸與搖尾巴動畫 */
     @keyframes pixel-breath {
       0%, 100% { transform: scale(1) translateY(0); }
-      50% { transform: scale(1, 0.97) translateY(0.5px); }
+      50% { transform: scale(1, 0.96) translateY(0.5px); }
     }
     .animate-pixel-breath {
-      animation: pixel-breath 3s steps(3, end) infinite;
+      animation: pixel-breath 3s steps(2, end) infinite;
       transform-origin: bottom center;
     }
 
     @keyframes pixel-tail {
       0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(6deg); }
+      50% { transform: rotate(8deg); }
     }
     .animate-pixel-tail {
       animation: pixel-tail 2s steps(2, end) infinite;
-      transform-origin: 48px 46px; 
-    }
-
-    @keyframes pixel-float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-1.5px); }
-    }
-    .animate-pixel-float {
-      animation: pixel-float 2.5s steps(2, end) infinite;
+      transform-origin: 24px 22px; 
     }
 
     /* 手繪感粗黑外框 */
@@ -104,11 +96,13 @@
         <div class="flex items-center gap-2">
           <!-- 像素小 Logo -->
           <div class="w-10 h-10 flex items-center justify-center bg-white rounded-xl border-3 border-inkColor overflow-hidden">
-            <svg viewBox="0 0 64 64" class="w-8 h-8" style="image-rendering: pixelated;">
-              <path d="M 16,30 H 48 V 48 H 16 Z" fill="#FFF5E6" stroke="#534340" stroke-width="2" />
-              <rect x="22" y="36" width="2" height="2" fill="#534340" />
-              <rect x="40" y="36" width="2" height="2" fill="#534340" />
-              <rect x="30" y="40" width="4" height="2" fill="#534340" />
+            <svg viewBox="0 0 32 32" class="w-8 h-8" style="image-rendering: pixelated;">
+              <path d="M 9,15 H 23 V 24 H 6 V 15 Z" fill="#FFF5E6" />
+              <rect x="11" y="17" width="1" height="1" fill="#534340" />
+              <rect x="20" y="17" width="1" height="1" fill="#534340" />
+              <rect x="15" y="18" width="2" height="1" fill="#534340" />
+              <rect x="9" y="12" width="2" height="3" fill="#534340" />
+              <rect x="21" y="12" width="2" height="3" fill="#534340" />
             </svg>
           </div>
           <h1 class="text-3xl font-extrabold tracking-wide drop-shadow-sm select-none">Zuzu書櫃</h1>
@@ -158,7 +152,7 @@
           <div class="w-full aspect-[4/3] rounded-3xl overflow-hidden sketch-border bg-[#9CBD5B] relative flex items-center justify-center cursor-pointer active:scale-[0.98] transition-transform" onclick="petActiveCat()">
             <div id="active-cat-svg-container" class="w-full h-full"></div>
             <div id="heart-floaters" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
-            <div class="absolute bottom-2 right-4 bg-white/80 border-2 border-inkColor text-[11px] px-2 py-0.5 rounded-full font-bold opacity-60">🐾 摸吓精細像素貓</div>
+            <div class="absolute bottom-2 right-4 bg-white/80 border-2 border-inkColor text-[11px] px-2 py-0.5 rounded-full font-bold opacity-60">🐾 摸吓像素貓</div>
           </div>
 
           <div class="bg-white mt-4 py-2 px-3 rounded-2xl border-3 border-inkColor flex flex-col items-center text-center">
@@ -233,16 +227,16 @@
               <option value="🌍 翻譯文學">🌍 翻譯文學 (暹羅貓 可可 ☕)</option>
               <option value="📜 詩">📜 詩 (波斯貓 詩詩 🍃)</option>
               <option value="🚀 科幻/奇幻小說">🚀 科幻/奇幻小說 (美短貓 星爵 💫)</option>
-              <option value="🔍 懸疑/推理小說">🔍 懸疑/推理小說 (英短貓 華生 👓)</option>
+              <option value="🔍 懸疑/推理小說">🔍 懸疑/推理小說 (英短貓 華生 🔍)</option>
               <option value="👻 恐怖/驚悚小說">👻 恐怖/驚悚小說 (小黑貓 黑仔 🕯️)</option>
               <option value="☕ 溫馨/療癒小說">☕ 溫馨/療癒小說 (三花貓 阿福 🍵)</option>
               <option value="💖 愛情小說">💖 愛情小說 (耳粉白貓 咪咪 🎀)</option>
-              <option value="⚔️ 歷史/武俠小說">⚔️ 歷史/武俠小說 (虎斑貓 獨孤 🗡️)</option>
-              <option value="🍙 輕小說">🍙 輕小說 (賓士貓 小黑寶 ⭐)</option>
-              <option value="🎨 藝術設計">🎨 藝術設計 (玳瑁貓 畢卡貓 🖌️)</option>
-              <option value="🐟 飲食">🐟 飲食 (小奶貓 布丁 🍪)</option>
-              <option value="🪙 商業 / 理財投資">🪙 商業 / 理財投資 (招財橘貓 金金 🍊)</option>
-              <option value="🌱 心靈 / 心理成長">🌱 心靈 / 心理成長 (布偶貓 棉花糖 ☁️)</option>
+              <option value="⚔️ 歷史/武俠小說">⚔️ 歷史/武俠小說 (虎斑貓 擺爛 📜)</option>
+              <option value="🍙 輕小說">🍙 輕小說 (面罩元氣貓 🍙)</option>
+              <option value="🎨 藝術設計">🎨 藝術設計 (戴畫家帽玳瑁貓 🎨)</option>
+              <option value="飲食">🐟 飲食 (愛吃魚魚小胖貓 🐟)</option>
+              <option value="商業 / 理財投資">🪙 商業 / 理財投資 (招財橘貓 金幣 🪙)</option>
+              <option value="心靈 / 心理成長">🌱 心靈 / 心理成長 (生機小綠芽護心貓 🌱)</option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -256,12 +250,12 @@
             </div>
           </div>
         </div>
-        <button onclick="submitNewBook()" class="bg-accentOrange hover:bg-amber-400 py-3 rounded-xl sketch-border-sm font-black text-lg active:translate-y-1 transition-all">🐾 帶精細像素貓返屋企</button>
+        <button onclick="submitNewBook()" class="bg-accentOrange hover:bg-amber-400 py-3 rounded-xl sketch-border-sm font-black text-lg active:translate-y-1 transition-all">🐾 帶像素流浪貓返屋企</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: 修改/編輯書籍 -->
+  <!-- ==================== MODAL: 修改/編輯書籍 ==================== -->
   <div id="modal-edit-book" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
     <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh]">
       <button onclick="closeEditBookModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold z-10">❌</button>
@@ -280,19 +274,19 @@
           <div class="flex flex-col gap-1">
             <label>🏷️ 書本主題</label>
             <select id="edit-book-theme" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+              <option value="商業 / 理財投資">🪙 商業 / 理財投資</option>
+              <option value="心靈 / 心理成長">🌱 心靈 / 心理成長</option>
+              <option value="懸疑/推理小說">🔍 懸疑/推理小說</option>
+              <option value="溫馨/療癒小說">☕ 溫馨/療癒小說</option>
               <option value="🌍 翻譯文學">🌍 翻譯文學</option>
               <option value="📜 詩">📜 詩</option>
               <option value="🚀 科幻/奇幻小說">🚀 科幻/奇幻小說</option>
-              <option value="🔍 懸疑/推理小說">🔍 懸疑/推理小說</option>
               <option value="👻 恐怖/驚悚小說">👻 恐怖/驚悚小說</option>
-              <option value="☕ 溫馨/療癒小說">☕ 溫馨/療癒小說</option>
               <option value="💖 愛情小說">💖 愛情小說</option>
               <option value="⚔️ 歷史/武俠小說">⚔️ 歷史/武俠小說</option>
               <option value="🍙 輕小說">🍙 輕小說</option>
               <option value="🎨 藝術設計">🎨 藝術設計</option>
               <option value="🐟 飲食">🐟 飲食</option>
-              <option value="🪙 商業 / 理財投資">🪙 商業 / 理財投資</option>
-              <option value="🌱 心靈 / 心理成長">🌱 心靈 / 心理成長</option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -311,7 +305,7 @@
     </div>
   </div>
 
-  <!-- MODAL: 登記進度 -->
+  <!-- ==================== MODAL: 登記進度 ==================== -->
   <div id="modal-log-progress" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
     <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh]">
       <button onclick="closeLogModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold z-10">❌</button>
@@ -367,261 +361,192 @@
       galleryFilter: '全部'
     };
 
-    // 64x64 高精細度像素大福貓生成演算法
+    // 32x32 全景像素風格（去邊框 + 全屏動態場景背景）
     function getCatSVG(theme, isBreathing = true) {
       let bodyFill = "#FFFFFF";      
       let patchHtml = "";     
-      let bgFill = "#E8F1F2";        
-      let accessoryHtml = "";              
-      let catName = "流浪貓";
+      let bgHtml = `<rect width="32" height="32" fill="#9CBD5B" />`; // 預設草地底
+      let catName = "流浪精靈";
 
-      // 根據 13 個分類切換品種、顏色與草地精細配件
+      // 13個分類純像素大福貓換裝與情景大改造
       if (theme.includes("翻譯文學")) {
         catName = "可可 (Coco) ☕ 暹羅貓";
-        bodyFill = "#F4ECCF"; bgFill = "#EDF2FB";
-        patchHtml = `<!-- 暹羅貓深色面罩與耳朵 -->
-          <path d="M 26,32 H 38 V 40 H 26 Z" fill="#6D594F"/>
-          <path d="M 18,22 H 24 V 28 H 18 Z" fill="#534340"/>
-          <path d="M 40,22 H 46 V 28 H 40 Z" fill="#534340"/>
-          <path d="M 12,40 H 16 V 50 H 12 Z" fill="#534340"/>
-          <path d="M 48,40 H 52 V 50 H 48 Z" fill="#534340"/>`;
-        // 配件：暖暖的熱咖啡/熱茶杯
-        accessoryHtml = `<g class="animate-pixel-float">
-          <rect x="46" y="44" width="8" height="6" fill="#D3A99B" stroke="#534340" stroke-width="1"/>
-          <path d="M 54,46 H 56 V 48 H 54 Z" fill="#534340"/>
-          <path d="M 48,41 V 43 M 51,41 V 43 M 53,41 V 43" stroke="#534340" stroke-width="1" opacity="0.6"/>
-        </g>`;
+        bgHtml = `<rect width="32" height="32" fill="#EDF2FB" />
+                  <!-- 咖啡廳手繪瓷磚牆與小圓桌 -->
+                  <rect x="0" y="0" width="32" height="18" fill="#D3A99B" opacity="0.3"/>
+                  <rect x="24" y="22" width="6" height="1" fill="#534340"/>
+                  <rect x="26" y="23" width="2" height="9" fill="#534340"/>`;
+        bodyFill = "#FFF3E0";
+        patchHtml = `<rect x="13" y="15" width="6" height="4" fill="#5D4037"/>
+                     <rect x="9" y="12" width="1" height="2" fill="#5D4037"/><rect x="22" y="12" width="1" height="2" fill="#5D4037"/>`;
       } 
       else if (theme.includes("詩")) {
         catName = "詩詩 (Poem) 🍃 波斯貓";
-        bodyFill = "#FAFAFA"; bgFill = "#E8DFF5";
-        patchHtml = `<!-- 波斯貓長毛蓬鬆邊緣特徵 -->
-          <rect x="13" y="32" width="2" height="12" fill="#EAEAEA"/>
-          <rect x="49" y="32" width="2" height="12" fill="#EAEAEA"/>`;
-        // 配件：手繪羽毛筆
-        accessoryHtml = `<g transform="rotate(-15 48 44)">
-          <path d="M 46,36 C 48,38 50,44 46,50" stroke="#9CBD5B" stroke-width="2" fill="none"/>
-          <line x1="46" y1="50" x2="44" y2="54" stroke="#534340" stroke-width="1"/>
-        </g>`;
+        bgHtml = `<rect width="32" height="32" fill="#F4EFFB" />
+                  <!-- 書房復古窗花與散落紙張 -->
+                  <rect x="2" y="2" width="8" height="10" fill="none" stroke="#534340" stroke-width="0.5" opacity="0.5"/>
+                  <rect x="22" y="24" width="4" height="3" fill="#FFF" stroke="#534340" stroke-width="0.5"/>`;
+        bodyFill = "#FAFAFA";
+        patchHtml = `<rect x="7" y="18" width="1" height="6" fill="#E0E0E0"/><rect x="24" y="18" width="1" height="6" fill="#E0E0E0"/>`;
       } 
       else if (theme.includes("科幻/奇幻小說")) {
         catName = "星爵 (Nova) 💫 美短貓";
-        bodyFill = "#DCE2E6"; bgFill = "#2A2D34";
-        patchHtml = `<!-- 美短精細條紋 -->
-          <rect x="22" y="30" width="2" height="14" fill="#708090"/>
-          <rect x="28" y="28" width="2" height="16" fill="#708090"/>
-          <rect x="34" y="28" width="2" height="16" fill="#708090"/>
-          <rect x="40" y="30" width="2" height="14" fill="#708090"/>`;
-        // 配件：旋轉閃耀小金星
-        accessoryHtml = `<g class="animate-bounce" style="animation-duration: 2s;">
-          <path d="M 48,40 L 50,43 L 53,43 L 51,45 L 52,48 L 48,46 L 44,48 L 45,45 L 43,43 L 46,43 Z" fill="#FFE082" stroke="#FFF" stroke-width="1"/>
-        </g>`;
+        // 全屏太空背景
+        bgHtml = `<rect width="32" height="32" fill="#1A1B2F" />
+                  <rect x="4" y="4" width="1" height="1" fill="#FFF" opacity="0.8"/>
+                  <rect x="26" y="6" width="1" height="1" fill="#FFF"/>
+                  <rect x="12" y="20" width="1" height="1" fill="#FFE082" opacity="0.5"/>
+                  <circle cx="28" cy="24" r="2" fill="#4EA8DE" opacity="0.4"/>`;
+        bodyFill = "#ECEFF1";
+        patchHtml = `<rect x="11" y="16" width="1" height="8" fill="#78909C"/>
+                     <rect x="15" y="15" width="1" height="9" fill="#78909C"/>
+                     <rect x="20" y="16" width="1" height="8" fill="#78909C"/>`;
       } 
       else if (theme.includes("懸疑/推理小說")) {
         catName = "華生 (Watson) 🔍 英短貓";
-        bodyFill = "#B0C4DE"; bgFill = "#F4ECCF"; // 經典藍貓色
-        // 配件：復古單眼眼鏡
-        accessoryHtml = `<g>
-          <circle cx="28" cy="34" r="4" fill="none" stroke="#FFD700" stroke-width="1"/>
-          <line x1="24" y1="34" x2="20" y2="30" stroke="#FFD700" stroke-width="1"/>
-          <!-- 掉在草地上的單眼眼鏡 -->
-          <circle cx="48" cy="48" r="3" fill="none" stroke="#FFD700" stroke-width="1.5"/>
-          <line x1="51" y1="50" x2="54" y2="53" stroke="#534340" stroke-width="1.5"/>
-        </g>`;
+        bgHtml = `<rect width="32" height="32" fill="#E6E8EA" />
+                  <!-- 英倫街頭像素懷舊紅磚與路燈 -->
+                  <rect x="0" y="0" width="32" height="12" fill="#C25953" opacity="0.4"/>
+                  <line x1="28" y1="0" x2="28" y2="24" stroke="#534340" stroke-width="0.5"/>
+                  <rect x="27" y="4" width="3" height="3" fill="#FFD166"/>`;
+        bodyFill = "#B0C4DE";
       } 
       else if (theme.includes("恐怖/驚悚小說")) {
         catName = "黑仔 (Shadow) 🕯️ 小黑貓";
-        bodyFill = "#3D3D3D"; bgFill = "#4A4E69";
-        patchHtml = `<!-- 黃色大眼睛 -->
-          <rect x="23" y="32" width="4" height="4" fill="#FFD166"/>
-          <rect x="37" y="32" width="4" height="4" fill="#FFD166"/>`;
-        // 配件：可愛小幽靈
-        accessoryHtml = `<g class="animate-pixel-float" opacity="0.8">
-          <path d="M 46,42 C 46,38 54,38 54,42 V 48 L 52,46 L 50,48 L 48,46 L 46,48 Z" fill="#FFFFFF" stroke="#534340" stroke-width="1"/>
-          <circle cx="49" cy="42" r="0.7" fill="#534340"/>
-          <circle cx="51" cy="42" r="0.7" fill="#534340"/>
-        </g>`;
+        // 陰森城堡古宅背景（紫夜、墓碑小幽靈）
+        bgHtml = `<rect width="32" height="32" fill="#3D3A45" />
+                  <rect x="24" y="18" width="4" height="7" fill="#757575"/>
+                  <line x1="23" y1="20" x2="29" y2="20" stroke="#534340" stroke-width="0.5"/>`;
+        bodyFill = "#212121";
+        patchHtml = `<rect x="11" y="18" width="1" height="1" fill="#FFD166"/>
+                     <rect x="20" y="18" width="1" height="1" fill="#FFD166"/>`;
       } 
       else if (theme.includes("溫馨/療癒小說")) {
         catName = "阿福 (Fuku) 🍵 三花貓";
-        bodyFill = "#FFFDF0"; bgFill = "#EDF2FB";
-        patchHtml = `<!-- 三花精緻黑橘雙色斑塊 -->
-          <path d="M 16,28 H 26 V 36 H 16 Z" fill="#F4A261"/>
-          <path d="M 38,28 H 48 V 34 H 38 Z" fill="#534340"/>
-          <path d="M 20,40 H 28 V 46 H 20 Z" fill="#534340"/>
-          <path d="M 40,42 H 46 V 48 H 40 Z" fill="#F4A261"/>`;
-        // 配件：日式抹茶碗
-        accessoryHtml = `<g>
-          <rect x="44" y="45" width="10" height="5" rx="2" fill="#5CBD74" stroke="#534340" stroke-width="1"/>
-          <rect x="46" y="44" width="6" height="1" fill="#2E7D32"/>
-        </g>`;
+        // 和風紙窗榻榻米背景
+        bgHtml = `<rect width="32" height="32" fill="#FAEDCD" />
+                  <rect x="0" y="0" width="32" height="14" fill="#FFF" stroke="#D4A373" stroke-width="1"/>
+                  <line x1="16" y1="0" x2="16" y2="14" stroke="#D4A373" stroke-width="0.5"/>`;
+        bodyFill = "#FFFDF0";
+        patchHtml = `<rect x="8" y="16" width="4" height="4" fill="#F4A261"/>
+                     <rect x="20" y="15" width="4" height="3" fill="#534340"/>`;
       } 
       else if (theme.includes("愛情小說")) {
         catName = "咪咪 (Mimi) 🎀 粉耳白貓";
-        bodyFill = "#FFFFFF"; bgFill = "#FFF0F5";
-        // 配件：粉紅色愛心
-        accessoryHtml = `<g class="animate-pulse">
-          <path d="M 48,46 L 45,43 C 43,41 41,43 43,45 L 48,50 L 53,45 C 55,43 53,41 51,43 Z" fill="#FF8A8A" stroke="#534340" stroke-width="1"/>
-        </g>`;
+        bgHtml = `<rect width="32" height="32" fill="#FFF0F5" />
+                  <!-- 粉紅泡泡與浪漫愛心雲朵 -->
+                  <circle cx="6" cy="8" r="3" fill="#FFB6C1" opacity="0.3"/>
+                  <circle cx="26" cy="10" r="4" fill="#FFB6C1" opacity="0.3"/>`;
+        bodyFill = "#FFFFFF";
       } 
       else if (theme.includes("歷史/武俠小說")) {
-        catName = "獨孤 (Dugu) 🗡️ 虎斑貓";
-        bodyFill = "#CD853F"; bgFill = "#F4ECCF";
-        patchHtml = `<!-- 俠客深啡色條紋 -->
-          <rect x="18" y="32" width="2" height="10" fill="#5C4033"/>
-          <rect x="44" y="32" width="2" height="10" fill="#5C4033"/>`;
-        // 配件：歷史感竹簡
-        accessoryHtml = `<g>
-          <rect x="44" y="44" width="10" height="6" fill="#E9D8A6" stroke="#534340" stroke-width="1"/>
-          <line x1="47" y1="44" x2="47" y2="50" stroke="#534340" stroke-width="1"/>
-          <line x1="50" y1="44" x2="50" y2="50" stroke="#534340" stroke-width="1"/>
-        </g>`;
+        catName = "獨孤 (Dugu) 擺爛 📜 虎斑貓";
+        // 竹林與古風客棧背景
+        bgHtml = `<rect width="32" height="32" fill="#E8F0FE" />
+                  <rect x="4" y="0" width="2" height="26" fill="#9CBD5B" opacity="0.4"/>
+                  <rect x="26" y="0" width="1.5" height="26" fill="#9CBD5B" opacity="0.4"/>`;
+        bodyFill = "#D2B48C";
+        patchHtml = `<rect x="9" y="17" width="1" height="5" fill="#5C4033"/>
+                     <rect x="22" y="17" width="1" height="5" fill="#5C4033"/>`;
       } 
       else if (theme.includes("輕小說")) {
-        catName = "小黑寶 (Kuro) ⭐ 賓士貓";
-        bodyFill = "#3D3D3D"; bgFill = "#FCEADE";
-        patchHtml = `<!-- 經典賓士正三角白面罩 -->
-          <polygon points="32,34 22,46 42,46" fill="#FFFFFF"/>
-          <rect x="24" y="46" width="16" height="4" fill="#FFFFFF"/>`;
-        // 配件：像素風漫畫書
-        accessoryHtml = `<g transform="rotate(10 48 44)">
-          <rect x="44" y="42" width="8" height="7" fill="#FFFFFF" stroke="#534340" stroke-width="1"/>
-          <line x1="45" y1="45" x2="51" y2="45" stroke="#534340" stroke-width="0.5"/>
-          <line x1="45" y1="47" x2="49" y2="47" stroke="#534340" stroke-width="0.5"/>
-        </g>`;
+        catName = "小黑寶 (Kuro) 🍙 賓士貓";
+        // 二次元御宅族房間、海報背景
+        bgHtml = `<rect width="32" height="32" fill="#FFF3E0" />
+                  <rect x="2" y="2" width="6" height="8" fill="#4EA8DE" opacity="0.3"/>
+                  <rect x="24" y="4" width="5" height="7" fill="#FFADAD" opacity="0.3"/>`;
+        bodyFill = "#424242";
+        patchHtml = `<polygon points="16,19 12,25 20,26" fill="#FFFFFF"/>
+                     <rect x="13" y="24" width="6" height="1" fill="#FFFFFF"/>`;
       } 
       else if (theme.includes("藝術設計")) {
-        catName = "畢卡貓 (Picasso) 🖌️ 玳瑁貓";
-        bodyFill = "#8B4513"; bgFill = "#EDF2FB";
-        patchHtml = `<!-- 玳瑁不規則藝術混色 -->
-          <rect x="18" y="26" width="6" height="8" fill="#FFAD4D"/>
-          <rect x="38" y="28" width="8" height="6" fill="#332211"/>
-          <rect x="24" y="38" width="10" height="8" fill="#332211"/>
-          <rect x="36" y="36" width="8" height="10" fill="#FFAD4D"/>`;
-        // 配件：精緻彩色調色盤
-        accessoryHtml = `<g>
-          <ellipse cx="49" cy="46" rx="5" ry="4" fill="#FFF" stroke="#534340" stroke-width="1"/>
-          <circle cx="47" cy="45" r="1" fill="#FF5252"/>
-          <circle cx="50" cy="45" r="1" fill="#FFD54F"/>
-          <circle cx="49" cy="48" r="1" fill="#4EA8DE"/>
-        </g>`;
+        catName = "畢卡貓 (Picasso) 🎨 玳瑁貓";
+        // 畫廊不規則彩色潑墨背景
+        bgHtml = `<rect width="32" height="32" fill="#FAFAFA" />
+                  <circle cx="6" cy="6" r="4" fill="#FFD54F" opacity="0.2"/>
+                  <path d="M 22,2 Q 26,10 30,4" stroke="#4EA8DE" stroke-width="2" fill="none" opacity="0.2"/>`;
+        bodyFill = "#795548";
+        patchHtml = `<rect x="9" y="16" width="3" height="4" fill="#FFB74D"/>
+                     <rect x="18" y="19" width="5" height="4" fill="#3E2723"/>`;
       } 
       else if (theme.includes("飲食")) {
-        catName = "布丁 (Pudding) 🍪 小奶貓";
-        bodyFill = "#FFF5EE"; bgFill = "#E8F1F2";
-        patchHtml = `<!-- 淺茶色耳朵與尾巴尖尖 -->
-          <rect x="18" y="20" width="4" height="4" fill="#E6C2A0"/>
-          <rect x="42" y="20" width="4" height="4" fill="#E6C2A0"/>`;
-        // 配件：黃金脆皮小魚餅乾
-        accessoryHtml = `<g class="animate-pixel-float">
-          <path d="M 44,46 Q 48,43 52,46 L 54,44 V 48 L 52,46 Z" fill="#FFB74D" stroke="#534340" stroke-width="1"/>
-        </g>`;
+        catName = "布丁 (Pudding) 🐟 小奶貓";
+        // 廚房與野餐桌布格紋背景
+        bgHtml = `<rect width="32" height="32" fill="#FFFFFF" />
+                  <rect x="0" y="20" width="32" height="12" fill="#FFADAD" opacity="0.4"/>
+                  <line x1="0" y1="24" x2="32" y2="24" stroke="#FFF" stroke-width="1"/>
+                  <line x1="16" y1="20" x2="16" y2="32" stroke="#FFF" stroke-width="1"/>`;
+        bodyFill = "#FFF5EE";
       } 
       else if (theme.includes("商業 / 理財投資")) {
         catName = "金金 (Goldie) 🍊 招財橘貓";
-        bodyFill = "#FF9F1C"; bgFill = "#E8DFF5";
-        patchHtml = `<!-- 招財橘貓深橘色虎紋 -->
-          <rect x="20" y="30" width="2" height="12" fill="#E76F51"/>
-          <rect x="42" y="30" width="2" height="12" fill="#E76F51"/>`;
-        // 配件：金燦燦古錢幣
-        accessoryHtml = `<g>
-          <circle cx="48" cy="46" r="4" fill="#FFD166" stroke="#534340" stroke-width="1"/>
-          <rect x="47" y="45" width="2" height="2" fill="#E8DFF5" stroke="#534340" stroke-width="0.5"/>
-        </g>`;
+        // 金金發光交易所／金幣雨背景
+        bgHtml = `<rect width="32" height="32" fill="#FFFDE7" />
+                  <rect x="4" y="6" width="2" height="2" fill="#FFD166"/>
+                  <rect x="26" y="4" width="2" height="2" fill="#FFD166"/>
+                  <line x1="10" y1="2" x2="10" y2="12" stroke="#6CBD5B" stroke-width="0.5" opacity="0.4"/>`;
+        bodyFill = "#FF9800";
+        patchHtml = `<rect x="10" y="17" width="1" height="6" fill="#E65100"/>
+                     <rect x="21" y="17" width="1" height="6" fill="#E65100"/>`;
       } 
       else if (theme.includes("心靈 / 心理成長")) {
         catName = "棉花糖 (Marshmallow) ☁️ 布偶貓";
-        bodyFill = "#F8F9FA"; bgFill = "#FCEADE";
-        patchHtml = `<!-- 布偶貓經典重點色雙眼圍與耳朵 -->
-          <path d="M 20,30 H 26 V 38 H 20 Z" fill="#A49383"/>
-          <path d="M 38,30 H 44 V 38 H 38 Z" fill="#A49383"/>
-          <!-- 湛藍色高貴雙眼 -->
-          <rect x="23" y="33" width="2" height="2" fill="#00B4D8"/>
-          <rect x="39" y="33" width="2" height="2" fill="#00B4D8"/>`;
-        // 配件：粉紫色薰衣草小花
-        accessoryHtml = `<g transform="rotate(20 48 46)">
-          <line x1="48" y1="42" x2="48" y2="50" stroke="#9CBD5B" stroke-width="1"/>
-          <circle cx="48" cy="42" r="1.5" fill="#B388FF"/>
-          <circle cx="48" cy="45" r="1.2" fill="#B388FF"/>
-          <circle cx="48" cy="47" r="1" fill="#D1C4E9"/>
-        </g>`;
-      }
-      else { // 通用主題
-        bodyFill = "#FFFFFF"; bgFill = "#E8F1F2";
+        // 治癒系粉紫薰衣草花海天空背景
+        bgHtml = `<rect width="32" height="32" fill="#EDF2FB" />
+                  <rect x="0" y="24" width="32" height="8" fill="#D1C4E9" opacity="0.6"/>
+                  <circle cx="28" cy="8" r="3" fill="#FFF" opacity="0.7"/>`;
+        bodyFill = "#F8F9FA";
+        patchHtml = `<rect x="8" y="15" width="3" height="4" fill="#BCAAA4"/>
+                     <rect x="21" y="15" width="3" height="4" fill="#BCAAA4"/>
+                     <rect x="11" y="18" width="1" height="1" fill="#00B4D8"/>
+                     <rect x="20" y="18" width="1" height="1" fill="#00B4D8"/>`;
       }
 
       return `
-        <svg viewBox="0 0 64 64" class="w-full h-full" style="image-rendering: pixelated; background: transparent;">
-          <!-- 64x64 高清像素外框與草地 -->
-          <rect x="2" y="2" width="60" height="60" fill="${bgFill}" stroke="#534340" stroke-width="2" />
-          <rect x="4" y="4" width="56" height="56" fill="none" stroke="#534340" stroke-width="0.5" stroke-dasharray="2,2" opacity="0.3"/>
-          
-          <!-- 草地小裝飾像素點 -->
-          <rect x="10" y="52" width="2" height="1" fill="#534340" opacity="0.15"/>
-          <rect x="52" y="54" width="2" height="1" fill="#534340" opacity="0.15"/>
-          <rect x="18" y="12" width="1" height="1" fill="#534340" opacity="0.1"/>
+        <svg viewBox="0 0 32 32" class="w-full h-full" style="image-rendering: pixelated; background: transparent;">
+          <!-- 1. 注入全屏專屬場景背景 -->
+          ${bgHtml}
 
-          <!-- 大福屁屁底部的軟萌像素陰影 -->
-          <ellipse cx="32" cy="48" rx="18" ry="2.5" fill="#534340" opacity="0.15" />
-
-          <!-- 貓咪主體（會呼吸的大福 $64 \times 64$ 精細版） -->
+          <!-- 大福主體（會呼吸的 32-bit 大福） -->
           <g class="${isBreathing ? 'animate-pixel-breath' : ''}">
             
-            <!-- 像素搖擺尾巴 -->
+            <!-- 像素搖尾巴 -->
             <g class="animate-pixel-tail">
-              <path d="M 46,40 H 52 V 43 H 54 V 47 H 50 V 45 H 46 Z" fill="#534340" />
-              <path d="M 47,41 H 51 V 43 H 53 V 46 H 50 V 44 H 47 Z" fill="${bodyFill}" />
+              <path d="M 26,19 H 29 V 22 H 28 V 24 H 26 Z" fill="#534340" />
+              <path d="M 26,20 H 28 V 22 H 27 V 23 H 26 Z" fill="${bodyFill}" />
             </g>
 
-            <!-- 核心：大福麻糬形狀身軀的外輪廓線 -->
-            <path d="M 16,42 
-                     C 12,32 20,22 32,22 
-                     C 44,22 52,32 48,42 
-                     C 46,49 18,49 16,42 Z" 
-                  fill="#534340" />
-
-            <!-- 核心：大福身軀內填色 -->
-            <path d="M 17,41 
-                     C 14,33 21,24 32,24 
-                     C 43,24 50,33 47,41 
-                     C 45,47 19,47 17,41 Z" 
-                  fill="${bodyFill}" />
-
-            <!-- 動態注入的品種花斑 (Patches) -->
+            <!-- 32-bit 大福核心骨架與填色 -->
+            <path d="M 9,15 H 23 V 16 H 25 V 17 H 26 V 21 H 27 V 24 H 26 V 25 H 6 V 24 H 5 V 21 H 6 V 17 H 7 V 16 H 9 Z" fill="#534340" />
+            <path d="M 9,16 H 23 V 17 H 25 V 21 H 26 V 24 H 6 V 21 H 7 V 17 H 9 Z" fill="${bodyFill}" />
+            
+            <!-- 動態調配的花斑 -->
             ${patchHtml}
 
-            <!-- 圓圓小短耳（分得開開的貼在兩側） -->
-            <!-- 左耳 -->
-            <path d="M 18,24 L 14,16 L 23,20 Z" fill="#534340" />
-            <path d="M 18,23 L 16,18 L 21,21 Z" fill="#FFB3C1" />
-            <!-- 右耳 -->
-            <path d="M 46,24 L 50,16 L 41,20 Z" fill="#534340" />
-            <path d="M 45,23 L 48,18 L 43,21 Z" fill="#FFB3C1" />
+            <!-- 圓圓像素小短耳 -->
+            <rect x="8" y="12" width="3" height="3" fill="#534340" />
+            <rect x="9" y="13" width="1" height="2" fill="#FFB3C1" />
+            <rect x="21" y="12" width="3" height="3" fill="#534340" />
+            <rect x="22" y="13" width="1" height="2" fill="#FFB3C1" />
+            <rect x="9" y="15" width="1" height="1" fill="${bodyFill}" />
+            <rect x="22" y="15" width="1" height="1" fill="${bodyFill}" />
 
-            <!-- 呆萌系面部表情（精細化調整） -->
-            <!-- 1. 經典像素豆豆眼 (分得超開，留有 14 像素的高清距離) -->
-            <rect x="22" y="33" width="2" height="2" fill="#534340"/>
-            <rect x="40" y="33" width="2" height="2" fill="#534340"/>
-            
-            <!-- 2. 像素無辜小腮紅 -->
-            <rect x="18" y="36" width="4" height="2" fill="#FFB3C1" opacity="0.6"/>
-            <rect x="42" y="36" width="4" height="2" fill="#FFB3C1" opacity="0.6"/>
+            <!-- 呆萌系表情面部（分超開的豆豆眼） -->
+            <rect x="11" y="18" width="1" height="1" fill="#534340" />
+            <rect x="20" y="18" width="1" height="1" fill="#534340" />
+            <rect x="9" y="19" width="2" height="1" fill="#FFB3C1" opacity="0.6" />
+            <rect x="21" y="19" width="2" height="1" fill="#FFB3C1" opacity="0.6" />
+            <rect x="15" y="19" width="2" height="1" fill="#534340" />
 
-            <!-- 3. 像素「w」極簡倒三角嘴巴 -->
-            <path d="M 30,36 Q 32,38 34,36 Q 36,38 38,36" fill="none" stroke="#534340" stroke-width="1.5" stroke-linecap="round"/>
-
-            <!-- 4. 像素小鬍鬚 -->
-            <rect x="10" y="35" width="4" height="1" fill="#534340" opacity="0.3" />
-            <rect x="50" y="35" width="4" height="1" fill="#534340" opacity="0.3" />
+            <!-- 短短小鬍鬚 -->
+            <rect x="4" y="19" width="2" height="1" fill="#534340" opacity="0.4" />
+            <rect x="26" y="19" width="2" height="1" fill="#534340" opacity="0.4" />
           </g>
-
-          <!-- 額外的主題草地專屬配件層 -->
-          <g>${accessoryHtml}</g>
         </svg>
       `;
     }
 
-    // 介面切換
+    // 分頁切換邏輯
     window.switchTab = function(viewName) {
       document.getElementById('view-home').classList.add('hidden');
       document.getElementById('view-bookshelf').classList.add('hidden');
@@ -677,15 +602,14 @@
       
       if (!activeBook) {
         document.getElementById('active-book-title').textContent = "未有睇緊嘅書";
-        document.getElementById('active-book-author').textContent = "快啲去「書櫃」加新書，吸引精細像素貓貓過嚟啦！";
+        document.getElementById('active-book-author').textContent = "快啲去「書櫃」加新書，吸引大福像素精靈過嚟啦！";
         document.getElementById('active-progress-text').textContent = "進度：0%";
         document.getElementById('active-progress-bar').style.width = "0%";
-        document.getElementById('home-card-header-right').textContent = "流浪緊";
+        document.getElementById('home-card-header-right').textContent = "流浪中";
         container.innerHTML = getCatSVG("通用主題", false);
         return;
       }
 
-      // 提取並顯示自訂的貓咪品種與名字
       let catDetails = "伴讀緊";
       if (activeBook.theme.includes("🌍 翻譯文學")) catDetails = "可可 (Coco) ☕";
       else if (activeBook.theme.includes("📜 詩")) catDetails = "詩詩 (Poem) 🍃";
@@ -694,12 +618,12 @@
       else if (activeBook.theme.includes("👻 恐怖/驚悚小說")) catDetails = "黑仔 (Shadow) 🕯️";
       else if (activeBook.theme.includes("溫馨/療癒小說")) catDetails = "阿福 (Fuku) 🍵";
       else if (activeBook.theme.includes("💖 愛情小說")) catDetails = "咪咪 (Mimi) 🎀";
-      else if (activeBook.theme.includes("歷史/武俠小說")) catDetails = "獨孤 (Dugu) 🗡️";
-      else if (activeBook.theme.includes("輕小說")) catDetails = "小黑寶 (Kuro) ⭐";
-      else if (activeBook.theme.includes("🎨 藝術設計")) catDetails = "畢卡貓 (Picasso) 🖌️";
-      else if (activeBook.theme.includes("🐟 飲食")) catDetails = "布丁 (Pudding) 🍪";
+      else if (activeBook.theme.includes("歷史/武俠小說")) catDetails = "獨孤 (Dugu) 📜";
+      else if (activeBook.theme.includes("輕小說")) catDetails = "小黑寶 (Kuro) 🍙";
+      else if (activeBook.theme.includes("🎨 藝術設計")) catDetails = "畢卡貓 (Picasso) 🎨";
+      else if (activeBook.theme.includes("🐟 飲食")) catDetails = "布丁 (Pudding) 🐟";
       else if (activeBook.theme.includes("商業 / 理財投資")) catDetails = "金金 (Goldie) 🍊";
-      else if (activeBook.theme.includes("心靈 / 心理成長")) catDetails = "棉花糖 (Marshmallow) ☁️";
+      else if (activeBook.theme.includes("心靈 / 心理成長")) catDetails = "棉花糖 (Marshmallow) 🌱";
 
       document.getElementById('active-book-title').textContent = `《${activeBook.name}》`;
       document.getElementById('active-book-author').textContent = `作者：${activeBook.author || '佚名'}`;
@@ -728,11 +652,9 @@
         heart.style.transform = `translateY(-60px)`;
         heart.style.opacity = "0";
       }, 50);
-
       setTimeout(() => { heart.remove(); }, 1100);
 
-      const meows = ["嗶嗶... 64-bit 呼嚕呼嚕...", "（高清大福踩奶中...）🐾", "草地上的專屬道具在閃閃發光喔！喵~"];
-      showToast(meows[Math.floor(Math.random() * meows.length)], "💖");
+      showToast("32-bit 大福呼嚕呼嚕中... 🐾", "💖");
     }
 
     function updateTopStatsUI() {
@@ -748,18 +670,6 @@
     function renderBookshelf() {
       const container = document.getElementById('bookshelf-list');
       container.innerHTML = "";
-
-      const filters = ['all', 'reading', 'wishlist', 'finished'];
-      filters.forEach(f => {
-        const btn = document.getElementById(`filter-bs-${f}`);
-        if (btn) {
-          if (f === state.bookshelfFilter) {
-            btn.className = "px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all";
-          } else {
-            btn.className = "px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all";
-          }
-        }
-      });
 
       let filteredBooks = state.books;
       if (state.bookshelfFilter !== 'all') {
@@ -1055,7 +965,7 @@
         
         card.innerHTML = `
           <div class="flex justify-between items-center mb-2 px-1">
-            <span class="text-xl font-black text-rose-400 tracking-wider">64-BIT STAGE</span>
+            <span class="text-xl font-black text-rose-400 tracking-wider">32-BIT STAGE</span>
             <span class="text-base font-extrabold text-rose-400">+250 HP</span>
           </div>
           <div class="w-full aspect-[4/3] rounded-2xl overflow-hidden sketch-border bg-white flex items-center justify-center">
