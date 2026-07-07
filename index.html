@@ -705,9 +705,12 @@
         
         state.books = fetchedBooks;
         
-        const currentReading = state.books.find(b => b.status === 'reading');
-        state.activeBookId = currentReading ? currentReading.id : (state.books.length > 0 ? state.books[0].id : null);
-        
+    const activeExists = state.books.some(b => b.id === state.activeBookId);
+    if (!state.activeBookId || !activeExists) {
+      const firstReading = state.books.find(b => b.status === 'reading');
+      state.activeBookId = firstReading ? firstReading.id : (state.books.length > 0 ? state.books[0].id : null);
+    }
+
         updateTopStatsUI();
         renderActiveBookHome();
       } catch (error) {
