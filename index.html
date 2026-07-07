@@ -1336,7 +1336,7 @@
       filteredFinished.forEach(book => {
         const card = document.createElement('div');
         // 【圖3修改：將寬度限制為 max-w-[340px]，微調內邊距 p-4，徹底防止邊緣裁剪問題】
-        card.className = "w-full max-w-[340px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4 sketch-border flex flex-col relative select-none animate-breath my-2";
+        card.className = "w-full max-w-[385px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4 sketch-border flex flex-col relative select-none animate-breath my-2";
         card.style.animationDuration = "12s";
 
         const catSvg = getCatSVG(book.theme, false);
