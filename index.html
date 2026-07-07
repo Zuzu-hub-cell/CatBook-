@@ -232,7 +232,7 @@
         </div>
 
         <!-- 書櫃滾動列表 -->
-        <div id="bookshelf-list" class="grid grid-cols-1 gap-4 max-h-[440px] overflow-y-auto pr-1 pb-4"></div>
+       <div id="bookshelf-list" class="grid grid-cols-1 gap-4 pr-1 pb-4"></div>
       </div>
 
       <!-- ==================== VIEW 3: 明信片畫廊 (GALLERY) ==================== -->
@@ -244,7 +244,7 @@
         </div>
 
         <!-- 動態類別篩選按鈕列 -->
-<div id="gallery-filter-container" class="w-full flex-shrink-0 flex gap-1.5 overflow-x-auto pb-1 no-scrollbar select-none">
+<div id="gallery-filter-container" class="w-full flex-shrink-0 flex gap-1.5 overflow-x-auto px-1 pb-2 no-scrollbar select-none">
           <!-- 將由 JS 動態生成 -->
         </div>
 
@@ -258,7 +258,7 @@
 
   <!-- ==================== MODAL: 新增書籍 ==================== -->
   <div id="modal-add-book" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
-    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col gap-4 animate-breath" style="animation-duration: 8s;">
+    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col gap-4 max-h-[90vh] overflow-y-auto animate-breath" style="animation-duration: 8s;">
       
       <!-- 關閉按鈕 -->
       <button onclick="closeAddBookModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold">
@@ -298,11 +298,11 @@
         <div class="grid grid-cols-2 gap-2">
           <div class="flex flex-col gap-1">
             <label>🏁 現時頁數</label>
-            <input id="input-book-current" type="number" min="0" value="0" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+            <input id="input-book-current" type="number" min="0" value="0" inputmode="numeric" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
           </div>
           <div class="flex flex-col gap-1">
             <label>📖 總頁數</label>
-            <input id="input-book-total" type="number" min="1" value="200" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
+            <input id="input-book-total" type="number" min="1" value="200" inputmode="numeric" class="bg-white border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
           </div>
         </div>
       </div>
@@ -315,7 +315,7 @@
 
   <!-- ==================== MODAL: 登記進度 ==================== -->
   <div id="modal-log-progress" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
-    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col gap-4 animate-breath" style="animation-duration: 9s;">
+    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col gap-4 max-h-[90vh] overflow-y-auto animate-breath" style="animation-duration: 9s;">
       
       <!-- 關閉按鈕 -->
       <button onclick="closeLogModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold">
