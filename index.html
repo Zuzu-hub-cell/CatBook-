@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Zuzu書櫃</title>
   <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
-<link rel="icon" type="image/png" href="icon-192.png">
-<link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="manifest" href="manifest.json">
   <!-- 引入 Firebase 模組化 SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js" type="module"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js" type="module"></script>
@@ -37,24 +37,23 @@
     }
   </script>
   <style>
-    /* 貓咪溫和呼吸動畫 */
-    @keyframes gentle-breath {
+    /* 32-bit 貓咪像素呼吸與搖尾巴動畫 */
+    @keyframes pixel-breath {
       0%, 100% { transform: scale(1) translateY(0); }
-      50% { transform: scale(1.02, 0.97) translateY(-2px); }
+      50% { transform: scale(1, 0.96) translateY(0.5px); }
     }
-    .animate-breath {
-      animation: gentle-breath 4s ease-in-out infinite;
+    .animate-pixel-breath {
+      animation: pixel-breath 3s steps(2, end) infinite;
       transform-origin: bottom center;
     }
 
-    /* 尾巴搖擺動畫 */
-    @keyframes tail-wag {
+    @keyframes pixel-tail {
       0%, 100% { transform: rotate(0deg); }
-      50% { transform: rotate(10deg); }
+      50% { transform: rotate(8deg); }
     }
-    .animate-tail {
-      animation: tail-wag 3s ease-in-out infinite;
-      transform-origin: 280px 175px;
+    .animate-pixel-tail {
+      animation: pixel-tail 2s steps(2, end) infinite;
+      transform-origin: 24px 22px; 
     }
 
     /* 手繪感粗黑外框 */
@@ -115,15 +114,15 @@
       <div class="flex items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center gap-2">
-          <!-- 手繪可愛貓咪頭像 -->
-          <div class="w-10 h-10 flex items-center justify-center bg-warmPink rounded-full border-3 border-inkColor">
-            <svg viewBox="0 0 100 100" class="w-7 h-7">
-              <path d="M 20,40 C 20,20 80,20 80,40 C 80,60 70,80 50,80 C 30,80 20,60 20,40 Z" fill="#FFF" stroke="#534340" stroke-width="8"/>
-              <path d="M 25,25 L 15,5 Q 35,10 35,25" fill="#FFF" stroke="#534340" stroke-width="8" stroke-linejoin="round"/>
-              <path d="M 75,25 L 85,5 Q 65,10 65,25" fill="#FFF" stroke="#534340" stroke-width="8" stroke-linejoin="round"/>
-              <circle cx="40" cy="45" r="5" fill="#534340"/>
-              <circle cx="60" cy="45" r="5" fill="#534340"/>
-              <path d="M 46,55 Q 50,58 54,55" fill="none" stroke="#534340" stroke-width="6" stroke-linecap="round"/>
+          <!-- 32-bit 像素風格小頭像 -->
+          <div class="w-10 h-10 flex items-center justify-center bg-white rounded-xl border-3 border-inkColor overflow-hidden">
+            <svg viewBox="0 0 32 32" class="w-8 h-8" style="image-rendering: pixelated;">
+              <path d="M 9,15 H 23 V 24 H 6 V 15 Z" fill="#FFF5E6" />
+              <rect x="11" y="17" width="1" height="1" fill="#534340" />
+              <rect x="20" y="17" width="1" height="1" fill="#534340" />
+              <rect x="15" y="18" width="2" height="1" fill="#534340" />
+              <rect x="9" y="12" width="2" height="3" fill="#534340" />
+              <rect x="21" y="12" width="2" height="3" fill="#534340" />
             </svg>
           </div>
           <h1 class="text-3xl font-extrabold tracking-wide drop-shadow-sm select-none">Zuzu書櫃</h1>
@@ -181,33 +180,33 @@
 
           <!-- 貓咪畫框 -->
           <div class="w-full aspect-[4/3] rounded-3xl overflow-hidden sketch-border bg-[#9CBD5B] relative flex items-center justify-center cursor-pointer active:scale-[0.98] transition-transform" onclick="petActiveCat()">
-            <!-- 動態繪製 SVG 貓咪 -->
-            <div id="active-cat-svg-container" class="w-full h-full p-2"></div>
+            <!-- 動態繪製 SVG 像素貓咪 -->
+            <div id="active-cat-svg-container" class="w-full h-full"></div>
             
             <!-- 摸貓貓時飄出嘅心心 -->
             <div id="heart-floaters" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
             
             <!-- 摸貓提示 -->
             <div class="absolute bottom-2 right-4 bg-white/80 border-2 border-inkColor text-[11px] px-2 py-0.5 rounded-full font-bold opacity-60">
-              🐾 摸吓貓貓
+              🐾 摸吓像素貓
             </div>
           </div>
 
           <!-- 書名橫幅 -->
           <div class="bg-white mt-4 py-2 px-3 rounded-2xl border-3 border-inkColor flex flex-col items-center text-center">
-            <span id="active-book-title" class="text-xl font-black">《致富心態》</span>
-            <span id="active-book-author" class="text-xs font-semibold text-inkColor/70 mt-0.5">作者：摩根·豪瑟</span>
+            <span id="active-book-title" class="text-xl font-black">同步中...</span>
+            <span id="active-book-author" class="text-xs font-semibold text-inkColor/70 mt-0.5">作者：--</span>
           </div>
 
           <!-- 進度詳情欄 -->
           <div class="bg-white/90 mt-3 p-4 rounded-3xl border-3 border-inkColor flex flex-col gap-2">
             <div class="flex justify-between text-sm font-bold">
               <span>飽食親密度</span>
-              <span id="active-progress-text">讀咗 30%</span>
+              <span id="active-progress-text">讀咗 0%</span>
             </div>
             <!-- 進度條 -->
             <div class="w-full h-5 bg-warmPink/50 rounded-full border-3 border-inkColor overflow-hidden relative">
-              <div id="active-progress-bar" class="h-full bg-accentOrange border-r-3 border-inkColor transition-all duration-500" style="width: 30%;"></div>
+              <div id="active-progress-bar" class="h-full bg-accentOrange border-r-3 border-inkColor transition-all duration-500" style="width: 0%;"></div>
             </div>
           </div>
 
@@ -262,7 +261,7 @@
 
   <!-- ==================== MODAL: 新增書籍 ==================== -->
   <div id="modal-add-book" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
-    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh] animate-breath" style="animation-duration: 8s;">
+    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh]">
       
       <!-- 關閉按鈕 -->
       <button onclick="closeAddBookModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold z-10">
@@ -283,21 +282,13 @@
             <input id="input-book-author" type="text" placeholder="例如：柯南·道爾" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
           </div>
           <div class="flex flex-col gap-1">
-            <label>🏷️ 揀個書本主題（會吸引唔同貓貓架）</label>
+            <label>🏷️ 揀個書本主題（吸引像素伴讀精靈）</label>
             <select id="input-book-theme" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
-              <option value="翻譯文學">🌍 翻譯文學 (班紋優雅暹羅貓)</option>
-              <option value="詩">✍️ 詩 (配羽毛筆波斯貓)</option>
-              <option value="科幻/奇幻小說">🚀 科幻/奇幻小說 (流星伴讀外星貓)</option>
-              <option value="懸疑/推理小說">🔍 懸疑/推理小說 (小偵探帽學霸貓)</option>
-              <option value="恐怖/驚悚小說">👻 恐怖/驚悚小說 (幽靈伴眠小黑貓)</option>
-              <option value="溫馨/療癒小說">☕ 溫馨/療癒小說 (暖茶香橙奶斑貓)</option>
-              <option value="愛情小說">💖 愛情小說 (粉嫩桃花布偶貓)</option>
-              <option value="歷史/武俠小說">📜 歷史/武俠小說 (古卷竹簡俠客貓)</option>
-              <option value="輕小說">🍙 輕小說 (御飯糰面罩元氣貓)</option>
-              <option value="藝術設計">🎨 藝術設計 (戴畫家帽玳瑁貓)</option>
-              <option value="飲食">🐟 飲食 (愛吃魚魚小胖貓)</option>
-              <option value="商業 / 理財投資">🪙 商業 / 理財投資 (金幣發光招財橘貓)</option>
-              <option value="心靈 / 心理成長">🌱 心靈 / 心理成長 (生機小綠芽護心貓)</option>
+              <option value="商業 / 理財投資">🪙 商業 / 理財投資 (發光金幣橘貓)</option>
+              <option value="心靈 / 心理成長">🌱 心靈 / 心理成長 (頭頂發芽薄荷貓)</option>
+              <option value="懸疑/推理小說">🔍 懸疑/推理小說 (芝麻灰偵探鏡貓)</option>
+              <option value="溫馨/療癒小說">☕ 溫馨/療癒小說 (焦糖橘斑烤奶貓)</option>
+              <option value="通用主題">🐱 其他通用主題 (手帳風經典白貓)</option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -313,7 +304,7 @@
         </div>
 
         <button onclick="submitNewBook()" class="bg-accentOrange hover:bg-amber-400 py-3 rounded-xl sketch-border-sm font-black text-lg active:translate-y-1 transition-all flex-shrink-0 mb-1">
-          🐾 帶小流浪貓返屋企
+          🐾 帶像素流浪貓返屋企
         </button>
       </div>
 
@@ -322,7 +313,7 @@
 
   <!-- ==================== MODAL: 修改/編輯書籍 ==================== -->
   <div id="modal-edit-book" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
-    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh] animate-breath" style="animation-duration: 8s;">
+    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh]">
       
       <!-- 關閉按鈕 -->
       <button onclick="closeEditBookModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold z-10">
@@ -337,42 +328,29 @@
         <div class="flex flex-col gap-3 font-semibold text-sm">
           <div class="flex flex-col gap-1">
             <label>📖 書名</label>
-            <!-- 圖2修正：底色加深（使用 bg-amber-100/50 手繪質感微深色） -->
             <input id="edit-book-name" type="text" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
           </div>
           <div class="flex flex-col gap-1">
             <label>✏️ 作者</label>
-            <!-- 圖2修正：底色加深 -->
             <input id="edit-book-author" type="text" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
           </div>
           <div class="flex flex-col gap-1">
             <label>🏷️ 書本主題</label>
-            <!-- 圖2修正：底色加深 -->
             <select id="edit-book-theme" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
-              <option value="翻譯文學">🌍 翻譯文學</option>
-              <option value="詩">✍️ 詩</option>
-              <option value="科幻/奇幻小說">🚀 科幻/奇幻小說</option>
-              <option value="懸疑/推理小說">🔍 懸疑/推理小說</option>
-              <option value="恐怖/驚悚小說">👻 恐怖/驚悚小說</option>
-              <option value="溫馨/療癒小說">☕ 溫馨/療癒小說</option>
-              <option value="愛情小說">💖 愛情小說</option>
-              <option value="歷史/武俠小說">📜 歷史/武俠小說</option>
-              <option value="輕小說">🍙 輕小說</option>
-              <option value="藝術設計">🎨 藝術設計</option>
-              <option value="飲食">🐟 飲食</option>
               <option value="商業 / 理財投資">🪙 商業 / 理財投資</option>
               <option value="心靈 / 心理成長">🌱 心靈 / 心理成長</option>
+              <option value="懸疑/推理小說">🔍 懸疑/推理小說</option>
+              <option value="溫馨/療癒小說">☕ 溫馨/療癒小說</option>
+              <option value="通用主題">🐱 其他通用主題</option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
             <div class="flex flex-col gap-1">
               <label>🏁 現時頁數</label>
-              <!-- 圖2修正：底色加深 -->
               <input id="edit-book-current" type="number" min="0" inputmode="numeric" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
             </div>
             <div class="flex flex-col gap-1">
               <label>📖 總頁數</label>
-              <!-- 圖2修正：底色加深 -->
               <input id="edit-book-total" type="number" min="1" inputmode="numeric" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold focus:bg-warmPink/30">
             </div>
           </div>
@@ -387,7 +365,7 @@
 
   <!-- ==================== MODAL: 登記進度 ==================== -->
   <div id="modal-log-progress" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
-    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh] animate-breath" style="animation-duration: 9s;">
+    <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh]">
       
       <!-- 關閉按鈕 -->
       <button onclick="closeLogModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold z-10">
@@ -398,7 +376,7 @@
       
       <div class="overflow-y-auto flex-grow flex flex-col gap-4 pt-3 pr-1 no-scrollbar">
         <p class="text-sm font-semibold text-center text-inkColor/80">
-          更新《<span id="log-book-name-label" class="font-extrabold text-accentOrange"></span>》讀到第幾頁，餵吓你隻貓貓！
+          更新《<span id="log-book-name-label" class="font-extrabold text-accentOrange"></span>》進度，餵吓你隻像素貓！
         </p>
 
         <div class="flex flex-col gap-4 font-bold">
@@ -419,7 +397,7 @@
         </div>
 
         <button onclick="submitProgress()" class="bg-[#9CBD5B] hover:bg-green-500 py-3 rounded-xl sketch-border-sm font-black text-lg active:translate-y-1 transition-all flex-shrink-0 mb-1">
-          餵肉泥罐罐！
+          餵像素肉泥罐罐！
         </button>
       </div>
 
@@ -451,7 +429,8 @@
     // 初始化 Firebase 同 Firestore 資料庫
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const booksCollection = collection(db, "books"); // 自動喺 Firebase 建立名為 books 嘅資料夾
+    const booksCollection = collection(db, "books"); 
+
     // 記憶體中的狀態數據
     let state = {
       books: [],
@@ -460,82 +439,32 @@
       galleryFilter: '全部'    
     };
 
-    // 預設書籍數據
-    const DEFAULT_BOOKS = [
-      {
-        id: "book-1",
-        name: "致富心態",
-        author: "摩根·豪瑟",
-        theme: "商業 / 理財投資",
-        currentPage: 90,
-        totalPage: 300,
-        notes: "學識點樣用正確嘅態度面對財富、貪婪同幸福。呢本唔單止係理財書，仲係心靈修行！",
-        status: "reading" 
-      },
-      {
-        id: "book-2",
-        name: "被討厭的勇氣",
-        author: "岸見一郎",
-        theme: "心靈 / 心理成長",
-        currentPage: 220,
-        totalPage: 220, 
-        notes: "決定自己人生嘅，係活喺當下嘅自己。我哋唔需要向任何人證明自己，擁有被討厭嘅勇氣先至係真自由！",
-        status: "finished"
-      },
-      {
-        id: "book-3",
-        name: "福爾摩斯新探案",
-        author: "亞瑟·柯南·道爾",
-        theme: "懸疑/推理小說",
-        currentPage: 0,
-        totalPage: 350,
-        notes: "",
-        status: "wishlist"
+    // 載入狀態（改為從 Firebase 撈取最新數據）
+    async function loadState() {
+      try {
+        showToast("同步雲端中...", "⏳");
+        const querySnapshot = await getDocs(booksCollection);
+        let fetchedBooks = [];
+        querySnapshot.forEach((doc) => {
+          fetchedBooks.push({ id: doc.id, ...doc.data() });
+        });
+        
+        state.books = fetchedBooks;
+        
+        // 自動鎖定第一本「睇緊」嘅書做小屋伴讀
+        const currentReading = state.books.find(b => b.status === 'reading');
+        state.activeBookId = currentReading ? currentReading.id : (state.books.length > 0 ? state.books[0].id : null);
+        
+        updateTopStatsUI();
+        renderActiveBookHome();
+      } catch (error) {
+        console.error("Firebase 讀取失敗: ", error);
+        showToast("雲端同步失敗 😿", "❌");
       }
-    ];
-
-    // 載入狀態
-    function loadState() {
-      const stored = localStorage.getItem('zuzu_bookshelf_state');
-      if (stored) {
-        try {
-          state = JSON.parse(stored);
-        } catch (e) {
-          console.error("狀態解析失敗，載入預設值。", e);
-        }
-      } else {
-        state.books = DEFAULT_BOOKS;
-        state.activeBookId = "book-1";
-        saveState();
-      }
-      updateTopStatsUI();
     }
 
-    async function loadState() {
-  try {
-    showToast("同步雲端中...", "⏳");
-    const querySnapshot = await getDocs(booksCollection);
-    let fetchedBooks = [];
-    querySnapshot.forEach((doc) => {
-      fetchedBooks.push({ id: doc.id, ...doc.data() });
-    });
-    
-    state.books = fetchedBooks;
-    
-    // 自動鎖定第一本「睇緊」嘅書做小屋伴讀
-    const currentReading = state.books.find(b => b.status === 'reading');
-    state.activeBookId = currentReading ? currentReading.id : (state.books.length > 0 ? state.books[0].id : null);
-    
-    updateTopStatsUI();
-    renderActiveBookHome();
-  } catch (error) {
-    console.error("Firebase 讀取失敗: ", error);
-    showToast("雲端同步失敗 😿", "❌");
-  }
-}
-
     // 修改與刪除功能邏輯
-    function openEditBookModal(id) {
+    window.openEditBookModal = function(id) {
       const book = state.books.find(b => b.id === id);
       if (!book) return;
 
@@ -549,11 +478,11 @@
       document.getElementById('modal-edit-book').classList.remove('hidden');
     }
 
-    function closeEditBookModal() {
+    window.closeEditBookModal = function() {
       document.getElementById('modal-edit-book').classList.add('hidden');
     }
 
-    function submitEditBook() {
+    window.submitEditBook = async function() {
       const id = document.getElementById('edit-book-id').value;
       const book = state.books.find(b => b.id === id);
       if (!book) return;
@@ -573,181 +502,95 @@
         return;
       }
 
-      book.name = name;
-      book.author = author;
-      book.theme = theme;
-      book.currentPage = current;
-      book.totalPage = total;
+      let status = current === total ? "finished" : (current > 0 ? "reading" : "wishlist");
 
-      if (current === total) {
-        book.status = "finished";
-        if (state.activeBookId === id) state.activeBookId = null; 
-      } else if (current > 0) {
-        book.status = "reading";
-      } else {
-        book.status = "wishlist";
-      }
-
-      saveState();
-      updateTopStatsUI();
-      closeEditBookModal();
-      showToast(`《${name}》資料已更新！`, "💾");
-      renderBookshelf();
-      renderActiveBookHome();
-    }
-
-    function deleteBook(id, name) {
-      if (confirm(`你確定要將《${name}》同埋佢隻貓貓送走嗎？不留痕跡架喔... 😿`)) {
-        state.books = state.books.filter(b => b.id !== id);
-        
-        if (state.activeBookId === id) {
-          const nextInLine = state.books.find(b => b.status === 'reading');
-          state.activeBookId = nextInLine ? nextInLine.id : null;
-        }
-
-        saveState();
-        updateTopStatsUI();
-        showToast(`已成功刪除《${name}》`, "🗑️");
+      showToast("儲存修改中...", "⏳");
+      try {
+        await updateDoc(doc(db, "books", id), { name, author, theme, currentPage: current, totalPage: total, status });
+        closeEditBookModal();
+        showToast(`《${name}》資料已更新！`, "💾");
+        await loadState();
         renderBookshelf();
-        renderActiveBookHome();
+      } catch (e) {
+        showToast("修改失敗 😿", "❌");
       }
     }
 
-    // 動態 SVG 貓咪生成演算法
+    window.deleteBook = async function(id, name) {
+      if (confirm(`你確定要將《${name}》同埋佢隻像素貓送走嗎？雲端紀錄會消失架... 😿`)) {
+        try {
+          showToast("正在從雲端移除...", "⏳");
+          await deleteDoc(doc(db, "books", id));
+          showToast(`已成功刪除《${name}》`, "🗑️");
+          await loadState();
+          renderBookshelf();
+        } catch (e) {
+          showToast("刪除失敗 😿", "❌");
+        }
+      }
+    }
+
+    // 32-bit 動態像素大福貓生成演算法
     function getCatSVG(theme, isBreathing = true) {
-      let bodyFill = "#FFFFFF";
-      let patchFill = "#F4A261"; 
-      let bgFill = "#9CBD5B"; 
-      let details = "";
+      let bodyFill = "#FFFFFF";      // 麻糬主色
+      let patchFill = "#E29578";     // 斑紋顏色
+      let bgFill = "#E8F1F2";        // 背景色
+      let details = "";              // 特殊主題像素道具
 
       switch(theme) {
-        case "翻譯文學":
-          bodyFill = "#FDFBF7";
-          patchFill = "#D2B48C"; 
-          bgFill = "#BDD1C5"; 
-          details = `<path d="M 160,150 Q 150,175 165,185 Q 175,175 170,150 Z" fill="#E76F51" stroke="#534340" stroke-width="4"/><path d="M 152,165 Q 135,185 145,195 Q 160,185 152,165 Z" fill="#F4A261" stroke="#534340" stroke-width="4"/>`;
-          break;
-        case "詩":
-          bodyFill = "#F5EFFB";
-          patchFill = "#CDB4DB"; 
-          bgFill = "#E2CFC4"; 
-          details = `<rect x="260" y="190" width="25" height="25" rx="5" fill="#A2D2FF" stroke="#534340" stroke-width="4"/><path d="M 272,190 L 272,180" stroke="#534340" stroke-width="4"/><path d="M 272,180 C 285,150 295,140 310,130 C 295,145 285,165 275,180 Z" fill="#FFFFFF" stroke="#534340" stroke-width="3"/>`;
-          break;
-        case "科幻/奇幻小說":
-          bodyFill = "#ECEFF1";
-          patchFill = "#90A4AE"; 
-          bgFill = "#83A2B7"; 
-          details = `<g class="animate-bounce" style="animation-duration: 3s;"><path d="M 280,100 L 285,110 L 295,112 L 287,120 L 290,130 L 280,123 L 270,130 L 273,120 L 265,112 L 275,110 Z" fill="#FFE082" stroke="#534340" stroke-width="3"/><circle cx="120" cy="80" r="4" fill="#FFE082"/><circle cx="310" cy="90" r="3" fill="#FFF"/></g>`;
-          break;
-        case "懸疑/推理小說":
-          bodyFill = "#EFEBE9";
-          patchFill = "#8D6E63"; 
-          bgFill = "#AE9B8E"; 
-          details = `<circle cx="280" cy="195" r="18" fill="none" stroke="#534340" stroke-width="5"/><line x1="293" y1="208" x2="315" y2="230" stroke="#534340" stroke-width="6" stroke-linecap="round"/><path d="M 125,100 L 145,100 Q 155,100 150,90 L 140,80 Q 125,80 120,90 Z" fill="#534340"/>`;
-          break;
-        case "恐怖/驚悚小說":
-          bodyFill = "#ECEFF1";
-          patchFill = "#78909C"; 
-          bgFill = "#90A19D"; 
-          details = `<g class="animate-bounce" style="animation-duration: 4s;"><path d="M 280,110 C 280,90 305,90 305,110 L 305,130 L 292,125 L 280,130 Z" fill="#FFFFFF" stroke="#534340" stroke-width="4"/><circle cx="288" cy="105" r="2" fill="#534340"/><circle cx="297" cy="105" r="2" fill="#534340"/></g>`;
-          break;
-        case "溫馨/療癒小說":
-          bodyFill = "#FFF9C4"; 
-          patchFill = "#FFB74D"; 
-          bgFill = "#BDCBB5"; 
-          details = `<rect x="270" y="190" width="30" height="25" rx="6" fill="#FF8A80" stroke="#534340" stroke-width="4"/><path d="M 300,195 Q 310,202 300,210" fill="none" stroke="#534340" stroke-width="4"/><path d="M 280,180 Q 285,170 280,165 M 290,180 Q 295,172 290,167" fill="none" stroke="#534340" stroke-width="3" stroke-linecap="round"/>`;
-          break;
-        case "愛情小說":
-          bodyFill = "#FFF0F5"; 
-          patchFill = "#FFB6C1"; 
-          bgFill = "#D9C3B0"; 
-          details = `<g class="animate-pulse"><path d="M 280,110 C 275,100 260,105 270,120 L 280,130 L 290,120 C 300,105 285,100 280,110 Z" fill="#FF5252" stroke="#534340" stroke-width="3"/><path d="M 120,85 C 117,78 107,81 113,91 L 120,97 L 127,91 C 133,81 123,78 120,85 Z" fill="#FF5252" stroke="#534340" stroke-width="2"/></g>`;
-          break;
-        case "歷史/武俠小說":
-          bodyFill = "#FAEDCD"; 
-          patchFill = "#D4A373"; 
-          bgFill = "#9AA282"; 
-          details = `<g transform="rotate(-15, 280, 190)"><rect x="270" y="180" width="40" height="20" rx="3" fill="#E9D8A6" stroke="#534340" stroke-width="4"/><line x1="280" y1="180" x2="280" y2="200" stroke="#534340" stroke-width="3"/><line x1="290" y1="180" x2="290" y2="200" stroke="#534340" stroke-width="3"/><line x1="300" y1="180" x2="300" y2="200" stroke="#534340" stroke-width="3"/></g>`;
-          break;
-        case "輕小說":
-          bodyFill = "#FFF";
-          patchFill = "#4EA8DE"; 
-          bgFill = "#E2A499"; 
-          details = `<circle cx="285" cy="195" r="16" fill="#F4A261" stroke="#534340" stroke-width="4"/><path d="M 272,195 L 298,195 M 285,182 L 285,208" stroke="#534340" stroke-width="3"/>`;
-          break;
-        case "藝術設計":
-          bodyFill = "#F4F1DE";
-          patchFill = "#E07A5F"; 
-          bgFill = "#82A3A1"; 
-          details = `<path d="M 265,185 C 265,175 305,175 305,195 C 305,210 280,215 265,195 Z" fill="#F2CC8F" stroke="#534340" stroke-width="4"/><circle cx="275" cy="188" r="3" fill="#E07A5F"/><circle cx="285" cy="188" r="3" fill="#3D5A80"/><circle cx="290" cy="196" r="3" fill="#81B29A"/><line x1="295" y1="175" x2="315" y2="195" stroke="#534340" stroke-width="5" stroke-linecap="round"/><path d="M 315,195 L 319,199" stroke="#E07A5F" stroke-width="4"/>`;
-          break;
-        case "飲食":
-          bodyFill = "#FFF";
-          patchFill = "#F4A261"; 
-          bgFill = "#96BC8F"; 
-          details = `<circle cx="285" cy="195" r="14" fill="#E63946" stroke="#534340" stroke-width="4"/><path d="M 285,181 Q 288,173 293,175" fill="none" stroke="#534340" stroke-width="3"/>`;
-          break;
         case "商業 / 理財投資":
-          bodyFill = "#ECEFF1";
-          patchFill = "#FFD54F"; 
-          bgFill = "#BD9CBD"; 
-          details = `<circle cx="285" cy="195" r="12" fill="#FFCA28" stroke="#534340" stroke-width="4"/><text x="281" y="200" font-family="sans-serif" font-weight="bold" font-size="13" fill="#534340">$</text><circle cx="265" cy="205" r="10" fill="#FFD54F" stroke="#534340" stroke-width="3"/>`;
+          bodyFill = "#FFFDF0"; patchFill = "#FFD166"; bgFill = "#E8DFF5";   
+          // 32-bit 像素金幣
+          details = `<rect x="23" y="21" width="4" height="4" fill="#FFD166" stroke="#534340" stroke-width="1"/><rect x="25" y="22" width="1" height="2" fill="#534340"/>`;
           break;
         case "心靈 / 心理成長":
-          bodyFill = "#E8F5E9";
-          patchFill = "#81C784"; 
-          bgFill = "#9CBD5B"; 
-          details = `<path d="M 285,200 Q 285,175 285,175 M 285,182 Q 297,175 295,185 M 285,190 Q 270,185 273,195" fill="none" stroke="#534340" stroke-width="4" stroke-linecap="round"/><path d="M 285,175 Q 297,175 295,185 Z" fill="#81C784"/><path d="M 285,190 Q 270,185 273,195 Z" fill="#81C784"/>`;
+          bodyFill = "#F4F9F4"; patchFill = "#A8DADC"; bgFill = "#FCEADE";   
+          // 頭頂像素發芽
+          details = `<rect x="15" y="10" width="1" height="3" fill="#5CBD74"/><rect x="14" y="9" width="1" height="1" fill="#5CBD74"/><rect x="16" y="10" width="1" height="1" fill="#5CBD74"/>`;
+          break;
+        case "懸疑/推理小說":
+          bodyFill = "#EAEAEA"; patchFill = "#6C757D"; bgFill = "#F4ECCF";   
+          // 像素偵探帽與放大鏡
+          details = `<rect x="13" y="11" width="6" height="2" fill="#534340"/><rect x="11" y="13" width="10" height="1" fill="#534340"/><rect x="23" y="22" width="3" height="3" fill="none" stroke="#534340" stroke-width="1"/><line x1="25" y1="24" x2="27" y2="26" stroke="#534340" stroke-width="1"/>`;
+          break;
+        case "溫馨/療癒小說":
+          bodyFill = "#FFF5E6"; patchFill = "#F4A261"; bgFill = "#EDF2FB";   
+          // 旁邊一小杯冒煙像素熱茶
+          details = `<rect x="24" y="22" width="3" height="2" fill="#FFADAD"/><rect x="24" y="21" width="1" height="1" fill="#534340" opacity="0.3"/>`;
+          break;
+        default:
+          bodyFill = "#FFFFFF"; patchFill = "#E29578"; bgFill = "#E8F1F2";
           break;
       }
 
       return `
-        <svg viewBox="0 0 400 300" class="w-full h-full transition-transform duration-500" style="background: transparent;">
-          <rect x="15" y="15" width="370" height="270" rx="24" fill="${bgFill}" stroke="#534340" stroke-width="6" />
-          <rect x="22" y="22" width="356" height="256" rx="18" fill="none" stroke="#534340" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
-          <g opacity="0.8">
-            <circle cx="80" cy="70" r="6" fill="#FFB74D" stroke="#534340" stroke-width="2"/>
-            <circle cx="72" cy="70" r="6" fill="#FFD54F" stroke="#534340" stroke-width="2"/>
-            <circle cx="88" cy="70" r="6" fill="#FFD54F" stroke="#534340" stroke-width="2"/>
-            <circle cx="80" cy="62" r="6" fill="#FFD54F" stroke="#534340" stroke-width="2"/>
-            <circle cx="80" cy="78" r="6" fill="#FFD54F" stroke="#534340" stroke-width="2"/>
-            <circle cx="80" cy="70" r="3" fill="#D81B60"/>
-            <circle cx="70" cy="230" r="5" fill="#F48FB1" stroke="#534340" stroke-width="2"/>
-            <circle cx="64" cy="225" r="5" fill="#F48FB1" stroke="#534340" stroke-width="2"/>
-            <circle cx="76" cy="225" r="5" fill="#F48FB1" stroke="#534340" stroke-width="2"/>
-            <circle cx="70" cy="220" r="3" fill="#FFF"/>
-            <circle cx="330" cy="100" r="5" fill="#FFF" stroke="#534340" stroke-width="2"/>
-            <circle cx="324" cy="95" r="5" fill="#FFF" stroke="#534340" stroke-width="2"/>
-            <circle cx="336" cy="95" r="5" fill="#FFF" stroke="#534340" stroke-width="2"/>
-            <circle cx="330" cy="90" r="3" fill="#FFD54F"/>
-          </g>
-          <path d="M 120,245 L 123,235 M 123,235 L 128,245 M 123,235 L 121,245" stroke="#534340" stroke-width="3" stroke-linecap="round"/>
-          <path d="M 310,75 L 312,68 M 312,68 L 316,75" stroke="#534340" stroke-width="3" stroke-linecap="round"/>
-          <ellipse cx="200" cy="212" rx="105" ry="16" fill="#534340" opacity="0.2" />
-          <g class="${isBreathing ? 'animate-breath' : ''}">
-            <g class="animate-tail">
-              <path d="M 280,185 C 310,185 325,160 320,140 C 315,125 295,125 295,145 C 295,165 280,175 270,175 Z" fill="${bodyFill}" stroke="#534340" stroke-width="6" stroke-linejoin="round"/>
-              <path d="M 300,165 C 315,165 322,152 318,142 C 315,135 305,135 302,148 Z" fill="${patchFill}" opacity="0.9"/>
+        <svg viewBox="0 0 32 32" class="w-full h-full" style="image-rendering: pixelated; background: transparent;">
+          <rect x="1" y="1" width="30" height="30" fill="${bgFill}" stroke="#534340" stroke-width="1" />
+          <rect x="2" y="2" width="28" height="28" fill="none" stroke="#534340" stroke-width="0.5" stroke-dasharray="2,2" opacity="0.3"/>
+          <rect x="8" y="25" width="16" height="1" fill="#534340" opacity="0.15" />
+          <g class="${isBreathing ? 'animate-pixel-breath' : ''}">
+            <g class="animate-pixel-tail">
+              <path d="M 26,19 H 29 V 22 H 28 V 24 H 26 Z" fill="#534340" />
+              <path d="M 26,20 H 28 V 22 H 27 V 23 H 26 Z" fill="${bodyFill}" />
+              <rect x="27" y="20" width="1" height="1" fill="${patchFill}" />
             </g>
-            <path d="M 115,185 C 100,135 150,115 200,115 C 265,115 290,135 290,175 C 290,210 250,215 200,215 C 145,215 125,210 115,185 Z" fill="${bodyFill}" stroke="#534340" stroke-width="6" stroke-linejoin="round" />
-            <path d="M 205,116 C 215,135 235,135 245,118 Z" fill="${patchFill}" opacity="0.9"/>
-            <path d="M 240,123 C 248,142 263,142 270,128 Z" fill="${patchFill}" opacity="0.9"/>
-            <path d="M 215,214 C 222,195 242,195 250,214 Z" fill="${patchFill}" opacity="0.9"/>
-            <path d="M 115,175 C 105,125 185,125 175,175 C 165,200 125,200 115,175 Z" fill="${bodyFill}" stroke="#534340" stroke-width="6" stroke-linejoin="round" />
-            <path d="M 115,150 C 125,140 140,140 140,155 C 130,165 118,160 115,150 Z" fill="${patchFill}" opacity="0.9"/>
-            <path d="M 120,135 L 110,105 Q 125,108 135,123 Z" fill="${bodyFill}" stroke="#534340" stroke-width="6" stroke-linejoin="round" />
-            <path d="M 122,129 L 116,111 Q 125,113 130,123 Z" fill="#FFAAAA" />
-            <path d="M 155,135 L 168,108 Q 170,122 155,135 Z" fill="${bodyFill}" stroke="#534340" stroke-width="6" stroke-linejoin="round" />
-            <path d="M 156,131 L 163,116 Q 164,124 156,131 Z" fill="#FFAAAA" />
-            <path d="M 122,160 Q 127,155 132,160" fill="none" stroke="#534340" stroke-width="4.5" stroke-linecap="round"/>
-            <path d="M 152,160 Q 157,155 162,160" fill="none" stroke="#534340" stroke-width="4.5" stroke-linecap="round"/>
-            <path d="M 137,168 Q 141,172 144,168 Q 147,172 151,168" fill="none" stroke="#534340" stroke-width="4" stroke-linecap="round"/>
-            <line x1="108" y1="168" x2="95" y2="168" stroke="#534340" stroke-width="3" stroke-linecap="round"/>
-            <line x1="109" y1="174" x2="97" y2="177" stroke="#534340" stroke-width="3" stroke-linecap="round"/>
-            <line x1="174" y1="168" x2="187" y2="168" stroke="#534340" stroke-width="3" stroke-linecap="round"/>
-            <line x1="173" y1="174" x2="185" y2="177" stroke="#534340" stroke-width="3" stroke-linecap="round"/>
-            <circle cx="118" cy="167" r="6" fill="#FFAAAA" opacity="0.7"/>
-            <circle cx="166" cy="167" r="6" fill="#FFAAAA" opacity="0.7"/>
+            <path d="M 9,15 H 23 V 16 H 25 V 17 H 26 V 21 H 27 V 24 H 26 V 25 H 6 V 24 H 5 V 21 H 6 V 17 H 7 V 16 H 9 Z" fill="#534340" />
+            <path d="M 9,16 H 23 V 17 H 25 V 21 H 26 V 24 H 6 V 21 H 7 V 17 H 9 Z" fill="${bodyFill}" />
+            <path d="M 7,17 H 10 V 19 H 8 V 20 H 7 Z" fill="${patchFill}" />
+            <path d="M 23,17 H 25 V 19 H 24 V 20 H 23 Z" fill="${patchFill}" />
+            <rect x="8" y="12" width="3" height="3" fill="#534340" />
+            <rect x="9" y="13" width="1" height="2" fill="#FFB3C1" />
+            <rect x="21" y="12" width="3" height="3" fill="#534340" />
+            <rect x="22" y="13" width="1" height="2" fill="#FFB3C1" />
+            <rect x="9" y="15" width="1" height="1" fill="${bodyFill}" />
+            <rect x="22" y="15" width="1" height="1" fill="${bodyFill}" />
+            <rect x="11" y="18" width="1" height="1" fill="#534340" />
+            <rect x="20" y="18" width="1" height="1" fill="#534340" />
+            <rect x="9" y="19" width="2" height="1" fill="#FFB3C1" opacity="0.6" />
+            <rect x="21" y="19" width="2" height="1" fill="#FFB3C1" opacity="0.6" />
+            <rect x="15" y="19" width="2" height="1" fill="#534340" />
+            <rect x="4" y="19" width="2" height="1" fill="#534340" opacity="0.4" />
+            <rect x="26" y="19" width="2" height="1" fill="#534340" opacity="0.4" />
           </g>
           <g>${details}</g>
         </svg>
@@ -755,7 +598,7 @@
     }
 
     // 分頁切換邏輯
-    function switchTab(viewName) {
+    window.switchTab = function(viewName) {
       document.getElementById('view-home').classList.add('hidden');
       document.getElementById('view-bookshelf').classList.add('hidden');
       document.getElementById('view-gallery').classList.add('hidden');
@@ -771,7 +614,6 @@
       } else if (viewName === 'bookshelf') {
         document.getElementById('view-bookshelf').classList.remove('hidden');
         document.getElementById('tab-bookshelf-btn').className = "px-2.5 py-1 text-xs sm:text-sm font-semibold rounded-full bg-inkColor text-warmPink transition-all flex-1 text-center";
-        // 圖1修正：點入書櫃時，預設直達、初始化為「全部」篩選
         state.bookshelfFilter = 'all';
         renderBookshelf();
       } else if (viewName === 'gallery') {
@@ -792,7 +634,7 @@
         document.getElementById('active-progress-text').textContent = "進度：0%";
         document.getElementById('active-progress-bar').style.width = "0%";
         document.getElementById('home-card-header-right').textContent = "流浪緊";
-        container.innerHTML = getCatSVG("心靈 / 心理成長", false);
+        container.innerHTML = getCatSVG("通用主題", false);
         return;
       }
 
@@ -807,7 +649,7 @@
       container.innerHTML = getCatSVG(activeBook.theme, true);
     }
 
-    function petActiveCat() {
+    window.petActiveCat = function() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
       if (!activeBook) {
         showToast("出面有隻流浪貓探緊頭，快啲帶佢返屋企啦！", "🐾");
@@ -816,21 +658,20 @@
 
       const container = document.getElementById('heart-floaters');
       const heart = document.createElement('div');
-      heart.textContent = "💖";
-      heart.className = "absolute text-2xl transition-all duration-1000 select-none pointer-events-none";
-      heart.style.left = `${Math.random() * 80 + 10}%`;
-      heart.style.top = `60%`;
-      heart.style.opacity = "1";
+      heart.textContent = "👾";
+      heart.className = "absolute text-xl transition-all duration-1000 select-none pointer-events-none";
+      heart.style.left = `${Math.random() * 60 + 20}%`;
+      heart.style.top = `50%`;
       container.appendChild(heart);
 
       setTimeout(() => {
-        heart.style.transform = `translateY(-100px) scale(1.5)`;
+        heart.style.transform = `translateY(-60px)`;
         heart.style.opacity = "0";
       }, 50);
 
       setTimeout(() => { heart.remove(); }, 1100);
 
-      const meows = ["喵嗚~ 呼嚕呼嚕...", "喵~ 主人摸得好舒服呀！", "（踩奶中...）🐾", "（瞇起眼仔瞓覺）💤", "喵！睇多幾頁書，我就飽飽喇！"];
+      const meows = ["嗶嗶... 呼嚕呼嚕...", "（32-bit 踩奶中...）🐾", "睇多幾頁書，我就升級補滿血喇！罐罐！"];
       showToast(meows[Math.floor(Math.random() * meows.length)], "💖");
     }
 
@@ -844,7 +685,6 @@
       document.getElementById('stat-wishlist').textContent = wishlistCount;
     }
 
-    // 圖3修正：徹底改寫書櫃列表渲染，重整 Flexbox 同格線以防文字突出去
     function renderBookshelf() {
       const container = document.getElementById('bookshelf-list');
       container.innerHTML = "";
@@ -905,11 +745,10 @@
 
         const card = document.createElement('div');
         card.className = `p-4 rounded-3xl sketch-border flex gap-3 items-center transition-all w-full ${isActive ? 'bg-warmPink/40' : 'bg-white'}`;
-        const miniSvgHtml = getCatSVG(book.theme, false);
 
         card.innerHTML = `
-          <div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-inkColor bg-grassGreen flex-shrink-0 relative">
-            ${miniSvgHtml}
+          <div class="w-16 h-16 rounded-xl overflow-hidden border-2 border-inkColor bg-white flex-shrink-0 relative">
+            ${getCatSVG(book.theme, false)}
           </div>
           <div class="flex-grow min-w-0 flex flex-col gap-1">
             <div class="flex justify-between items-start gap-2">
@@ -943,44 +782,43 @@
       });
     }
 
-    function setActiveBook(id) {
+    window.setActiveBook = function(id) {
       state.activeBookId = id;
-      saveState();
-      showToast("成功將貓貓帶到小屋！", "🏠");
-      updateTopStatsUI();
+      showToast("切換伴讀貓咪！", "🏠");
+      renderActiveBookHome();
       renderBookshelf();
     }
 
-    function adoptBook(id) {
-      const book = state.books.find(b => b.id === id);
-      if (book) {
-        book.status = "reading";
+    window.adoptBook = async function(id) {
+      try {
+        await updateDoc(doc(db, "books", id), { status: "reading" });
         state.activeBookId = id;
-        saveState();
-        showToast(`成功收養咗《${book.name}》嘅主題貓貓！`, "🎉");
-        updateTopStatsUI();
+        showToast("開始伴讀！", "🎉");
+        await loadState();
         renderBookshelf();
+      } catch (e) {
+        showToast("操作失敗", "❌");
       }
     }
 
-    function setBookshelfFilter(filterType) {
+    window.setBookshelfFilter = function(filterType) {
       state.bookshelfFilter = filterType;
       renderBookshelf();
     }
 
-    function setGalleryFilter(theme) {
+    window.setGalleryFilter = function(theme) {
       state.galleryFilter = theme;
       renderGallery();
     }
 
-    function openAddBookModal() {
+    window.openAddBookModal = function() {
       document.getElementById('modal-add-book').classList.remove('hidden');
     }
-    function closeAddBookModal() {
+    window.closeAddBookModal = function() {
       document.getElementById('modal-add-book').classList.add('hidden');
     }
 
-    async function submitNewBook() {
+    window.submitNewBook = async function() {
       const name = document.getElementById('input-book-name').value.trim();
       const author = document.getElementById('input-book-author').value.trim();
       const theme = document.getElementById('input-book-theme').value;
@@ -999,41 +837,36 @@
       const id = `book-${Date.now()}`;
       const isFinished = current === total;
 
-      const id = `book-${Date.now()}`;
-    const isFinished = current === total;
+      const newBook = {
+        name,
+        author,
+        theme,
+        currentPage: current,
+        totalPage: total,
+        notes: "",
+        status: isFinished ? "finished" : (current > 0 ? "reading" : "wishlist")
+      };
 
-    const newBook = {
-      name,
-      author,
-      theme,
-      currentPage: current,
-      totalPage: total,
-      notes: "",
-      status: isFinished ? "finished" : (current > 0 ? "reading" : "wishlist")
-    };
+      try {
+        showToast("正在傳送雲端...", "⏳");
+        await setDoc(doc(db, "books", id), newBook);
 
-    try {
-      // 🔴 寫入 Firebase 雲端
-      showToast("正在傳送雲端...", "⏳");
-      await setDoc(doc(db, "books", id), newBook);
+        closeAddBookModal();
+        showToast(`《${name}》成功入落書櫃！`, "📖");
+        
+        document.getElementById('input-book-name').value = "";
+        document.getElementById('input-book-author').value = "";
+        document.getElementById('input-book-current').value = 0;
 
-      closeAddBookModal();
-      showToast(`《${name}》成功入落書櫃！`, "📖");
-      
-      // 清空輸入框
-      document.getElementById('input-book-name').value = "";
-      document.getElementById('input-book-author').value = "";
-      document.getElementById('input-book-current').value = 0;
-
-      await loadState(); // 重新整理雲端數據
-      switchTab('bookshelf');
-    } catch (error) {
-      console.error("雲端新增失敗:", error);
-      showToast("雲端儲存失敗 😿", "❌");
+        await loadState(); 
+        switchTab('bookshelf');
+      } catch (error) {
+        console.error("雲端新增失敗:", error);
+        showToast("雲端儲存失敗 😿", "❌");
+      }
     }
-  }
 
-    function openLogModal() {
+    window.openLogModal = function() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
       if (!activeBook) {
         showToast("去書櫃揀本書伴讀先啦！", "🐾");
@@ -1048,11 +881,11 @@
       document.getElementById('modal-log-progress').classList.remove('hidden');
     }
 
-    function closeLogModal() {
+    window.closeLogModal = function() {
       document.getElementById('modal-log-progress').classList.add('hidden');
     }
 
-    async function submitProgress() {
+    window.submitProgress = async function() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
       if (!activeBook) return;
 
@@ -1065,33 +898,32 @@
       }
 
       let updatedStatus = activeBook.status;
-    if (newPage === activeBook.totalPage) {
-      updatedStatus = "finished";
+      if (newPage === activeBook.totalPage) {
+        updatedStatus = "finished";
+      }
+
+      try {
+        showToast("正在餵食肉泥罐罐...", "⏳");
+        const bookRef = doc(db, "books", activeBook.id);
+        await updateDoc(bookRef, {
+          currentPage: newPage,
+          notes: note ? note : activeBook.notes,
+          status: updatedStatus
+        });
+
+        let alertText = newPage === activeBook.totalPage 
+          ? `🎉 好好叻啊！《${activeBook.name}》全部睇完！攞到張成就明信片！` 
+          : `讀完啦！真係好叻！`;
+
+        closeLogModal();
+        showToast(alertText, "🥫");
+        await loadState(); 
+      } catch (error) {
+        console.error("雲端更新進度失敗:", error);
+        showToast("雲端儲存失敗 😿", "❌");
+      }
     }
 
-    try {
-      // 🔴 同步更新去 Firebase 雲端
-      showToast("正在餵食肉泥罐罐...", "⏳");
-      const bookRef = doc(db, "books", activeBook.id);
-      await updateDoc(bookRef, {
-        currentPage: newPage,
-        notes: note ? note : activeBook.notes,
-        status: updatedStatus
-      });
-
-      let alertText = newPage === activeBook.totalPage 
-        ? `🎉 好好叻啊！《${activeBook.name}》全部睇完！攞到張成就明信片！` 
-        : `讀完啦！真係好叻！`;
-
-      closeLogModal();
-      showToast(alertText, "🥫");
-      await loadState(); // 重新整理雲端數據，自動刷新畫面
-    } catch (error) {
-      console.error("雲端更新進度失敗:", error);
-      showToast("雲端儲存失敗 😿", "❌");
-    }
-  }
-    // 圖4修正：優化明信片大小限制在 max-w-[360px] 內並加強 pb-6 防止任何小手機爆邊裁切
     function renderGallery() {
       const container = document.getElementById('gallery-list');
       container.innerHTML = "";
@@ -1143,48 +975,46 @@
 
       filteredFinished.forEach(book => {
         const card = document.createElement('div');
-        // 圖4全面限制與優化：縮放 max-w 防止細屏幕破框，加強 pb-6
         card.className = "w-full max-w-[360px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4 pb-6 sketch-border flex flex-col relative select-none animate-breath my-2";
         card.style.animationDuration = "12s";
 
-        const catSvg = getCatSVG(book.theme, false);
-
         card.innerHTML = `
           <div class="flex justify-between items-center mb-2 px-1">
-            <span class="text-xl font-black text-rose-400 tracking-wider">COMPLETED</span>
+            <span class="text-xl font-black text-rose-400 tracking-wider">32-BIT STAGE</span>
             <span class="text-base font-extrabold text-rose-400">+250 HP</span>
           </div>
-          <div class="w-full aspect-[4/3] rounded-2xl overflow-hidden sketch-border bg-grassGreen relative flex items-center justify-center">
-            ${catSvg}
+          <div class="w-full aspect-[4/3] rounded-2xl overflow-hidden sketch-border bg-white flex items-center justify-center">
+            ${getCatSVG(book.theme, false)}
           </div>
           <div class="bg-[#D3A99B] border-3 border-inkColor py-1.5 px-3 rounded-xl flex justify-between items-center mt-3 gap-1">
             <span class="text-white font-extrabold text-xs sm:text-sm tracking-wide truncate">睇完啦：《${book.name}》</span>
-            <div class="flex text-amber-300 text-xs flex-shrink-0">
-              <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
-            </div>
           </div>
           <div class="bg-white mt-2 p-3 rounded-2xl border-3 border-inkColor flex flex-col gap-1 min-w-0">
             <p class="text-[10px] uppercase tracking-wider text-rose-400 font-extrabold">伴讀紀錄同諗法</p>
             <p class="text-xs font-bold leading-relaxed text-inkColor/90 break-words">
               書名：《${book.name}》 <br>
               作者：${book.author || '未知'} <br>
-              讀後感：${book.notes || "奴才陪我一齊睇晒成本書！我依家元氣滿滿，等我每日都黐住你大腿發出呼嚕聲，陪你渡過人生中所有溫暖嘅好時光啦！"}
+              讀後感：${book.notes || "奴才陪我一齊睇晒成本書！雲端數據滿載！"}
             </p>
-          </div>
-          <div class="flex justify-between items-center mt-3 px-1 text-[9px] font-extrabold text-inkColor/60 gap-2">
-            <span class="truncate">🐾 類別：${book.theme}</span>
-            <span class="flex-shrink-0">溫馨伴讀・一齊成長 🍃</span>
           </div>
         `;
         container.appendChild(card);
       });
     }
 
-    // 初始化 App
-    window.onload = function() {
+    window.showToast = function(text, icon = "🐱") {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-icon').textContent = icon;
+      document.getElementById('toast-text').textContent = text;
+      toast.classList.remove('hidden');
+      if (window.toastTimeout) clearTimeout(window.toastTimeout);
+      window.toastTimeout = setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+    }
+
+    // App 初始化啟動
+    window.addEventListener('DOMContentLoaded', () => {
       loadState();
-      renderActiveBookHome();
-    };
+    });
   </script>
 </body>
 </html>
