@@ -610,7 +610,7 @@
         patchHtml = `<rect x="12" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="26" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="15" y="18" width="1" height="1" fill="#00B4D8"/><rect x="25" y="18" width="1" height="1" fill="#00B4D8"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><line x1="34" y1="18" x2="34" y2="25" stroke="#9CBD5B" stroke-width="1"/><circle cx="34" cy="18" r="1.2" fill="#B388FF"/></g>`;
       }
-      // 🌟 新增貓貓 1：人文社科
+      // 🤓 人文社科 (戴可愛的黑框像素眼鏡)
       else if (theme.includes("人文社科")) {
         catName = "聰聰 (Smarty) 🤓 學霸黑白貓";
         bgHtml = `<rect width="42" height="32" fill="#ECEFF1" /><rect x="6" y="6" width="12" height="4" fill="#CFD8DC"/>`;
@@ -618,15 +618,23 @@
         patchHtml = `<polygon points="21,18 17,25 25,25" fill="#FFFFFF"/>`;
         accessoryHtml = `<g transform="translate(5, 0)"><rect x="10" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><rect x="18" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><line x1="14" y1="18" x2="18" y2="18" stroke="#534340" stroke-width="0.8"/></g>`;
       }
-      // 🌟 新增貓貓 2：宗教命理 / 神話/宗教
-      else if (theme.includes("宗教命理") || theme.includes("神話/宗教")) {
-        catName = "法師 (Mystic) 🔮 占星暹羅貓";
-        bgHtml = `<rect width="42" height="32" fill="#311B92" /><circle cx="8" cy="8" r="3" fill="#FFF" opacity="0.3"/>`;
-        bodyFill = "#E0F7FA";
-        patchHtml = `<rect x="17" y="16" width="6" height="4" fill="#006064"/>`;
-        accessoryHtml = `<g class="animate-item-spin"><path d="M 34,20 L 35,21 L 37,21 L 35,22 L 36,24 L 34,23 L 32,24 L 33,22 L 31,21 L 33,21 Z" fill="#FFF700" stroke="#FFF" stroke-width="0.3"/></g>`;
+      // 👼 宗教命理 (改成 天使：全新小天使粉白翅膀與神聖金色光圈)
+      else if (theme.includes("宗教命理")) {
+        catName = "安琪 (Angel) 👼 純潔天使白貓";
+        bgHtml = `<rect width="42" height="32" fill="#FFFDE7" />`;
+        bodyFill = "#FFFFFF";
+        patchHtml = `<rect x="14" y="18" width="1" height="1" fill="#00B4D8"/><rect x="25" y="18" width="1" height="1" fill="#00B4D8"/>`;
+        accessoryHtml = `<g class="animate-item-float"><ellipse cx="19" cy="8" rx="4" ry="1.2" fill="none" stroke="#FFD166" stroke-width="1"/><rect x="33" y="17" width="4" height="4" rx="2" fill="#FFF5E6" stroke="#FFD166" stroke-width="0.5"/></g>`;
       }
-      // 🌟 新增貓貓 3：自然科普
+      // 👑 神話/宗教 (改成 皇冠：高貴黃金小皇冠與帝王金貓)
+      else if (theme.includes("神話/宗教")) {
+        catName = "阿瑟 (Arthur) 👑 像素國王金貓";
+        bgHtml = `<rect width="42" height="32" fill="#FFF8E1" />`;
+        bodyFill = "#FFB300";
+        patchHtml = `<rect x="14" y="17" width="1" height="6" fill="#E65100"/><rect x="26" y="17" width="1" height="6" fill="#E65100"/>`;
+        accessoryHtml = `<g class="animate-item-float"><path d="M 31,23 V 19 L 32.5,21 L 34,18 L 35.5,21 L 37,19 V 23 Z" fill="#FFD166" stroke="#534340" stroke-width="0.5"/><circle cx="34" cy="16" r="0.6" fill="#E63946"/></g>`;
+      }
+      // 🧪 自然科普
       else if (theme.includes("自然科普")) {
         catName = "達爾文 (Darwin) 🧪 博士灰斑貓";
         bgHtml = `<rect width="42" height="32" fill="#E0F2F1" /><rect x="4" y="4" width="8" height="6" fill="#B2DFDB" opacity="0.5"/>`;
@@ -634,9 +642,9 @@
         patchHtml = `<rect x="13" y="18" width="2" height="4" fill="#455A64"/><rect x="25" y="18" width="2" height="4" fill="#455A64"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><circle cx="34" cy="22" r="3" fill="none" stroke="#009688" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="34" cy="22" r="1" fill="#FF5722"/></g>`;
       }
-      // 🌟 新增貓貓 4：醫療保健
+      // 🏥 醫療保健 (攜帶白底紅十字像素醫藥箱)
       else if (theme.includes("醫療保健")) {
-        catName = "天使 (Angel) 🏥 醫護小白貓";
+        catName = "波比 (Bobo) 🏥 像素醫護小白貓";
         bgHtml = `<rect width="42" height="32" fill="#E1F5FE" /><rect x="0" y="24" width="42" height="8" fill="#B3E5FC" opacity="0.5"/>`;
         bodyFill = "#FFFFFF";
         patchHtml = `<rect x="14" y="19" width="2" height="2" fill="#FFCDD2"/><rect x="24" y="19" width="2" height="2" fill="#FFCDD2"/>`;
@@ -810,10 +818,10 @@
       else if (activeBook.theme.includes("商業") || activeBook.theme.includes("理財投資")) catDetails = "金金 (Goldie) 🍊";
       else if (activeBook.theme.includes("心靈") || activeBook.theme.includes("心理成長")) catDetails = "棉花糖 (Marshmallow) 🌱";
       else if (activeBook.theme.includes("人文社科")) catDetails = "聰聰 (Smarty) 🤓";
-      else if (activeBook.theme.includes("宗教命理")) catDetails = "法師 (Mystic) 🔮";
-      else if (activeBook.theme.includes("神話/宗教")) catDetails = "法師 (Mystic) 🔮";
+      else if (activeBook.theme.includes("宗教命理")) catDetails = "安琪 (Angel) 👼"; 
+      else if (activeBook.theme.includes("神話/宗教")) catDetails = "阿瑟 (Arthur) 👑"; 
       else if (activeBook.theme.includes("自然科普")) catDetails = "達爾文 (Darwin) 🧪";
-      else if (activeBook.theme.includes("醫療保健")) catDetails = "天使 (Angel) 🏥";
+      else if (activeBook.theme.includes("醫療保健")) catDetails = "波比 (Bobo) 🏥";
 
       document.getElementById('active-book-title').textContent = `《${activeBook.name}》`;
       document.getElementById('active-book-author').textContent = `作者：${activeBook.author || '佚名'}`;
