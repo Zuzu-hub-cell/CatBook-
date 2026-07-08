@@ -778,6 +778,7 @@
       container.innerHTML = getCatSVG(activeBook.theme, true);
     }
 
+    // 🔴 搵到 window.petActiveCat，整段完全覆蓋替換成此版本：
     window.petActiveCat = function() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
       if (!activeBook) return;
@@ -795,10 +796,22 @@
         heart.style.opacity = "0";
       }, 50);
       setTimeout(() => { heart.remove(); }, 1100);
-      showToast("32-bit 大福呼嚕呼嚕中... 🐾", "💖");
-    }
 
-    function updateTopStatsUI() {
+      // 🐱 【全新隨機對話核心】
+      const catMessages = [
+        { text: "貓貓呼嚕呼嚕中... 🐾", icon: "💖" },
+        { text: "喵嗚～（貓貓想你繼續睇書）", icon: "🐈" },
+        { text: "今日餵咗罐罐未？🍖", icon: "👀" },
+        { text: "貓貓對你翻肚 🐱", icon: "💤" }
+      ];
+
+      // 隨機抽一句發送
+      const randomIndex = Math.floor(Math.random() * catMessages.length);
+      const randomCat = catMessages[randomIndex];
+      
+      showToast(randomCat.text, randomCat.icon);
+    }
+      function updateTopStatsUI() {
       const finishedCount = state.books.filter(b => b.status === 'finished').length;
       const readingCount = state.books.filter(b => b.status === 'reading').length;
       const wishlistCount = state.books.filter(b => b.status === 'wishlist').length;
