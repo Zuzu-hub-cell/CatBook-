@@ -671,18 +671,23 @@
         
         let q;
         if (CURRENT_OWNER === "Zuzu") {
-          // 如果是 Zuzu 進去，就撈取全庫（兼容未標記 owner 嘅舊紀錄）
-          q = query(booksCollection); 
+          // 引入 or 查詢條件
+          const { or } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
+          // 🌟 完美過濾：只撈取擁有者是 "Zuzu" 的書，或者「完全沒有 owner 標籤」的舊書！
+          q = query(booksCollection, or(
+            where("owner", "==", "Zuzu"),
+            where("owner", "==", null) // 針對完全沒有欄位的舊紀錄兼容
+          ));
         } else {
-          // 如果是其他名字，嚴格篩選 owner 吻合嘅書
+          // 如果是其他朋友，嚴格執行名字一對一吻合隔離
           q = query(booksCollection, where("owner", "==", CURRENT_OWNER));
         }
         const querySnapshot = await getDocs(q);
         
-        let fetchedBooks = [];
+       let fetchedBooks = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          // 安全守衛：如果是朋友，而書本無綁定 owner（即 Zuzu 嘅舊書），則直接攔截隔離
+          // 如果目前不是 Zuzu，而該舊書完全沒有 owner 欄位，就當作是 Zuzu 嘅舊書，不塞進朋友的書櫃
           if (CURRENT_OWNER !== "Zuzu" && !data.owner) {
             return; 
           }
