@@ -1188,19 +1188,17 @@
       try {
         const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
         
-        // 檢查瀏覽器 localStorage 本地有沒有記住通行證
         const savedPin = localStorage.getItem(`auth_pin_${CURRENT_OWNER.toLowerCase()}`);
-        
         const userDocRef = doc(db, "users", CURRENT_OWNER.toLowerCase());
         const userDocSnap = await getDoc(userDocRef);
 
-        // 如果雲端有密碼紀錄，且本地快取密碼與雲端吻合，直接全自動放行解鎖！
+        // 1. 如果本地快取密碼與雲端吻合，直接全自動放行解鎖
         if (userDocSnap.exists() && savedPin === userDocSnap.data().pin) {
           loadState();
           return; 
         }
 
-        // 否則，彈出密碼視窗強制驗證攔截
+        // 2. 否則，打開密碼彈窗
         const lockModal = document.getElementById('modal-auth-lock');
         const lockTitle = document.getElementById('auth-lock-title');
         const lockDesc = document.getElementById('auth-lock-desc');
@@ -1210,55 +1208,57 @@
         pinInput.value = "";
         lockModal.classList.remove('hidden'); 
 
-        if (userDocSnap.exists()) {
-          // 情況 A：呢個名字之前建立過密碼
-          lockTitle.textContent = `解鎖《${CURRENT_OWNER}》書櫃`;
-          lockDesc.textContent = "請輸入你登記嘅 4 位數專屬暗號 🔒";
-          lockBtn.textContent = "🐾 驗證暗號解鎖";
+        // 3. 🔴 修正：將驗證邏輯與按鈕事件直接綁定，確保主畫面 App 模式下按鈕一定能觸發
+        window.submitAuthPin = async function() {
+          const inputPin = pinInput.value.trim();
+          if (!/^\d{4}$/.test(inputPin)) {
+            return showToast("請輸入 4 位數純數字密碼！", "❌");
+          }
+
+          // 重新拉一次最新雲端數據確保即時對比
+          const freshSnap = await getDoc(userDocRef);
           
-          window.submitAuthPin = async function() {
-            const inputPin = pinInput.value.trim();
-            if (inputPin === userDocSnap.data().pin) {
-              // 驗證成功：塞入長期通行證，下次開啟直接免輸入
+          if (freshSnap.exists()) {
+            // 情況 A：驗證現有密碼
+            if (inputPin === freshSnap.data().pin) {
               localStorage.setItem(`auth_pin_${CURRENT_OWNER.toLowerCase()}`, inputPin);
-              
-              showToast("解鎖成功！已自動為你記住密碼 💖", "🔑");
+              showToast("解鎖成功！歡迎返嚟 💖", "🔑");
               lockModal.classList.add('hidden');
               loadState(); 
             } else {
               showToast("暗號唔啱啵！再試吓 ❌", "🔒");
               pinInput.value = "";
             }
-          };
-        } else {
-          // 情況 B：此為全新名字，直接進入首次設定流程
-          lockTitle.textContent = `歡迎首次光臨！`;
-          lockDesc.textContent = `請為《${CURRENT_OWNER}》設定一個 4 位數專屬暗號，以後喺呢部手機開就唔洗再打架喇！`;
-          lockBtn.textContent = "💾 儲存並建立書櫃";
-          
-          window.submitAuthPin = async function() {
-            const inputPin = pinInput.value.trim();
-            if (!/^\d{4}$/.test(inputPin)) {
-              return showToast("請輸入 4 位數純數字密碼！", "❌");
-            }
-            
+          } else {
+            // 情況 B：全新主人，註冊新密碼
             showToast("正在建立專屬加密書櫃...", "⏳");
+            const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
             await setDoc(userDocRef, { pin: inputPin, createdAt: Date.now() });
             
-            // 寫入本地快取長期放行
             localStorage.setItem(`auth_pin_${CURRENT_OWNER.toLowerCase()}`, inputPin);
-            
             showToast("密碼鎖設定成功！🎉", "🔒");
             lockModal.classList.add('hidden');
             loadState(); 
-          };
+          }
+        };
+
+        // 根據雲端是否存在紀錄，動態改寫文字介面（不影響按鈕功能）
+        if (userDocSnap.exists()) {
+          lockTitle.textContent = `解鎖《${CURRENT_OWNER}》書櫃`;
+          lockDesc.textContent = "請輸入你登記嘅 4 位數專專屬暗號 🔒";
+          lockBtn.textContent = "🐾 驗證暗號解鎖";
+        } else {
+          lockTitle.textContent = `歡迎首次光臨！`;
+          lockDesc.textContent = `請為《${CURRENT_OWNER}》設定一個 4 位數專屬暗號，以後喺呢部手機開就唔洗再打架喇！`;
+          lockBtn.textContent = "💾 儲存並建立書櫃";
         }
+
       } catch (e) {
         console.error("安全鎖初始化失敗:", e);
         loadState(); 
       }
     }
-
+    
     window.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
       const urlOwner = urlParams.get('owner');
