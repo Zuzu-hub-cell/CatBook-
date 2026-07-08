@@ -258,7 +258,7 @@
           <div id="gallery-filter-container" class="w-full flex gap-1.5 overflow-x-auto no-scrollbar"></div>
           <div class="flex items-center gap-2 text-xs font-bold pt-1 border-t border-dashed border-inkColor/20">
             <span>睇完年份篩選：</span>
-            <select id="gallery-year-select" onchange="renderGallery()" class="bg-white border-2 border-inkColor px-2 py-0.5 rounded-lg font-bold">
+            <select id="gallery-year-select" onchange="updateGalleryYearFilter()" class="bg-white border-2 border-inkColor px-2 py-0.5 rounded-lg font-bold">
   <option value="all">全部年份</option>
 </select>
           </div>
@@ -888,7 +888,10 @@
       state.galleryFilter = theme;
       renderGallery();
     }
-
+window.updateGalleryYearFilter = function() {
+      state.galleryYearFilter = document.getElementById('gallery-year-select').value;
+      renderGallery();
+    }
     window.openAddBookModal = function() {
       document.getElementById('modal-add-book').classList.remove('hidden');
     }
@@ -1108,13 +1111,13 @@
       let filteredFinished = state.galleryFilter === '全部' ? finishedBooks : finishedBooks.filter(b => b.theme === state.galleryFilter);
 
       // 圖 6: 年份下拉篩選擴展
-      const galleryYear = document.getElementById('gallery-year-select').value;
-      if (galleryYear !== 'all') {
-        filteredFinished = filteredFinished.filter(b => {
-          const fDate = b.finishedDate || "";
-          return fDate.startsWith(galleryYear);
-        });
-      }
+      const galleryYear = state.galleryYearFilter || 'all';
+        if (galleryYear !== 'all') {
+          filteredFinished = filteredFinished.filter(b => {
+            const fDate = b.finishedDate || "";
+            return fDate.startsWith(galleryYear);
+          });
+        }
 
       if (filteredFinished.length === 0) {
         container.innerHTML = `<div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full"><p class="font-extrabold text-lg">呢個類別或年份暫時未有明信片 🍂</p></div>`;
