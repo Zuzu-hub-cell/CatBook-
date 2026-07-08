@@ -29,21 +29,18 @@
     const blob = new Blob([stringManifest], {type: 'application/json'});
     const manifestURL = URL.createObjectURL(blob);
     
-    // 搵返你第 15 行嗰個 manifest 標籤並更新它
+    // 搵返第 15 行嗰個 manifest 標籤並更新它
     const manifestLink = document.querySelector('link[rel="manifest"]');
     if (manifestLink) {
       manifestLink.href = manifestURL;
     }
   }
 </script>
-  <!-- 引入 Firebase 模組化 SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js" type="module"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js" type="module"></script>
-  <!-- 引入可愛手寫風格字體 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -150,7 +147,6 @@
   
   <div class="paper-texture"></div>
 
-  <!-- 回頂部浮動按鈕 -->
   <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="fixed bottom-6 right-6 z-50 bg-white hover:bg-warmPink w-12 h-12 rounded-2xl sketch-border-sm flex flex-col items-center justify-center font-black text-xs select-none active:translate-y-0.5 transition-all">
     <span>🐾</span>
     <span class="text-[9px] -mt-1">回頂部</span>
@@ -158,11 +154,9 @@
 
   <main class="max-w-md w-full mx-auto px-4 pt-6 flex-grow flex flex-col justify-between">
     
-    <!-- 頂部標題與狀態 -->
     <div class="w-full flex flex-col gap-4 mb-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <!-- 像素小 Logo -->
           <div class="w-10 h-10 flex items-center justify-center bg-white rounded-xl border-3 border-inkColor overflow-hidden">
             <svg viewBox="0 0 32 32" class="w-8 h-8" style="image-rendering: pixelated;">
               <path d="M 9,15 H 23 V 24 H 6 V 15 Z" fill="#FFF5E6" />
@@ -173,7 +167,6 @@
               <rect x="21" y="12" width="2" height="3" fill="#534340" />
             </svg>
           </div>
-          <!-- 支援動態更換主人名字的標題 -->
           <h1 class="text-3xl font-black tracking-wide drop-shadow-sm select-none flex items-baseline gap-1">
             <span id="bookshelf-owner-name">Zuzu</span><span class="text-base font-bold text-inkColor/80">書櫃</span>
           </h1>
@@ -208,10 +201,8 @@
       </div>
     </div>
 
-    <!-- 視圖主容器 -->
     <div class="flex-grow flex flex-col justify-start pt-2 min-h-[460px]">
 
-      <!-- VIEW 1: 小屋伴讀 -->
       <div id="view-home" class="w-full flex flex-col items-center gap-4 transition-all duration-300">
         <div class="w-full bg-warmPink rounded-[2.5rem] p-5 sketch-border flex flex-col relative select-none">
           <div class="flex justify-between items-center mb-3">
@@ -219,7 +210,6 @@
             <span id="home-card-header-right" class="text-lg font-extrabold pr-2 text-inkColor/90">伴讀緊</span>
           </div>
 
-          <!-- 像素貓咪畫框 -->
           <div class="w-full aspect-[4/3] rounded-3xl overflow-hidden sketch-border bg-[#9CBD5B] relative flex items-center justify-center cursor-pointer active:scale-[0.98] transition-transform" onclick="petActiveCat()">
             <div id="active-cat-svg-container" class="w-full h-full"></div>
             <div id="heart-floaters" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
@@ -247,14 +237,12 @@
         </button>
       </div>
 
-      <!-- VIEW 2: 書櫃 -->
       <div id="view-bookshelf" class="w-full flex flex-col gap-4 transition-all duration-300 hidden">
         <div class="flex justify-between items-center">
           <h2 class="text-2xl font-black">我嘅藏書同貓貓</h2>
           <button onclick="openAddBookModal()" class="bg-warmPink hover:bg-pink-200 px-4 py-2 rounded-xl sketch-border-sm font-bold text-sm">➕ 加新書</button>
         </div>
 
-        <!-- 分類與年份篩選列 -->
         <div class="w-full flex flex-col gap-2 bg-white/30 p-2.5 rounded-2xl border border-inkColor/20">
           <div class="w-full flex gap-1.5 overflow-x-auto no-scrollbar select-none pb-1">
             <button id="filter-bs-all" onclick="setBookshelfFilter('all')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all">全部</button>
@@ -262,7 +250,6 @@
             <button id="filter-bs-wishlist" onclick="setBookshelfFilter('wishlist')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">想睇 💤</button>
             <button id="filter-bs-finished" onclick="setBookshelfFilter('finished')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">已睇完 🏆</button>
           </div>
-          <!-- 年份篩選下拉選單 -->
           <div class="flex items-center gap-2 text-xs font-bold pl-1">
             <span>閱讀年份篩選：</span>
             <select id="bookshelf-year-select" onchange="updateBookshelfYearFilter()" class="bg-white border-2 border-inkColor px-2 py-0.5 rounded-lg outline-none font-bold">
@@ -274,14 +261,12 @@
         <div id="bookshelf-list" class="w-full flex flex-col gap-4 pr-1 pb-4"></div>
       </div>
 
-      <!-- VIEW 3: 明信片畫廊 -->
       <div id="view-gallery" class="w-full flex flex-col gap-4 transition-all duration-300 hidden">
         <div class="flex justify-between items-center">
           <h2 class="text-2xl font-black">成就明信片畫廊</h2>
           <span id="gallery-count" class="bg-white border-2 border-inkColor px-3 py-1 rounded-full text-xs font-bold">已收集: 0 張</span>
         </div>
 
-        <!-- 明信片年份與分類組合篩選列 -->
         <div class="w-full bg-white/40 p-3 rounded-2xl border-2 border-inkColor flex flex-col gap-2 select-none">
           <div id="gallery-filter-container" class="w-full flex gap-1.5 overflow-x-auto no-scrollbar"></div>
           <div class="flex items-center gap-2 text-xs font-bold pt-1 border-t border-dashed border-inkColor/20">
@@ -297,7 +282,6 @@
     </div>
   </main>
 
-  <!-- MODAL: 新增書籍 -->
   <div id="modal-add-book" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
     <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh]">
       <button onclick="closeAddBookModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold z-10">❌</button>
@@ -351,7 +335,6 @@
     </div>
   </div>
 
-  <!-- MODAL: 修改/編輯書籍 -->
   <div id="modal-edit-book" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
     <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh]">
       <button onclick="closeEditBookModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold z-10">❌</button>
@@ -384,10 +367,10 @@
               <option value=" 商業 / 理財投資"> 商業 / 理財投資</option>
               <option value=" 心靈 / 心理成長"> 心靈 / 心理成長</option>
               <option value=" 人文社科"> 人文社科 </option>
-             <option value=" 宗教命理"> 宗教命理 </option>
-             <option value=" 神話/宗教"> 神話/宗教 </option>
-             <option value=" 自然科普"> 自然科普 </option>
-             <option value=" 醫療保健"> 醫療保健 </option>
+              <option value=" 宗教命理"> 宗教命理 </option>
+              <option value=" 神話/宗教"> 神話/宗教 </option>
+              <option value=" 自然科普"> 自然科普 </option>
+              <option value=" 醫療保健"> 醫療保健 </option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -414,7 +397,6 @@
     </div>
   </div>
 
-  <!-- MODAL: 登記進度 -->
   <div id="modal-log-progress" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 hidden">
     <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 relative flex flex-col max-h-[85vh]">
       <button onclick="closeLogModal()" class="absolute -top-3 -right-3 bg-warmPink hover:bg-pink-200 w-10 h-10 rounded-full sketch-border-sm flex items-center justify-center text-xl font-bold z-10">❌</button>
@@ -440,7 +422,6 @@
     </div>
   </div>
 
-  <!-- MODAL: 免登入專屬個人密碼鎖 -->
   <div id="modal-auth-lock" class="fixed inset-0 bg-black/80 backdrop-blur-md z-[300] flex items-center justify-center p-4 hidden">
     <div class="bg-cardBg w-full max-w-sm rounded-[2rem] sketch-border p-6 flex flex-col text-center">
       <div class="text-4xl mb-2">🔒</div>
@@ -464,7 +445,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCZSj0CQc_V7LuqUurXOJndNGZwdSK8OlI",
@@ -491,7 +472,7 @@
     };
     let CURRENT_OWNER = "Zuzu";
 
-   // 32x32 全景像素場景與動態專屬配件演算法
+    // 32x32 全景像素場景與動態專屬配件演算法
     function getCatSVG(theme, isBreathing = true) {
       let bodyFill = "#FFFFFF";      
       let patchHtml = "";     
@@ -610,7 +591,7 @@
         patchHtml = `<rect x="12" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="26" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="15" y="18" width="1" height="1" fill="#00B4D8"/><rect x="25" y="18" width="1" height="1" fill="#00B4D8"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><line x1="34" y1="18" x2="34" y2="25" stroke="#9CBD5B" stroke-width="1"/><circle cx="34" cy="18" r="1.2" fill="#B388FF"/></g>`;
       }
-      // 🌟 新增貓貓 1：人文社科
+      // 🤓 人文社科 (戴可愛的黑框像素眼鏡)
       else if (theme.includes("人文社科")) {
         catName = "聰聰 (Smarty) 🤓 學霸黑白貓";
         bgHtml = `<rect width="42" height="32" fill="#ECEFF1" /><rect x="6" y="6" width="12" height="4" fill="#CFD8DC"/>`;
@@ -618,15 +599,25 @@
         patchHtml = `<polygon points="21,18 17,25 25,25" fill="#FFFFFF"/>`;
         accessoryHtml = `<g transform="translate(5, 0)"><rect x="10" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><rect x="18" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><line x1="14" y1="18" x2="18" y2="18" stroke="#534340" stroke-width="0.8"/></g>`;
       }
-      // 🌟 新增貓貓 2：宗教命理 / 神話/宗教
-      else if (theme.includes("宗教命理") || theme.includes("神話/宗教")) {
-        catName = "法師 (Mystic) 🔮 占星暹羅貓";
-        bgHtml = `<rect width="42" height="32" fill="#311B92" /><circle cx="8" cy="8" r="3" fill="#FFF" opacity="0.3"/>`;
-        bodyFill = "#E0F7FA";
-        patchHtml = `<rect x="17" y="16" width="6" height="4" fill="#006064"/>`;
-        accessoryHtml = `<g class="animate-item-spin"><path d="M 34,20 L 35,21 L 37,21 L 35,22 L 36,24 L 34,23 L 32,24 L 33,22 L 31,21 L 33,21 Z" fill="#FFF700" stroke="#FFF" stroke-width="0.3"/></g>`;
+      // 👼 宗教命理 (修復優化：全新小天使粉白翅膀與神聖金色光圈)
+      else if (theme.includes("宗教命理")) {
+        catName = "安琪 (Angel) 👼 純潔天使白貓";
+        bgHtml = `<rect width="42" height="32" fill="#FFFDE7" />`;
+        bodyFill = "#FFFFFF";
+        patchHtml = `<rect x="14" y="18" width="1" height="1" fill="#00B4D8"/><rect x="25" y="18" width="1" height="1" fill="#00B4D8"/>`;
+        // 配件：飄浮的像素金色小光圈
+        accessoryHtml = `<g class="animate-item-float"><ellipse cx="19" cy="8" rx="4" ry="1.2" fill="none" stroke="#FFD166" stroke-width="1"/><rect x="33" y="17" width="4" height="4" rx="2" fill="#FFF5E6" stroke="#FFD166" stroke-width="0.5"/></g>`;
       }
-      // 🌟 新增貓貓 3：自然科普
+      // 👑 神話/宗教 (修復優化：全新高貴黃金小皇冠)
+      else if (theme.includes("神話/宗教")) {
+        catName = "阿瑟 (Arthur) 👑 像素國王金貓";
+        bgHtml = `<rect width="42" height="32" fill="#FFF8E1" />`;
+        bodyFill = "#FFB300";
+        patchHtml = `<rect x="14" y="17" width="1" height="6" fill="#E65100"/><rect x="26" y="17" width="1" height="6" fill="#E65100"/>`;
+        // 配件：高貴的飄浮小皇冠（W型結構）
+        accessoryHtml = `<g class="animate-item-float"><path d="M 31,23 V 19 L 32.5,21 L 34,18 L 35.5,21 L 37,19 V 23 Z" fill="#FFD166" stroke="#534340" stroke-width="0.5"/><circle cx="34" cy="16" r="0.6" fill="#E63946"/></g>`;
+      }
+      // 🧪 自然科普
       else if (theme.includes("自然科普")) {
         catName = "達爾文 (Darwin) 🧪 博士灰斑貓";
         bgHtml = `<rect width="42" height="32" fill="#E0F2F1" /><rect x="4" y="4" width="8" height="6" fill="#B2DFDB" opacity="0.5"/>`;
@@ -634,9 +625,9 @@
         patchHtml = `<rect x="13" y="18" width="2" height="4" fill="#455A64"/><rect x="25" y="18" width="2" height="4" fill="#455A64"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><circle cx="34" cy="22" r="3" fill="none" stroke="#009688" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="34" cy="22" r="1" fill="#FF5722"/></g>`;
       }
-      // 🌟 新增貓貓 4：醫療保健
+      // 🏥 醫療保健 (優化：白底紅十字像素醫藥箱)
       else if (theme.includes("醫療保健")) {
-        catName = "天使 (Angel) 🏥 醫護小白貓";
+        catName = "波比 (Bobo) 🏥 像素醫護小白貓";
         bgHtml = `<rect width="42" height="32" fill="#E1F5FE" /><rect x="0" y="24" width="42" height="8" fill="#B3E5FC" opacity="0.5"/>`;
         bodyFill = "#FFFFFF";
         patchHtml = `<rect x="14" y="19" width="2" height="2" fill="#FFCDD2"/><rect x="24" y="19" width="2" height="2" fill="#FFCDD2"/>`;
@@ -810,8 +801,8 @@
       else if (activeBook.theme.includes("商業") || activeBook.theme.includes("理財投資")) catDetails = "金金 (Goldie) 🍊";
       else if (activeBook.theme.includes("心靈") || activeBook.theme.includes("心理成長")) catDetails = "棉花糖 (Marshmallow) 🌱";
       else if (activeBook.theme.includes("人文社科")) catDetails = "聰聰 (Smarty) 🤓";
-      else if (activeBook.theme.includes("宗教命理")) catDetails = "法師 (Mystic) 🔮";
-      else if (activeBook.theme.includes("神話/宗教")) catDetails = "法師 (Mystic) 🔮";
+      else if (activeBook.theme.includes("宗教命理")) catDetails = "安琪 (Angel) 👼";
+      else if (activeBook.theme.includes("神話/宗教")) catDetails = "阿瑟 (Arthur) 👑";
       else if (activeBook.theme.includes("自然科普")) catDetails = "達爾文 (Darwin) 🧪";
       else if (activeBook.theme.includes("醫療保健")) catDetails = "天使 (Angel) 🏥";
 
