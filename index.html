@@ -328,6 +328,11 @@
               <option value=" 飲食"> 飲食 </option>
               <option value=" 商業 / 理財投資"> 商業 / 理財投資 </option>
               <option value=" 心靈 / 心理成長"> 心靈 / 心理成長 </option>
+              <option value=" 人文社科"> 人文社科 </option>
+              <option value=" 宗教命理"> 宗教命理 </option>
+              <option value=" 神話/宗教"> 神話/宗教 </option>
+              <option value=" 自然科普"> 自然科普 </option>
+              <option value=" 醫療保健"> 醫療保健 </option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -378,6 +383,11 @@
               <option value=" 飲食"> 飲食</option>
               <option value=" 商業 / 理財投資"> 商業 / 理財投資</option>
               <option value=" 心靈 / 心理成長"> 心靈 / 心理成長</option>
+              <option value=" 人文社科"> 人文社科 </option>
+             <option value=" 宗教命理"> 宗教命理 </option>
+             <option value=" 神話/宗教"> 神話/宗教 </option>
+             <option value=" 自然科普"> 自然科普 </option>
+             <option value=" 醫療保健"> 醫療保健 </option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -489,7 +499,14 @@
       let accessoryHtml = "";              
       let catName = "流浪精靈";
 
-      // 模糊化比對，排除有無自帶 Emoji 的文字阻礙 (優化圖 2 推理小說)
+// 🔴 搵到 function getCatSVG，整段完全覆蓋替換：
+    function getCatSVG(theme, isBreathing = true) {
+      let bodyFill = "#FFFFFF";      
+      let patchHtml = "";     
+      let bgHtml = ""; 
+      let accessoryHtml = "";              
+      let catName = "流浪精靈";
+
       if (theme.includes("翻譯文學")) {
         catName = "可可 (Coco) ☕ 暹羅貓";
         bgHtml = `<rect width="42" height="32" fill="#E8D8C8" />
@@ -600,6 +617,39 @@
         bodyFill = "#F8F9FA";
         patchHtml = `<rect x="12" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="26" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="15" y="18" width="1" height="1" fill="#00B4D8"/><rect x="25" y="18" width="1" height="1" fill="#00B4D8"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><line x1="34" y1="18" x2="34" y2="25" stroke="#9CBD5B" stroke-width="1"/><circle cx="34" cy="18" r="1.2" fill="#B388FF"/></g>`;
+      }
+      // 🌟 新增貓貓 1：人文社科 (戴可愛的黑框像素眼鏡 🤓)
+      else if (theme.includes("人文社科")) {
+        catName = "聰聰 (Smarty) 🤓 學霸黑白貓";
+        bgHtml = `<rect width="42" height="32" fill="#ECEFF1" /><rect x="6" y="6" width="12" height="4" fill="#CFD8DC"/>`;
+        bodyFill = "#37474F";
+        patchHtml = `<polygon points="21,18 17,25 25,25" fill="#FFFFFF"/>`;
+        // 配件：臉部特別疊加手繪黑框眼鏡像素
+        accessoryHtml = `<g transform="translate(5, 0)"><rect x="10" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><rect x="18" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><line x1="14" y1="18" x2="18" y2="18" stroke="#534340" stroke-width="0.8"/></g>`;
+      }
+      // 🌟 新增貓貓 2：宗教命理 / 神話/宗教 (身邊環繞閃爍的金星 🌟)
+      else if (theme.includes("宗教命理") || theme.includes("神話/宗教")) {
+        catName = "法師 (Mystic) 🔮 占星暹羅貓";
+        bgHtml = `<rect width="42" height="32" fill="#311B92" /><circle cx="8" cy="8" r="3" fill="#FFF" opacity="0.3"/>`;
+        bodyFill = "#E0F7FA";
+        patchHtml = `<rect x="17" y="16" width="6" height="4" fill="#006064"/>`;
+        accessoryHtml = `<g class="animate-item-spin"><path d="M 34,20 L 35,21 L 37,21 L 35,22 L 36,24 L 34,23 L 32,24 L 33,22 L 31,21 L 33,21 Z" fill="#FFF700" stroke="#FFF" stroke-width="0.3"/></g>`;
+      }
+      // 🌟 新增貓貓 3：自然科普 (身邊飄浮綠色小草與能量原子 🌱)
+      else if (theme.includes("自然科普")) {
+        catName = "達爾文 (Darwin) 🧪 博士灰斑貓";
+        bgHtml = `<rect width="42" height="32" fill="#E0F2F1" /><rect x="4" y="4" width="8" height="6" fill="#B2DFDB" opacity="0.5"/>`;
+        bodyFill = "#78909C";
+        patchHtml = `<rect x="13" y="18" width="2" height="4" fill="#455A64"/><rect x="25" y="18" width="2" height="4" fill="#455A64"/>`;
+        accessoryHtml = `<g class="animate-item-pulse"><circle cx="34" cy="22" r="3" fill="none" stroke="#009688" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="34" cy="22" r="1" fill="#FF5722"/></g>`;
+      }
+      // 🌟 新增貓貓 4：醫療保健 (攜帶白底紅十字像素醫藥箱 🎒)
+      else if (theme.includes("醫療保健")) {
+        catName = "天使 (Angel) 🏥 醫護小白貓";
+        bgHtml = `<rect width="42" height="32" fill="#E1F5FE" /><rect x="0" y="24" width="42" height="8" fill="#B3E5FC" opacity="0.5"/>`;
+        bodyFill = "#FFFFFF";
+        patchHtml = `<rect x="14" y="19" width="2" height="2" fill="#FFCDD2"/><rect x="24" y="19" width="2" height="2" fill="#FFCDD2"/>`;
+        accessoryHtml = `<g class="animate-item-float"><rect x="31" y="19" width="6" height="5" rx="1" fill="#FFF" stroke="#534340" stroke-width="0.5"/><line x1="34" y1="20" x2="34" y2="23" stroke="#E63946" stroke-width="0.8"/><line x1="32.5" y1="21.5" x2="35.5" y2="21.5" stroke="#E63946" stroke-width="0.8"/></g>`;
       }
       else { 
         bgHtml = `<rect width="42" height="32" fill="#E8F1F2" />`;
@@ -773,8 +823,13 @@
       else if (activeBook.theme.includes("輕小說")) catDetails = "小黑寶 (Kuro) 🍙";
       else if (activeBook.theme.includes("藝術設計")) catDetails = "畢卡貓 (Picasso) 🎨";
       else if (activeBook.theme.includes("飲食")) catDetails = "布丁 (Pudding) 🍪";
-      else if (activeBook.theme.includes("商業") || activeBook.theme.includes("理財投資")) catDetails = "金金 (Goldie) 🍊";
-      else if (activeBook.theme.includes("心靈") || activeBook.theme.includes("心理成長")) catDetails = "棉花糖 (Marshmallow) 🌱";
+      else if (activeBook.theme.includes("商業") || theme.includes("理財投資")) catDetails = "金金 (Goldie) 🍊";
+      else if (activeBook.theme.includes("心靈") || theme.includes("心理成長")) catDetails = "棉花糖 (Marshmallow) 🌱";
+      else if (activeBook.theme.includes("人文社科")) catDetails = "聰聰 (Smarty) 🤓";
+      else if (activeBook.theme.includes("宗教命理")) catDetails = "法師 (Mystic) 🔮";
+      else if (activeBook.theme.includes("神話/宗教")) catDetails = "法師 (Mystic) 🔮";
+      else if (activeBook.theme.includes("自然科普")) catDetails = "達爾文 (Darwin) 🧪";
+      else if (activeBook.theme.includes("醫療保健")) catDetails = "天使 (Angel) 🏥";
 
       document.getElementById('active-book-title').textContent = `《${activeBook.name}》`;
       document.getElementById('active-book-author').textContent = `作者：${activeBook.author || '佚名'}`;
