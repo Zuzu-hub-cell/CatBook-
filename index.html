@@ -807,9 +807,8 @@
         let actionButton = "";
 
         if (book.status === 'finished') {
-          // 圖 5: 已睇完卡牌顯示年月日日期
-          const dateStr = book.finishedDate ? ` (${book.finishedDate})` : "";
-          statusBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] px-2 py-0.5 rounded-full border-2 border-emerald-800 font-extrabold whitespace-nowrap">🏆 已睇完${dateStr}</span>`;
+        const yearOnly = book.finishedDate ? ` (${book.finishedDate.split('-')[0]})` : "";
+        statusBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] px-2 py-0.5 rounded-full border-2 border-emerald-800 font-extrabold whitespace-nowrap">🏆 已睇完${yearOnly}</span>`;
           actionButton = `<span class="text-xs text-emerald-700 font-bold mr-1 whitespace-nowrap">已馴服明信片</span>`;
         } else if (book.status === 'wishlist') {
           statusBadge = `<span class="bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full border-2 border-amber-800 font-extrabold whitespace-nowrap">💤 想睇</span>`;
