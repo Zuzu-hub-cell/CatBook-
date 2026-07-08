@@ -285,7 +285,7 @@
             <input id="input-book-author" type="text" placeholder="例如：摩根·豪瑟" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
           </div>
           <div class="flex flex-col gap-1">
-            <label>🏷️ 選擇 13 款專屬像素伴讀貓貓</label>
+            <label>🏷️ 選擇書本類別</label>
             <select id="input-book-theme" class="bg-amber-50/60 border-3 border-inkColor p-2.5 rounded-xl outline-none focus:bg-warmPink/25 font-bold">
               <option value=" 翻譯文學"> 翻譯文學 </option>
               <option value=" 詩"> 詩 </option>
@@ -337,19 +337,19 @@
           <div class="flex flex-col gap-1">
             <label>🏷️ 書本主題</label>
             <select id="edit-book-theme" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
-              <option value="🌍 翻譯文學">🌍 翻譯文學</option>
-              <option value="📜 詩">📜 詩</option>
-              <option value="🚀 科幻/奇幻小說">🚀 科幻/奇幻小說</option>
-              <option value="🔍 懸疑/推理小說">🔍 懸疑/推理小說</option>
-              <option value="👻 恐怖/驚慢小說">👻 恐怖/驚悚小說</option>
-              <option value="☕ 溫馨/療癒小說">☕ 溫馨/療癒小說</option>
-              <option value="💖 愛情小說">💖 愛情小說</option>
-              <option value="⚔️ 歷史/武俠小說">⚔️ 歷史/武俠小說</option>
-              <option value="🍙 輕小說">🍙 輕小說</option>
-              <option value="🎨 藝術設計">🎨 藝術設計</option>
-              <option value="🐟 飲食">🐟 飲食</option>
-              <option value="🪙 商業 / 理財投資">🪙 商業 / 理財投資</option>
-              <option value="🌱 心靈 / 心理成長">🌱 心靈 / 心理成長</option>
+              <option value=" 翻譯文學"> 翻譯文學</option>
+              <option value=" 詩"> 詩</option>
+              <option value=" 科幻/奇幻小說"> 科幻/奇幻小說</option>
+              <option value=" 懸疑/推理小說"> 懸疑/推理小說</option>
+              <option value=" 恐怖/驚慢小說"> 恐怖/驚悚小說</option>
+              <option value=" 溫馨/療癒小說"> 溫馨/療癒小說</option>
+              <option value=" 愛情小說"> 愛情小說</option>
+              <option value=" 歷史/武俠小說"> 歷史/武俠小說</option>
+              <option value=" 輕小說"> 輕小說</option>
+              <option value=" 藝術設計"> 藝術設計</option>
+              <option value=" 飲食"> 飲食</option>
+              <option value=" 商業 / 理財投資"> 商業 / 理財投資</option>
+              <option value=" 心靈 / 心理成長"> 心靈 / 心理成長</option>
             </select>
           </div>
           <div class="grid grid-cols-2 gap-2">
@@ -364,7 +364,7 @@
           </div>
           <!-- 圖 5 紅圈：手動記錄或更改睇完日期（年月日） -->
           <div class="flex flex-col gap-1">
-            <label>🏆 睇完日期 (年-月-日)</label>
+            <label>🏆 睇完日期 </label>
             <input id="edit-book-finished-date" type="date" class="bg-amber-100/50 border-3 border-inkColor p-2.5 rounded-xl outline-none font-bold">
           </div>
           <div class="flex flex-col gap-1">
@@ -863,7 +863,7 @@
 
     window.setActiveBook = function(id) {
       state.activeBookId = id;
-      showToast("切換伴讀貓咪！", "🏠");
+      showToast("更換伴讀貓咪！", "🏠");
       renderActiveBookHome();
       renderBookshelf();
     }
@@ -988,7 +988,7 @@
       }
 
       try {
-        showToast("正在餵食肉泥罐罐...", "⏳");
+        showToast("正在餵食罐罐...", "⏳");
         const bookRef = doc(db, "books", activeBook.id);
         await updateDoc(bookRef, {
           currentPage: newPage,
@@ -998,7 +998,7 @@
         });
 
         let alertText = newPage === activeBook.totalPage 
-          ? `🎉 好好叻啊！《${activeBook.name}》全部睇完！攞到張成就明信片！` 
+          ? `🎉 好叻啊！《${activeBook.name}》全部睇完！攞到張成就明信片！` 
           : `讀完啦！真係好叻！`;
 
         closeLogModal();
@@ -1068,7 +1068,7 @@
     }
 
     window.deleteBook = async function(id, name) {
-      if (confirm(`你確定要將《${name}》同埋佢隻像素貓送走嗎？雲端紀錄會消失架... 😿`)) {
+      if (confirm(`你確定要將《${name}》同埋佢隻貓送走嗎？雲端紀錄會消失架... 😿`)) {
         try {
           showToast("正在從雲端移除...", "⏳");
           await deleteDoc(doc(db, "books", id));
@@ -1127,7 +1127,7 @@
         card.className = "w-full max-w-[360px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4 pb-6 sketch-border flex flex-col relative select-none animate-breath my-2";
         
         // 圖 6: 明信片卡牌底部補上睇完日期（年月日）
-        const dateDisplay = book.finishedDate ? `📅 睇完日期：${book.finishedDate}` : "📅 睇完日期：未知";
+        const dateDisplay = book.finishedDate ? ` 睇完日期：${book.finishedDate}` : " 睇完日期：未知";
 
         card.innerHTML = `
           <div class="w-full aspect-[4/3] rounded-2xl overflow-hidden sketch-border bg-white flex items-center justify-center">
