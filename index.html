@@ -236,13 +236,10 @@
           </div>
           <!-- 年份篩選下拉選單 (圖 4) -->
           <div class="flex items-center gap-2 text-xs font-bold pl-1">
-            <span>📅 閱讀年份篩選：</span>
+            <span>閱讀年份篩選：</span>
             <select id="bookshelf-year-select" onchange="updateBookshelfYearFilter()" class="bg-white border-2 border-inkColor px-2 py-0.5 rounded-lg outline-none font-bold">
-              <option value="all">全部年份</option>
-              <option value="2026">2026 年</option>
-              <option value="2025">2025 年</option>
-              <option value="2024">2024 年</option>
-            </select>
+  <option value="all">全部年份</option>
+</select>
           </div>
         </div>
 
@@ -260,12 +257,10 @@
         <div class="w-full bg-white/40 p-3 rounded-2xl border-2 border-inkColor flex flex-col gap-2 select-none">
           <div id="gallery-filter-container" class="w-full flex gap-1.5 overflow-x-auto no-scrollbar"></div>
           <div class="flex items-center gap-2 text-xs font-bold pt-1 border-t border-dashed border-inkColor/20">
-            <span>📅 睇完年份篩選：</span>
+            <span>睇完年份篩選：</span>
             <select id="gallery-year-select" onchange="renderGallery()" class="bg-white border-2 border-inkColor px-2 py-0.5 rounded-lg font-bold">
-              <option value="all">全部年份</option>
-              <option value="2026">2026 年</option>
-              <option value="2025">2025 年</option>
-            </select>
+  <option value="all">全部年份</option>
+</select>
           </div>
         </div>
 
@@ -622,6 +617,7 @@
     }
 
     // 從 Firebase 撈取數據，預設依照最新更新排至最舊
+    // 用呢整段完全覆蓋你電腦第 620 行開始嘅舊 loadState 函數
     async function loadState() {
       try {
         showToast("同步雲端中...", "⏳");
@@ -631,7 +627,7 @@
           fetchedBooks.push({ id: doc.id, ...doc.data() });
         });
         
-        // 🔴 排序優化：優先用睇完日期降序，若無則用 ID 時間戳降序（由最新到最舊）
+        // 排序：優先用睇完日期降序，若無則用 ID 時間戳降序（由最新到最舊）
         fetchedBooks.sort((a, b) => {
           let dateA = a.finishedDate || a.id || "";
           let dateB = b.finishedDate || b.id || "";
@@ -639,7 +635,48 @@
         });
 
         state.books = fetchedBooks;
-        
+
+        // 🔴 【全新動態年份提取核心】
+        // 從所有書本中提取出有紀錄嘅 finishedDate 年份（例如 "2024", "2026"），並用 Set 濾走重複值
+        const yearsSet = new Set();
+        state.books.forEach(b => {
+          if (b.finishedDate && b.finishedDate.includes('-')) {
+            const year = b.finishedDate.split('-')[0];
+            yearsSet.add(year);
+          }
+        });
+        // 由大到小排序年份（最新年份排先）
+        const sortedYears = Array.from(yearsSet).sort((a, b) => b - a);
+
+        // 動態重組【書櫃】年份下拉選單
+        const bsSelect = document.getElementById('bookshelf-year-select');
+        const currentBsVal = bsSelect ? bsSelect.value : 'all'; // 記低原本選取咗啲咩
+        if (bsSelect) {
+          bsSelect.innerHTML = '<option value="all">全部年份</option>';
+          sortedYears.forEach(y => {
+            bsSelect.innerHTML += `<option value="${y}">${y} 年</option>`;
+          });
+          if (Array.from(bsSelect.options).some(opt => opt.value === currentBsVal)) {
+            bsSelect.value = currentBsVal; // 回填選取狀態
+          } else {
+            state.bookshelfYearFilter = 'all';
+          }
+        }
+
+        // 動態重組【明信片】年份下拉選單
+        const glSelect = document.getElementById('gallery-year-select');
+        const currentGlVal = glSelect ? glSelect.value : 'all';
+        if (glSelect) {
+          glSelect.innerHTML = '<option value="all">全部年份</option>';
+          sortedYears.forEach(y => {
+            glSelect.innerHTML += `<option value="${y}">${y} 年</option>`;
+          });
+          if (Array.from(glSelect.options).some(opt => opt.value === currentGlVal)) {
+            glSelect.value = currentGlVal;
+          }
+        }
+
+        // 鎖定伴讀邏輯保持不變
         const activeExists = state.books.some(b => b.id === state.activeBookId);
         if (!state.activeBookId || !activeExists) {
           const firstReading = state.books.find(b => b.status === 'reading');
@@ -653,7 +690,6 @@
         showToast("雲端同步失敗 😿", "❌");
       }
     }
-
     function renderActiveBookHome() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
       const container = document.getElementById('active-cat-svg-container');
