@@ -671,25 +671,29 @@
         
         let q;
         if (CURRENT_OWNER === "Zuzu") {
-          // 引入 or 查詢條件
-          const { or } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
-          // 🌟 完美過濾：只撈取擁有者是 "Zuzu" 的書，或者「完全沒有 owner 標籤」的舊書！
-          q = query(booksCollection, or(
-            where("owner", "==", "Zuzu"),
-            where("owner", "==", null) // 針對完全沒有欄位的舊紀錄兼容
-          ));
+          // 🌟 如果是 Zuzu 進去，就先撈取全資料庫（保證絕對能完整抓到你那 8 本沒標記的舊書）
+          q = query(booksCollection); 
         } else {
           // 如果是其他朋友，嚴格執行名字一對一吻合隔離
           q = query(booksCollection, where("owner", "==", CURRENT_OWNER));
         }
         const querySnapshot = await getDocs(q);
         
-       let fetchedBooks = [];
+        let fetchedBooks = [];
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          // 如果目前不是 Zuzu，而該舊書完全沒有 owner 欄位，就當作是 Zuzu 嘅舊書，不塞進朋友的書櫃
-          if (CURRENT_OWNER !== "Zuzu" && !data.owner) {
-            return; 
+          
+          if (CURRENT_OWNER === "Zuzu") {
+            // 🌟 核心防線：如果是 Zuzu 進去，但發現這本書的 owner 寫著其他朋友的名字（例如 Showroom），就直接濾走！
+            // 這樣既可以留下你自己的新書、和沒寫 owner 的舊書，又可以成功隔開朋友的新書！
+            if (data.owner && data.owner !== "Zuzu") {
+              return;
+            }
+          } else {
+            // 如果目前是朋友登入，而該舊書完全沒有 owner 欄位（即 Zuzu 的舊書），就直接濾走，不塞進朋友的書櫃
+            if (!data.owner) {
+              return; 
+            }
           }
           fetchedBooks.push({ id: doc.id, ...data });
         });
