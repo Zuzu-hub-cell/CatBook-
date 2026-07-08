@@ -7,7 +7,35 @@
   <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
   <link rel="icon" type="image/png" href="icon-192.png">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" id="main-manifest">
+  <script>
+  // 自動偵測網址後面的 ?owner= 參數
+  const urlParams = new URLSearchParams(window.location.search);
+  const owner = urlParams.get('owner');
+
+  if (owner) {
+    // 建立一個動態的 Manifest 內容，強行把當前的 owner 塞入 start_url
+    const dynamicManifest = {
+      "name": `書櫃 - ${owner}`,
+      "short_name": `${owner} 的書櫃`,
+      "start_url": window.location.pathname + "?owner=" + encodeURIComponent(owner),
+      "display": "standalone",
+      "background_color": "#ffffff",
+      "theme_color": "#000000"
+    };
+
+    // 將物件轉成 Blob URL 並覆蓋原本的 manifest link
+    const stringManifest = JSON.stringify(dynamicManifest);
+    const blob = new Blob([stringManifest], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(blob);
+    
+    // 搵返你第 15 行嗰個 manifest 標籤並更新它
+    const manifestLink = document.querySelector('link[rel="manifest"]');
+    if (manifestLink) {
+      manifestLink.href = manifestURL;
+    }
+  }
+</script>
   <!-- 引入 Firebase 模組化 SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js" type="module"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js" type="module"></script>
