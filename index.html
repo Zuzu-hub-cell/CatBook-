@@ -491,7 +491,8 @@
     };
     let CURRENT_OWNER = "Zuzu";
 
-   function getCatSVG(theme, isBreathing = true) {
+   // 32x32 全景像素場景與動態專屬配件演算法
+    function getCatSVG(theme, isBreathing = true) {
       let bodyFill = "#FFFFFF";      
       let patchHtml = "";     
       let bgHtml = ""; 
@@ -609,16 +610,15 @@
         patchHtml = `<rect x="12" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="26" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="15" y="18" width="1" height="1" fill="#00B4D8"/><rect x="25" y="18" width="1" height="1" fill="#00B4D8"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><line x1="34" y1="18" x2="34" y2="25" stroke="#9CBD5B" stroke-width="1"/><circle cx="34" cy="18" r="1.2" fill="#B388FF"/></g>`;
       }
-      // 🌟 新增貓貓 1：人文社科 (戴可愛的黑框像素眼鏡 🤓)
+      // 🌟 新增貓貓 1：人文社科
       else if (theme.includes("人文社科")) {
         catName = "聰聰 (Smarty) 🤓 學霸黑白貓";
         bgHtml = `<rect width="42" height="32" fill="#ECEFF1" /><rect x="6" y="6" width="12" height="4" fill="#CFD8DC"/>`;
         bodyFill = "#37474F";
         patchHtml = `<polygon points="21,18 17,25 25,25" fill="#FFFFFF"/>`;
-        // 配件：臉部特別疊加手繪黑框眼鏡像素
         accessoryHtml = `<g transform="translate(5, 0)"><rect x="10" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><rect x="18" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><line x1="14" y1="18" x2="18" y2="18" stroke="#534340" stroke-width="0.8"/></g>`;
       }
-      // 🌟 新增貓貓 2：宗教命理 / 神話/宗教 (身邊環繞閃爍的金星 🌟)
+      // 🌟 新增貓貓 2：宗教命理 / 神話/宗教
       else if (theme.includes("宗教命理") || theme.includes("神話/宗教")) {
         catName = "法師 (Mystic) 🔮 占星暹羅貓";
         bgHtml = `<rect width="42" height="32" fill="#311B92" /><circle cx="8" cy="8" r="3" fill="#FFF" opacity="0.3"/>`;
@@ -626,7 +626,7 @@
         patchHtml = `<rect x="17" y="16" width="6" height="4" fill="#006064"/>`;
         accessoryHtml = `<g class="animate-item-spin"><path d="M 34,20 L 35,21 L 37,21 L 35,22 L 36,24 L 34,23 L 32,24 L 33,22 L 31,21 L 33,21 Z" fill="#FFF700" stroke="#FFF" stroke-width="0.3"/></g>`;
       }
-      // 🌟 新增貓貓 3：自然科普 (身邊飄浮綠色小草與能量原子 🌱)
+      // 🌟 新增貓貓 3：自然科普
       else if (theme.includes("自然科普")) {
         catName = "達爾文 (Darwin) 🧪 博士灰斑貓";
         bgHtml = `<rect width="42" height="32" fill="#E0F2F1" /><rect x="4" y="4" width="8" height="6" fill="#B2DFDB" opacity="0.5"/>`;
@@ -634,7 +634,7 @@
         patchHtml = `<rect x="13" y="18" width="2" height="4" fill="#455A64"/><rect x="25" y="18" width="2" height="4" fill="#455A64"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><circle cx="34" cy="22" r="3" fill="none" stroke="#009688" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="34" cy="22" r="1" fill="#FF5722"/></g>`;
       }
-      // 🌟 新增貓貓 4：醫療保健 (攜帶白底紅十字像素醫藥箱 🎒)
+      // 🌟 新增貓貓 4：醫療保健
       else if (theme.includes("醫療保健")) {
         catName = "天使 (Angel) 🏥 醫護小白貓";
         bgHtml = `<rect width="42" height="32" fill="#E1F5FE" /><rect x="0" y="24" width="42" height="8" fill="#B3E5FC" opacity="0.5"/>`;
@@ -703,7 +703,7 @@
       }
     }
 
-    // 數據載入（支援多用戶免登入與舊紀錄兼容過濾邏輯）
+    // 數據載入
     async function loadState() {
       try {
         showToast("同步雲端中...", "⏳");
@@ -712,10 +712,8 @@
         
         let q;
         if (CURRENT_OWNER === "Zuzu") {
-          // 🌟 如果是 Zuzu 進去，就先撈取全資料庫（保證絕對能完整抓到你那 8 本沒標記的舊書）
           q = query(booksCollection); 
         } else {
-          // 如果是其他朋友，嚴格執行名字一對一吻合隔離
           q = query(booksCollection, where("owner", "==", CURRENT_OWNER));
         }
         const querySnapshot = await getDocs(q);
@@ -725,13 +723,10 @@
           const data = doc.data();
           
           if (CURRENT_OWNER === "Zuzu") {
-            // 🌟 核心防線：如果是 Zuzu 進去，但發現這本書的 owner 寫著其他朋友的名字（例如 Showroom），就直接濾走！
-            // 這樣既可以留下你自己的新書、和沒寫 owner 的舊書，又可以成功隔開朋友的新書！
             if (data.owner && data.owner !== "Zuzu") {
               return;
             }
           } else {
-            // 如果目前是朋友登入，而該舊書完全沒有 owner 欄位（即 Zuzu 的舊書），就直接濾走，不塞進朋友的書櫃
             if (!data.owner) {
               return; 
             }
@@ -739,7 +734,6 @@
           fetchedBooks.push({ id: doc.id, ...data });
         });
         
-        // 排序：優先用睇完日期降序，若無則用 ID 時間戳降序
         fetchedBooks.sort((a, b) => {
           let dateA = a.finishedDate || a.id || "";
           let dateB = b.finishedDate || b.id || "";
@@ -748,7 +742,6 @@
 
         state.books = fetchedBooks;
 
-        // 動態年份選單自動提取
         const yearsSet = new Set();
         state.books.forEach(b => {
           if (b.finishedDate && b.finishedDate.includes('-')) {
@@ -814,8 +807,8 @@
       else if (activeBook.theme.includes("輕小說")) catDetails = "小黑寶 (Kuro) 🍙";
       else if (activeBook.theme.includes("藝術設計")) catDetails = "畢卡貓 (Picasso) 🎨";
       else if (activeBook.theme.includes("飲食")) catDetails = "布丁 (Pudding) 🍪";
-      else if (activeBook.theme.includes("商業") || theme.includes("理財投資")) catDetails = "金金 (Goldie) 🍊";
-      else if (activeBook.theme.includes("心靈") || theme.includes("心理成長")) catDetails = "棉花糖 (Marshmallow) 🌱";
+      else if (activeBook.theme.includes("商業") || activeBook.theme.includes("理財投資")) catDetails = "金金 (Goldie) 🍊";
+      else if (activeBook.theme.includes("心靈") || activeBook.theme.includes("心理成長")) catDetails = "棉花糖 (Marshmallow) 🌱";
       else if (activeBook.theme.includes("人文社科")) catDetails = "聰聰 (Smarty) 🤓";
       else if (activeBook.theme.includes("宗教命理")) catDetails = "法師 (Mystic) 🔮";
       else if (activeBook.theme.includes("神話/宗教")) catDetails = "法師 (Mystic) 🔮";
@@ -833,7 +826,6 @@
       container.innerHTML = getCatSVG(activeBook.theme, true);
     }
 
-    // 🔴 搵到 window.petActiveCat，整段完全覆蓋替換成此版本：
     window.petActiveCat = function() {
       const activeBook = state.books.find(b => b.id === state.activeBookId);
       if (!activeBook) return;
@@ -852,7 +844,6 @@
       }, 50);
       setTimeout(() => { heart.remove(); }, 1100);
 
-      // 🐱 【全新隨機對話核心】
       const catMessages = [
         { text: "貓貓呼嚕呼嚕中... 🐾", icon: "💖" },
         { text: "喵嗚～（貓貓想你繼續睇書）", icon: "🐈" },
@@ -860,13 +851,13 @@
         { text: "貓貓對你翻肚 🐱", icon: "💤" }
       ];
 
-      // 隨機抽一句發送
       const randomIndex = Math.floor(Math.random() * catMessages.length);
       const randomCat = catMessages[randomIndex];
       
       showToast(randomCat.text, randomCat.icon);
     }
-      function updateTopStatsUI() {
+
+    function updateTopStatsUI() {
       const finishedCount = state.books.filter(b => b.status === 'finished').length;
       const readingCount = state.books.filter(b => b.status === 'reading').length;
       const wishlistCount = state.books.filter(b => b.status === 'wishlist').length;
@@ -896,13 +887,11 @@
         }
       });
 
-      // 篩選分類
       let filteredBooks = state.books;
       if (state.bookshelfFilter !== 'all') {
         filteredBooks = state.books.filter(b => b.status === state.bookshelfFilter);
       }
 
-      // 篩選年份
       if (state.bookshelfYearFilter !== 'all') {
         filteredBooks = filteredBooks.filter(b => {
           const targetDate = b.finishedDate || "";
@@ -923,7 +912,6 @@
         let actionButton = "";
 
         if (book.status === 'finished') {
-          // 只截取年份部分
           const yearOnly = book.finishedDate ? ` (${book.finishedDate.split('-')[0]})` : "";
           statusBadge = `<span class="bg-emerald-100 text-emerald-800 text-[11px] px-2 py-0.5 rounded-full border-2 border-emerald-800 font-extrabold whitespace-nowrap">🏆 已睇完${yearOnly}</span>`;
           actionButton = `<span class="text-xs text-emerald-700 font-bold mr-1 whitespace-nowrap">已馴服明信片</span>`;
@@ -1006,9 +994,7 @@
     }
 
     window.updateGalleryYearFilter = function() {
-      // 1. 將選單年份存入全域 state 狀態變數入面
       state.galleryYearFilter = document.getElementById('gallery-year-select').value;
-      // 2. 重新進行畫面渲染
       renderGallery();
     }
 
@@ -1038,7 +1024,6 @@
       const id = `book-${Date.now()}`;
       const isFinished = current === total;
       
-      // 自動獲取當前年月日字串
       const todayStr = isFinished ? new Date().toISOString().split('T')[0] : "";
 
       const newBook = {
@@ -1050,7 +1035,7 @@
         notes: "",
         status: isFinished ? "finished" : (current > 0 ? "reading" : "wishlist"),
         finishedDate: todayStr,
-        owner: CURRENT_OWNER // 核心：綁定此書加新書時的主人標籤
+        owner: CURRENT_OWNER
       };
 
       try {
@@ -1217,7 +1202,6 @@
         return;
       }
 
-      // 生成類別過濾按鈕
       const filterContainer = document.getElementById('gallery-filter-container');
       const uniqueThemes = ['全部', ...new Set(finishedBooks.map(b => b.theme))];
       
@@ -1227,10 +1211,8 @@
         </button>
       `).join('');
 
-      // 分類篩選
       let filteredFinished = state.galleryFilter === '全部' ? finishedBooks : finishedBooks.filter(b => b.theme === state.galleryFilter);
 
-      // 年份下拉篩選擴展 (使用全域狀態變數過濾)
       const galleryYear = state.galleryYearFilter || 'all';
       if (galleryYear !== 'all') {
         filteredFinished = filteredFinished.filter(b => {
@@ -1279,7 +1261,7 @@
       window.toastTimeout = setTimeout(() => { toast.classList.add('hidden'); }, 3000);
     }
 
-    // 核心安全驗證鎖演算法（帶長期快取免輸入優化）
+    // 核心安全驗證鎖演算法
     async function checkOwnerSecurity() {
       try {
         const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
@@ -1288,13 +1270,11 @@
         const userDocRef = doc(db, "users", CURRENT_OWNER.toLowerCase());
         const userDocSnap = await getDoc(userDocRef);
 
-        // 1. 如果本地快取密碼與雲端吻合，直接全自動放行解鎖
         if (userDocSnap.exists() && savedPin === userDocSnap.data().pin) {
           loadState();
           return; 
         }
 
-        // 2. 否則，打開密碼彈窗
         const lockModal = document.getElementById('modal-auth-lock');
         const lockTitle = document.getElementById('auth-lock-title');
         const lockDesc = document.getElementById('auth-lock-desc');
@@ -1304,18 +1284,15 @@
         pinInput.value = "";
         lockModal.classList.remove('hidden'); 
 
-        // 3. 🔴 修正：將驗證邏輯與按鈕事件直接綁定，確保主畫面 App 模式下按鈕一定能觸發
         window.submitAuthPin = async function() {
           const inputPin = pinInput.value.trim();
           if (!/^\d{4}$/.test(inputPin)) {
             return showToast("請輸入 4 位數純數字密碼！", "❌");
           }
 
-          // 重新拉一次最新雲端數據確保即時對比
           const freshSnap = await getDoc(userDocRef);
           
           if (freshSnap.exists()) {
-            // 情況 A：驗證現有密碼
             if (inputPin === freshSnap.data().pin) {
               localStorage.setItem(`auth_pin_${CURRENT_OWNER.toLowerCase()}`, inputPin);
               showToast("解鎖成功！歡迎返嚟 💖", "🔑");
@@ -1326,7 +1303,6 @@
               pinInput.value = "";
             }
           } else {
-            // 情況 B：全新主人，註冊新密碼
             showToast("正在建立專屬加密書櫃...", "⏳");
             const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js");
             await setDoc(userDocRef, { pin: inputPin, createdAt: Date.now() });
@@ -1338,7 +1314,6 @@
           }
         };
 
-        // 根據雲端是否存在紀錄，動態改寫文字介面（不影響按鈕功能）
         if (userDocSnap.exists()) {
           lockTitle.textContent = `解鎖《${CURRENT_OWNER}》書櫃`;
           lockDesc.textContent = "請輸入你登記嘅 4 位數專專屬暗號 🔒";
@@ -1367,7 +1342,6 @@
         document.getElementById('bookshelf-owner-name').textContent = "Zuzu";
       }
 
-      // 攔截核心：不直接加載，必須先呼叫密碼驗證鎖機制
       checkOwnerSecurity();
     });
   </script>
