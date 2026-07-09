@@ -920,7 +920,7 @@
         }
       });
 
-      // 2. 完美的串聯式篩選邏輯：分類 -> 年份 -> 搜尋關鍵字
+      // 2. 串聯式篩選邏輯：分類 -> 年份 -> 搜尋關鍵字
       let filteredBooks = state.books;
       
       // A. 分類過濾
@@ -928,12 +928,12 @@
         filteredBooks = state.books.filter(b => b.status === state.bookshelfFilter);
       }
       
-      // B. 年份過濾 (只保留這一個最精簡、效能最好嘅寫法，刪除另一個重複嘅)
+      // B. 年份過濾
       if (state.bookshelfYearFilter !== 'all') {
         filteredBooks = filteredBooks.filter(b => b.finishedDate && b.finishedDate.startsWith(state.bookshelfYearFilter));
       }
 
-      // C. 搜尋關鍵字過濾 (確保按鈕跟 Enter 鍵即時獲取數值)
+      // C. 搜尋關鍵字過濾
       const searchInput = document.getElementById('input-bookshelf-search');
       const searchQuery = searchInput ? searchInput.value.trim().toLowerCase() : "";
       
@@ -943,6 +943,7 @@
           (b.author && b.author.toLowerCase().includes(searchQuery))
         );
       }
+
       // 3. 動態更新頂部標題數量
       const bsHeader = document.querySelector('#view-bookshelf h2');
       if (bsHeader) {
@@ -1013,8 +1014,7 @@
         `;
         container.appendChild(card);
       });
-    }
-    
+    }    
     window.setActiveBook = function(id) {
       state.activeBookId = id;
       localStorage.setItem(`active_book_${CURRENT_OWNER.toLowerCase()}`, id);
