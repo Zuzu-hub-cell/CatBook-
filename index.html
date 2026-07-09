@@ -249,14 +249,14 @@
         </button>
       </div>
 
-      <!-- VIEW 2: 書櫃 -->
+     <!-- VIEW 2: 書櫃 -->
       <div id="view-bookshelf" class="w-full flex flex-col gap-4 transition-all duration-300 hidden">
         <div class="flex justify-between items-center">
           <h2 class="text-2xl font-black">我嘅藏書同貓貓</h2>
           <button onclick="openAddBookModal()" class="bg-warmPink hover:bg-pink-200 px-4 py-2 rounded-xl sketch-border-sm font-bold text-sm">➕ 加新書</button>
         </div>
 
-        <!-- 分類與年份篩選列 -->
+        <!-- 分類與年份篩選列 + 🔴 全新搜尋欄 -->
         <div class="w-full flex flex-col gap-2 bg-white/30 p-2.5 rounded-2xl border border-inkColor/20">
           <div class="w-full flex gap-1.5 overflow-x-auto no-scrollbar select-none pb-1">
             <button id="filter-bs-all" onclick="setBookshelfFilter('all')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all">全部</button>
@@ -264,12 +264,15 @@
             <button id="filter-bs-wishlist" onclick="setBookshelfFilter('wishlist')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">想睇 💤</button>
             <button id="filter-bs-finished" onclick="setBookshelfFilter('finished')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all">已睇完 🏆</button>
           </div>
-          <!-- 年份篩選下拉選單 -->
-          <div class="flex items-center gap-2 text-xs font-bold pl-1">
-            <span>閱讀年份篩選：</span>
-            <select id="bookshelf-year-select" onchange="updateBookshelfYearFilter()" class="bg-white border-2 border-inkColor px-2 py-0.5 rounded-lg outline-none font-bold">
-              <option value="all">全部年份</option>
-            </select>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-t border-dashed border-inkColor/10">
+            <div class="flex items-center gap-2 text-xs font-bold pl-1">
+              <span>閱讀年份篩選：</span>
+              <select id="bookshelf-year-select" onchange="updateBookshelfYearFilter()" class="bg-white border-2 border-inkColor px-2 py-0.5 rounded-lg outline-none font-bold">
+                <option value="all">全部年份</option>
+              </select>
+            </div>
+            <!-- 🔍 書櫃獨立搜尋框 -->
+            <input id="input-bookshelf-search" type="text" oninput="renderBookshelf()" placeholder="🔍 搵書名或作者..." class="bg-white border-2 border-inkColor px-3 py-1 rounded-xl outline-none font-bold text-xs flex-grow sm:max-w-[180px]">
           </div>
         </div>
 
@@ -882,27 +885,11 @@
       renderBookshelf();
     }
 
-    // 書櫃渲染
     function renderBookshelf() {
       const container = document.getElementById('bookshelf-list');
       container.innerHTML = "";
 
-      // 1. 先計算篩選後的書籍
-      let filteredBooks = state.books;
-      if (state.bookshelfFilter !== 'all') {
-        filteredBooks = state.books.filter(b => b.status === state.bookshelfFilter);
-      }
-      if (state.bookshelfYearFilter !== 'all') {
-        filteredBooks = filteredBooks.filter(b => b.finishedDate && b.finishedDate.startsWith(state.bookshelfYearFilter));
-      }
-
-      // 2. 局部更新書櫃標題，動態顯示「篩選後有幾多本」
-      const bsHeader = document.querySelector('#view-bookshelf h2');
-      if (bsHeader) {
-        bsHeader.innerHTML = `數量 <span class="text-sm bg-white/65 px-2 py-0.5 rounded-lg border border-inkColor/30 text-inkColor/80">共 ${filteredBooks.length} 本</span>`;
-      }
-
-      // 3. 原本的切換按鈕高亮邏輯
+      // 1. 執行核心高亮樣式
       const filters = ['all', 'reading', 'wishlist', 'finished'];
       filters.forEach(f => {
         const btn = document.getElementById(`filter-bs-${f}`);
@@ -913,18 +900,7 @@
         }
       });
 
-      // (注意：因為上面已經做咗過濾，請將原本函數中段的「let filteredBooks = state.books; ...」那幾行刪除或覆蓋，避免重複宣告)
-
-      if (filteredBooks.length === 0) {
-      filters.forEach(f => {
-        const btn = document.getElementById(`filter-bs-${f}`);
-        if (btn) {
-          btn.className = (f === state.bookshelfFilter)
-            ? "px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all"
-            : "px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all";
-        }
-      });
-
+      // 2. 完美的串聯式篩選邏輯：分類 -> 年份 -> 搜尋關鍵字
       let filteredBooks = state.books;
       if (state.bookshelfFilter !== 'all') {
         filteredBooks = state.books.filter(b => b.status === state.bookshelfFilter);
@@ -937,8 +913,24 @@
         });
       }
 
+      const searchInput = document.getElementById('input-bookshelf-search');
+      const searchQuery = searchInput ? searchInput.value.trim().toLowerCase() : "";
+      if (searchQuery !== "") {
+        filteredBooks = filteredBooks.filter(b => 
+          (b.name && b.name.toLowerCase().includes(searchQuery)) || 
+          (b.author && b.author.toLowerCase().includes(searchQuery))
+        );
+      }
+
+      // 3. 動態更新頂部標題數量
+      const bsHeader = document.querySelector('#view-bookshelf h2');
+      if (bsHeader) {
+        bsHeader.innerHTML = `我嘅藏書同貓貓 <span class="text-xs bg-white/65 px-2 py-0.5 rounded-lg border border-inkColor/30 text-inkColor/80 font-bold ml-1">共 ${filteredBooks.length} 本</span>`;
+      }
+
+      // 4. 輸出卡片畫面
       if (filteredBooks.length === 0) {
-        container.innerHTML = `<div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full"><p class="font-extrabold text-lg">呢個分類或年份暫時冇書喔 🍂</p></div>`;
+        container.innerHTML = `<div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full"><p class="font-extrabold text-lg">搵唔到符合條件嘅書喔 🍂</p></div>`;
         return;
       }
 
@@ -1001,7 +993,7 @@
         container.appendChild(card);
       });
     }
-
+    
     window.setActiveBook = function(id) {
       state.activeBookId = id;
       showToast("更換伴讀貓咪！", "🏠");
@@ -1232,14 +1224,15 @@
       container.innerHTML = "";
 
       let finishedBooks = state.books.filter(b => b.status === 'finished');
-      document.getElementById('gallery-count').textContent = `已收集: ${finishedBooks.length} 張`;
 
       if (finishedBooks.length === 0) {
         document.getElementById('gallery-filter-container').innerHTML = ""; 
+        document.getElementById('gallery-count').textContent = `已收集: 0 張`;
         container.innerHTML = `<div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full"><p class="font-extrabold text-lg">仲未有睇完嘅書架 🌟</p></div>`;
         return;
       }
 
+      // 生成類別過濾按鈕
       const filterContainer = document.getElementById('gallery-filter-container');
       const uniqueThemes = ['全部', ...new Set(finishedBooks.map(b => b.theme))];
       
@@ -1249,21 +1242,29 @@
         </button>
       `).join('');
 
+      // 完美的串聯式過濾：分類 -> 年份 -> 搜尋欄關鍵字
       let filteredFinished = state.galleryFilter === '全部' ? finishedBooks : finishedBooks.filter(b => b.theme === state.galleryFilter);
 
       const galleryYear = state.galleryYearFilter || 'all';
       if (galleryYear !== 'all') {
-        filteredFinished = filteredFinished.filter(b => {
-          const fDate = b.finishedDate || "";
-          return fDate.startsWith(galleryYear);
-        });
+        filteredFinished = filteredFinished.filter(b => b.finishedDate && b.finishedDate.startsWith(galleryYear));
       }
 
-      // 局部更新明信片右上角數量：顯示篩選後的張數 / 總共已收集張數
+      const galSearchInput = document.getElementById('input-gallery-search');
+      const galSearchQuery = galSearchInput ? galSearchInput.value.trim().toLowerCase() : "";
+      if (galSearchQuery !== "") {
+        filteredFinished = filteredFinished.filter(b => 
+          (b.name && b.name.toLowerCase().includes(galSearchQuery)) || 
+          (b.author && b.author.toLowerCase().includes(galSearchQuery)) ||
+          (b.notes && b.notes.toLowerCase().includes(galSearchQuery))
+        );
+      }
+
+      // 局部動態更新明信片右上角數量：已顯示 / 總數
       document.getElementById('gallery-count').textContent = `已顯示: ${filteredFinished.length} / ${finishedBooks.length} 張`;
 
       if (filteredFinished.length === 0) {
-        container.innerHTML = `<div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full"><p class="font-extrabold text-lg">呢個類別或年份暫時未有明信片 🍂</p></div>`;
+        container.innerHTML = `<div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full"><p class="font-extrabold text-lg">搵唔到符合條件嘅明信片 🍂</p></div>`;
         return;
       }
 
