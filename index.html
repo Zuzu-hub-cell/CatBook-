@@ -298,6 +298,10 @@
               <option value="all">全部年份</option>
             </select>
           </div>
+          <div class="flex items-center gap-1.5 flex-grow mt-2">
+            <input id="input-gallery-search" type="text" onkeydown="if(event.key==='Enter') renderGallery()" placeholder="🔍 搵書名、作者或讀後感..." class="bg-white border-2 border-inkColor px-3 py-1 rounded-xl outline-none font-bold text-xs flex-grow">
+            <button onclick="renderGallery()" class="bg-inkColor text-white px-3 py-1 rounded-xl font-bold text-xs hover:bg-slate-700 active:scale-95 transition-all whitespace-nowrap">搜尋</button>
+          </div>
         </div>
 
         <div id="gallery-list" class="w-full flex flex-col gap-6 px-1 pb-12"></div>
