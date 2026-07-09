@@ -1273,7 +1273,7 @@
       }
 
       const galSearchInput = document.getElementById('input-gallery-search');
-      const galSearchQuery = galSearchInput ? galSearchInput.value.trim().toLowerCase() : "";
+      const galSearchQuery = (galSearchInput && galSearchInput.value) ? galSearchInput.value.trim().toLowerCase() : "";
       if (galSearchQuery !== "") {
         filteredFinished = filteredFinished.filter(b => 
           (b.name && b.name.toLowerCase().includes(galSearchQuery)) || 
