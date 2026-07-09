@@ -36,9 +36,11 @@
     }
   }
 </script>
-  <!-- 引入 Firebase 模組化 SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js" type="module"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js" type="module"></script>
+ <!-- 引入 Firebase 模組化 SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  </script>
   <!-- 引入可愛手寫風格字體 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
