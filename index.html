@@ -885,7 +885,35 @@
       const container = document.getElementById('bookshelf-list');
       container.innerHTML = "";
 
+      // 1. 先計算篩選後的書籍
+      let filteredBooks = state.books;
+      if (state.bookshelfFilter !== 'all') {
+        filteredBooks = state.books.filter(b => b.status === state.bookshelfFilter);
+      }
+      if (state.bookshelfYearFilter !== 'all') {
+        filteredBooks = filteredBooks.filter(b => b.finishedDate && b.finishedDate.startsWith(state.bookshelfYearFilter));
+      }
+
+      // 2. 局部更新書櫃標題，動態顯示「篩選後有幾多本」
+      const bsHeader = document.querySelector('#view-bookshelf h2');
+      if (bsHeader) {
+        bsHeader.innerHTML = `數量 <span class="text-sm bg-white/65 px-2 py-0.5 rounded-lg border border-inkColor/30 text-inkColor/80">共 ${filteredBooks.length} 本</span>`;
+      }
+
+      // 3. 原本的切換按鈕高亮邏輯
       const filters = ['all', 'reading', 'wishlist', 'finished'];
+      filters.forEach(f => {
+        const btn = document.getElementById(`filter-bs-${f}`);
+        if (btn) {
+          btn.className = (f === state.bookshelfFilter)
+            ? "px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all"
+            : "px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-white text-inkColor whitespace-nowrap transition-all";
+        }
+      });
+
+      // (注意：因為上面已經做咗過濾，請將原本函數中段的「let filteredBooks = state.books; ...」那幾行刪除或覆蓋，避免重複宣告)
+
+      if (filteredBooks.length === 0) {
       filters.forEach(f => {
         const btn = document.getElementById(`filter-bs-${f}`);
         if (btn) {
@@ -1228,6 +1256,9 @@
           return fDate.startsWith(galleryYear);
         });
       }
+
+      // 局部更新明信片右上角數量：顯示篩選後的張數 / 總共已收集張數
+      document.getElementById('gallery-count').textContent = `已顯示: ${filteredFinished.length} / ${finishedBooks.length} 張`;
 
       if (filteredFinished.length === 0) {
         container.innerHTML = `<div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full"><p class="font-extrabold text-lg">呢個類別或年份暫時未有明信片 🍂</p></div>`;
