@@ -780,8 +780,13 @@
           if (Array.from(glSelect.options).some(opt => opt.value === currentGlVal)) glSelect.value = currentGlVal;
         }
 
-        const activeExists = state.books.some(b => b.id === state.activeBookId);
-        if (!state.activeBookId || !activeExists) {
+        const rememberedBookId = localStorage.getItem(`active_book_${CURRENT_OWNER.toLowerCase()}`);
+        const rememberedExists = rememberedBookId ? state.books.some(b => b.id === rememberedBookId) : false;
+
+        if (rememberedExists) {
+          state.activeBookId = rememberedBookId; // 💡 成功讀取上一次選擇！
+        } else {
+          // 如果是第一次登入或者記憶中的書被刪除了，才去自動尋找第一本「睇緊」的書
           const firstReading = state.books.find(b => b.status === 'reading');
           state.activeBookId = firstReading ? firstReading.id : (state.books.length > 0 ? state.books[0].id : null);
         }
@@ -996,6 +1001,7 @@
     
     window.setActiveBook = function(id) {
       state.activeBookId = id;
+      localStorage.setItem(`active_book_${CURRENT_OWNER.toLowerCase()}`, id);
       showToast("更換伴讀貓咪！", "🏠");
       renderActiveBookHome();
       renderBookshelf();
