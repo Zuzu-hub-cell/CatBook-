@@ -905,9 +905,9 @@
       renderBookshelf();
     }
 
-    function renderBookshelf() {
-      const container = document.getElementById('bookshelf-list');
-      container.innerHTML = "";
+    window.renderBookshelf = function() {
+  const container = document.getElementById('bookshelf-list');
+  container.innerHTML = "";
 
       // 1. 執行核心高亮樣式
       const filters = ['all', 'reading', 'wishlist', 'finished'];
@@ -1241,9 +1241,9 @@
     }
 
     // 明信片畫廊渲染
-    function renderGallery() {
-      const container = document.getElementById('gallery-list');
-      container.innerHTML = "";
+    window.renderGallery = function() {
+  const container = document.getElementById('gallery-list');
+  container.innerHTML = "";
 
       let finishedBooks = state.books.filter(b => b.status === 'finished');
 
