@@ -1110,20 +1110,19 @@
     }
 
     window.openLogModal = function() {
-      const activeBook = state.books.find(b => b.id === state.activeBookId);
-      if (!activeBook) {
-        showToast("去書櫃揀本書伴讀先啦！", "🐾");
-        return;
-      }
+  const activeBook = state.books.find(b => b.id === state.activeBookId);
+  if (!activeBook) {
+    showToast("去書櫃揀本書伴讀先啦！", "🐾");
+    return;
+  }
 
-      document.getElementById('log-book-name-label').textContent = activeBook.name;
-      document.getElementById('log-current-status-label').textContent = `${activeBook.currentPage} / ${activeBook.totalPage} 頁`;
-      document.getElementById('input-log-new-page').value = activeBook.currentPage;
-      document.getElementById('input-log-note').value = "";
+  document.getElementById('log-book-name-label').textContent = activeBook.name;
+  document.getElementById('log-current-status-label').textContent = `${activeBook.currentPage} / ${activeBook.totalPage} 頁`;
+  document.getElementById('input-log-new-page').value = activeBook.currentPage;
+  document.getElementById('input-log-note').value = activeBook.notes || "";
 
-      document.getElementById('modal-log-progress').classList.remove('hidden');
-    }
-
+  document.getElementById('modal-log-progress').classList.remove('hidden');
+}
     window.closeLogModal = function() {
       document.getElementById('modal-log-progress').classList.add('hidden');
     }
@@ -1152,7 +1151,7 @@
         const bookRef = doc(db, "books", activeBook.id);
         await updateDoc(bookRef, {
           currentPage: newPage,
-          notes: note ? note : activeBook.notes,
+          notes: note.trim() !== "" ? note : (activeBook.notes || ""),
           status: updatedStatus,
           finishedDate: todayStr
         });
