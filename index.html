@@ -8,13 +8,13 @@
   <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
   <link rel="icon" type="image/png" href="icon-192.png">
   <link rel="manifest" id="main-manifest">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
   // 自動偵測網址後面的 ?owner= 參數
   const urlParams = new URLSearchParams(window.location.search);
   const owner = urlParams.get('owner');
 
   if (owner) {
-    // 建立一個動態的 Manifest 內容，強行把當前的 owner 塞入 start_url
     const dynamicManifest = {
       "name": `書櫃 - ${owner}`,
       "short_name": `${owner} 的書櫃`,
@@ -24,19 +24,17 @@
       "theme_color": "#000000"
     };
 
-    // 將物件轉成 Blob URL 並覆蓋原本的 manifest link
     const stringManifest = JSON.stringify(dynamicManifest);
     const blob = new Blob([stringManifest], {type: 'application/json'});
     const manifestURL = URL.createObjectURL(blob);
     
-    // 搵返你第 15 行嗰個 manifest 標籤並更新它
     const manifestLink = document.querySelector('link[rel="manifest"]');
     if (manifestLink) {
       manifestLink.href = manifestURL;
     }
   }
 </script>
- <!-- 引入 Firebase 模組化 SDK -->
+  <!-- 引入 Firebase 模組化 SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -65,7 +63,6 @@
         }
       }
     }
-    
   </script>
   <style>
     input[type="text"], 
@@ -75,7 +72,6 @@
     textarea {
       font-size: 16px !important;
     }
-    /* 32-bit 貓咪像素呼吸與搖尾巴動畫 */
     @keyframes pixel-breath {
       0%, 100% { transform: scale(1) translateY(0); }
       50% { transform: scale(1, 0.96) translateY(0.5px); }
@@ -94,7 +90,6 @@
       transform-origin: 24px 22px; 
     }
 
-    /* 配件專屬跳格動態效果 */
     @keyframes pixel-item-float {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-1.5px); }
@@ -109,7 +104,7 @@
     }
     .animate-item-spin {
       animation: pixel-item-spin 4s steps(4, end) infinite;
-      transform-origin: 34px 22px; /* 精準對齊古錢幣與金星的軸心點 */
+      transform-origin: 34px 22px;
     }
 
     @keyframes pixel-item-pulse {
@@ -121,14 +116,12 @@
       transform-origin: 34px 22px;
     }
 
-    /* 確保主小屋大圖及書櫃小圖 SVG 橫向完美鋪滿，消滅左右兩條綠色邊 */
     #active-cat-svg-container svg, .w-20 svg {
       width: 100%;
       height: 100%;
       object-fit: fill;
     }
 
-    /* 手繪感粗黑外框 */
     .sketch-border {
       border: 4px solid #534340;
       box-shadow: 4px 4px 0px #534340;
@@ -172,7 +165,6 @@
     <div class="w-full flex flex-col gap-4 mb-4">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <!-- 像素小 Logo -->
           <div class="w-10 h-10 flex items-center justify-center bg-white rounded-xl border-3 border-inkColor overflow-hidden">
             <svg viewBox="0 0 32 32" class="w-8 h-8" style="image-rendering: pixelated;">
               <path d="M 9,15 H 23 V 24 H 6 V 15 Z" fill="#FFF5E6" />
@@ -183,7 +175,6 @@
               <rect x="21" y="12" width="2" height="3" fill="#534340" />
             </svg>
           </div>
-          <!-- 支援動態更換主人名字的標題 -->
           <h1 class="text-3xl font-black tracking-wide drop-shadow-sm select-none flex items-baseline gap-1">
             <span id="bookshelf-owner-name">Zuzu</span><span class="text-base font-bold text-inkColor/80">書櫃</span>
           </h1>
@@ -229,7 +220,6 @@
             <span id="home-card-header-right" class="text-lg font-extrabold pr-2 text-inkColor/90">伴讀緊</span>
           </div>
 
-          <!-- 像素貓咪畫框 -->
           <div class="w-full aspect-[4/3] rounded-3xl overflow-hidden sketch-border bg-[#9CBD5B] relative flex items-center justify-center cursor-pointer active:scale-[0.98] transition-transform" onclick="petActiveCat()">
             <div id="active-cat-svg-container" class="w-full h-full"></div>
             <div id="heart-floaters" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
@@ -264,7 +254,6 @@
           <button onclick="openAddBookModal()" class="bg-warmPink hover:bg-pink-200 px-4 py-2 rounded-xl sketch-border-sm font-bold text-sm">➕ 加新書</button>
         </div>
 
-        <!-- 分類與年份篩選列 + 🔴 全新搜尋欄 -->
         <div class="w-full flex flex-col gap-2 bg-white/30 p-2.5 rounded-2xl border border-inkColor/20">
           <div class="w-full flex gap-1.5 overflow-x-auto no-scrollbar select-none pb-1">
             <button id="filter-bs-all" onclick="setBookshelfFilter('all')" class="px-3 py-1.5 text-xs font-black rounded-full border-2 border-inkColor bg-inkColor text-warmPink whitespace-nowrap transition-all">全部</button>
@@ -279,10 +268,9 @@
                 <option value="all">全部年份</option>
               </select>
             </div>
-            <!-- 🔍 書櫃獨立搜尋框 -->
             <div class="flex items-center gap-1.5 flex-grow sm:max-w-[240px]">
-            <input id="input-bookshelf-search" type="text" onkeydown="if(event.key==='Enter') renderBookshelf()" placeholder="🔍 搵書名或作者..." class="bg-white border-2 border-inkColor px-3 py-1 rounded-xl outline-none font-bold text-xs flex-grow">
-            <button onclick="renderBookshelf()" class="bg-inkColor text-white px-3 py-1 rounded-xl font-bold text-xs hover:bg-slate-700 active:scale-95 transition-all whitespace-nowrap">搜尋</button>
+              <input id="input-bookshelf-search" type="text" onkeydown="if(event.key==='Enter') renderBookshelf()" placeholder="🔍 搵書名或作者..." class="bg-white border-2 border-inkColor px-3 py-1 rounded-xl outline-none font-bold text-xs flex-grow">
+              <button onclick="renderBookshelf()" class="bg-inkColor text-white px-3 py-1 rounded-xl font-bold text-xs hover:bg-slate-700 active:scale-95 transition-all whitespace-nowrap">搜尋</button>
             </div>
           </div>
         </div>
@@ -297,7 +285,6 @@
           <span id="gallery-count" class="bg-white border-2 border-inkColor px-3 py-1 rounded-full text-xs font-bold">已收集: 0 張</span>
         </div>
 
-        <!-- 明信片年份與分類組合篩選列 -->
         <div class="w-full bg-white/40 p-3 rounded-2xl border-2 border-inkColor flex flex-col gap-2 select-none">
           <div id="gallery-filter-container" class="w-full flex gap-1.5 overflow-x-auto no-scrollbar"></div>
           <div class="flex items-center gap-2 text-xs font-bold pt-1 border-t border-dashed border-inkColor/20">
@@ -486,6 +473,75 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, getDocs, doc, setDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+    // 核心：將明信片 HTML 轉化為 Canvas 圖片
+    async function generatePostcardBlob(cardId) {
+      const cardElement = document.getElementById(cardId);
+      const actionBar = cardElement.querySelector('.postcard-action-bar');
+      
+      if (actionBar) actionBar.style.display = 'none';
+
+      try {
+        const canvas = await html2canvas(cardElement, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true
+        });
+
+        if (actionBar) actionBar.style.display = 'flex';
+
+        return new Promise((resolve) => {
+          canvas.toBlob((blob) => resolve(blob), 'image/png');
+        });
+      } catch (err) {
+        if (actionBar) actionBar.style.display = 'flex';
+        console.error("生成圖片失敗:", err);
+        return null;
+      }
+    }
+
+    // 按鈕 1：💾 下載圖片
+    window.downloadPostcard = async function(cardId, bookName) {
+      showToast("正在生成明信片圖片...", "⏳");
+      const blob = await generatePostcardBlob(cardId);
+      if (!blob) return showToast("圖片生成失敗 😿", "❌");
+
+      const link = document.createElement('a');
+      link.download = `Zuzu書櫃-${bookName}-明信片.png`;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+      URL.revokeObjectURL(link.href);
+      showToast("明信片已成功儲存！", "🖼️");
+    };
+
+    // 按鈕 2：📤 Share (呼叫手機原生 App 分享選單)
+    window.sharePostcard = async function(cardId, bookName) {
+      showToast("正在準備分享...", "⏳");
+      const blob = await generatePostcardBlob(cardId);
+      if (!blob) return showToast("分享失敗 😿", "❌");
+
+      const fileName = `Zuzu書櫃-${bookName}.png`;
+      const file = new File([blob], fileName, { type: 'image/png' });
+
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            title: `Zuzu 睇完咗《${bookName}》喇！🏆`,
+            text: `睇吓我同貓貓嘅成就明信片！🐾`,
+            files: [file]
+          });
+          showToast("分享成功！", "🎉");
+        } catch (err) {
+          if (err.name !== 'AbortError') {
+            console.error("分享出錯:", err);
+            showToast("分享取消或失敗", "ℹ️");
+          }
+        }
+      } else {
+        showToast("瀏覽器不支援直接彈出 App，幫你自動下載圖片！", "💡");
+        window.downloadPostcard(cardId, bookName);
+      }
+    };
+
     const firebaseConfig = {
       apiKey: "AIzaSyCZSj0CQc_V7LuqUurXOJndNGZwdSK8OlI",
       authDomain: "zuzu-travel-564a8.firebaseapp.com",
@@ -511,7 +567,7 @@
     };
     let CURRENT_OWNER = "Zuzu";
 
-   // 32x32 全景像素場景與動態專屬配件演算法
+    // 32x32 全景像素場景與動態專屬配件演算法
     function getCatSVG(theme, isBreathing = true) {
       let bodyFill = "#FFFFFF";      
       let patchHtml = "";     
@@ -630,7 +686,6 @@
         patchHtml = `<rect x="12" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="26" y="15" width="3" height="4" fill="#BCAAA4"/><rect x="15" y="18" width="1" height="1" fill="#00B4D8"/><rect x="25" y="18" width="1" height="1" fill="#00B4D8"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><line x1="34" y1="18" x2="34" y2="25" stroke="#9CBD5B" stroke-width="1"/><circle cx="34" cy="18" r="1.2" fill="#B388FF"/></g>`;
       }
-      // 🤓 人文社科 (戴可愛的黑框像素眼鏡)
       else if (theme.includes("人文社科")) {
         catName = "聰聰 (Smarty) 🤓 學霸黑白貓";
         bgHtml = `<rect width="42" height="32" fill="#ECEFF1" /><rect x="6" y="6" width="12" height="4" fill="#CFD8DC"/>`;
@@ -638,7 +693,6 @@
         patchHtml = `<polygon points="21,18 17,25 25,25" fill="#FFFFFF"/>`;
         accessoryHtml = `<g transform="translate(5, 0)"><rect x="10" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><rect x="18" y="17" width="4" height="3" fill="none" stroke="#534340" stroke-width="0.8"/><line x1="14" y1="18" x2="18" y2="18" stroke="#534340" stroke-width="0.8"/></g>`;
       }
-      // 👼 宗教命理 (改成 天使：全新小天使粉白翅膀與神聖金色光圈)
       else if (theme.includes("宗教命理")) {
         catName = "安琪 (Angel) 👼 純潔天使白貓";
         bgHtml = `<rect width="42" height="32" fill="#FFFDE7" />`;
@@ -646,7 +700,6 @@
         patchHtml = `<rect x="14" y="18" width="1" height="1" fill="#00B4D8"/><rect x="25" y="18" width="1" height="1" fill="#00B4D8"/>`;
         accessoryHtml = `<g class="animate-item-float"><ellipse cx="19" cy="8" rx="4" ry="1.2" fill="none" stroke="#FFD166" stroke-width="1"/><rect x="33" y="17" width="4" height="4" rx="2" fill="#FFF5E6" stroke="#FFD166" stroke-width="0.5"/></g>`;
       }
-      // 👑 神話/宗教 (改成 皇冠：高貴黃金小皇冠與帝王金貓)
       else if (theme.includes("神話/宗教")) {
         catName = "阿瑟 (Arthur) 👑 像素國王金貓";
         bgHtml = `<rect width="42" height="32" fill="#FFF8E1" />`;
@@ -654,7 +707,6 @@
         patchHtml = `<rect x="14" y="17" width="1" height="6" fill="#E65100"/><rect x="26" y="17" width="1" height="6" fill="#E65100"/>`;
         accessoryHtml = `<g class="animate-item-float"><path d="M 31,23 V 19 L 32.5,21 L 34,18 L 35.5,21 L 37,19 V 23 Z" fill="#FFD166" stroke="#534340" stroke-width="0.5"/><circle cx="34" cy="16" r="0.6" fill="#E63946"/></g>`;
       }
-      // 🧪 自然科普
       else if (theme.includes("自然科普")) {
         catName = "達爾文 (Darwin) 🧪 博士灰斑貓";
         bgHtml = `<rect width="42" height="32" fill="#E0F2F1" /><rect x="4" y="4" width="8" height="6" fill="#B2DFDB" opacity="0.5"/>`;
@@ -662,7 +714,6 @@
         patchHtml = `<rect x="13" y="18" width="2" height="4" fill="#455A64"/><rect x="25" y="18" width="2" height="4" fill="#455A64"/>`;
         accessoryHtml = `<g class="animate-item-pulse"><circle cx="34" cy="22" r="3" fill="none" stroke="#009688" stroke-width="0.8" stroke-dasharray="2,2"/><circle cx="34" cy="22" r="1" fill="#FF5722"/></g>`;
       }
-      // 🏥 醫療保健 (攜帶白底紅十字像素醫藥箱)
       else if (theme.includes("醫療保健")) {
         catName = "波比 (Bobo) 🏥 像素醫護小白貓";
         bgHtml = `<rect width="42" height="32" fill="#E1F5FE" /><rect x="0" y="24" width="42" height="8" fill="#B3E5FC" opacity="0.5"/>`;
@@ -799,9 +850,8 @@
         const rememberedExists = rememberedBookId ? state.books.some(b => b.id === rememberedBookId) : false;
 
         if (rememberedExists) {
-          state.activeBookId = rememberedBookId; // 💡 成功讀取上一次選擇！
+          state.activeBookId = rememberedBookId;
         } else {
-          // 如果是第一次登入或者記憶中的書被刪除了，才去自動尋找第一本「睇緊」的書
           const firstReading = state.books.find(b => b.status === 'reading');
           state.activeBookId = firstReading ? firstReading.id : (state.books.length > 0 ? state.books[0].id : null);
         }
@@ -906,10 +956,9 @@
     }
 
     window.renderBookshelf = function() {
-  const container = document.getElementById('bookshelf-list');
-  container.innerHTML = "";
+      const container = document.getElementById('bookshelf-list');
+      container.innerHTML = "";
 
-      // 1. 執行核心高亮樣式
       const filters = ['all', 'reading', 'wishlist', 'finished'];
       filters.forEach(f => {
         const btn = document.getElementById(`filter-bs-${f}`);
@@ -920,20 +969,16 @@
         }
       });
 
-      // 2. 串聯式篩選邏輯：分類 -> 年份 -> 搜尋關鍵字
       let filteredBooks = state.books;
       
-      // A. 分類過濾
       if (state.bookshelfFilter !== 'all') {
         filteredBooks = state.books.filter(b => b.status === state.bookshelfFilter);
       }
       
-      // B. 年份過濾
       if (state.bookshelfYearFilter !== 'all') {
         filteredBooks = filteredBooks.filter(b => b.finishedDate && b.finishedDate.startsWith(state.bookshelfYearFilter));
       }
 
-      // C. 搜尋關鍵字過濾
       const searchInput = document.getElementById('input-bookshelf-search');
       const searchQuery = searchInput ? searchInput.value.trim().toLowerCase() : "";
       
@@ -944,13 +989,11 @@
         );
       }
 
-      // 3. 動態更新頂部標題數量
       const bsHeader = document.querySelector('#view-bookshelf h2');
       if (bsHeader) {
         bsHeader.innerHTML = `我嘅藏書同貓貓 <span class="text-xs bg-white/65 px-2 py-0.5 rounded-lg border border-inkColor/30 text-inkColor/80 font-bold ml-1">共 ${filteredBooks.length} 本</span>`;
       }
 
-      // 4. 輸出卡片畫面
       if (filteredBooks.length === 0) {
         container.innerHTML = `<div class="bg-white/90 p-8 rounded-3xl sketch-border text-center w-full"><p class="font-extrabold text-lg">搵唔到符合條件嘅書喔 🍂</p></div>`;
         return;
@@ -1015,6 +1058,7 @@
         container.appendChild(card);
       });
     }    
+    
     window.setActiveBook = function(id) {
       state.activeBookId = id;
       localStorage.setItem(`active_book_${CURRENT_OWNER.toLowerCase()}`, id);
@@ -1110,19 +1154,20 @@
     }
 
     window.openLogModal = function() {
-  const activeBook = state.books.find(b => b.id === state.activeBookId);
-  if (!activeBook) {
-    showToast("去書櫃揀本書伴讀先啦！", "🐾");
-    return;
-  }
+      const activeBook = state.books.find(b => b.id === state.activeBookId);
+      if (!activeBook) {
+        showToast("去書櫃揀本書伴讀先啦！", "🐾");
+        return;
+      }
 
-  document.getElementById('log-book-name-label').textContent = activeBook.name;
-  document.getElementById('log-current-status-label').textContent = `${activeBook.currentPage} / ${activeBook.totalPage} 頁`;
-  document.getElementById('input-log-new-page').value = activeBook.currentPage;
-  document.getElementById('input-log-note').value = activeBook.notes || "";
+      document.getElementById('log-book-name-label').textContent = activeBook.name;
+      document.getElementById('log-current-status-label').textContent = `${activeBook.currentPage} / ${activeBook.totalPage} 頁`;
+      document.getElementById('input-log-new-page').value = activeBook.currentPage;
+      document.getElementById('input-log-note').value = activeBook.notes || "";
 
-  document.getElementById('modal-log-progress').classList.remove('hidden');
-}
+      document.getElementById('modal-log-progress').classList.remove('hidden');
+    }
+
     window.closeLogModal = function() {
       document.getElementById('modal-log-progress').classList.add('hidden');
     }
@@ -1239,10 +1284,10 @@
       }
     }
 
-    // 明信片畫廊渲染
+    // 明信片畫廊渲染 (完整修復版)
     window.renderGallery = function() {
-  const container = document.getElementById('gallery-list');
-  container.innerHTML = "";
+      const container = document.getElementById('gallery-list');
+      container.innerHTML = "";
 
       let finishedBooks = state.books.filter(b => b.status === 'finished');
 
@@ -1253,7 +1298,7 @@
         return;
       }
 
-      // 生成類別過濾按鈕
+      // 1. 生成類別過濾按鈕
       const filterContainer = document.getElementById('gallery-filter-container');
       const uniqueThemes = ['全部', ...new Set(finishedBooks.map(b => b.theme))];
       
@@ -1263,7 +1308,7 @@
         </button>
       `).join('');
 
-      // 完美的串聯式過濾：分類 -> 年份 -> 搜尋欄關鍵字
+      // 2. 串聯式過濾：分類 -> 年份 -> 搜尋欄關鍵字
       let filteredFinished = state.galleryFilter === '全部' ? finishedBooks : finishedBooks.filter(b => b.theme === state.galleryFilter);
 
       const galleryYear = state.galleryYearFilter || 'all';
@@ -1281,7 +1326,7 @@
         );
       }
 
-      // 局部動態更新明信片右上角數量：已顯示 / 總數
+      // 3. 更新右上角顯示數量
       document.getElementById('gallery-count').textContent = `已顯示: ${filteredFinished.length} / ${finishedBooks.length} 張`;
 
       if (filteredFinished.length === 0) {
@@ -1289,8 +1334,12 @@
         return;
       }
 
-      filteredFinished.forEach(book => {
+      // 4. 正確渲染明信片卡片
+      filteredFinished.forEach((book, index) => {
         const card = document.createElement('div');
+        const cardId = `postcard-card-${index}`;
+        card.id = cardId;
+        
         card.className = "w-full max-w-[360px] mx-auto bg-[#E5D4C3] rounded-[2.2rem] p-4 pb-6 sketch-border flex flex-col relative select-none animate-breath my-2";
         
         const dateDisplay = book.finishedDate ? ` 睇完日期：${book.finishedDate}` : " 睇完日期：未知";
@@ -1305,15 +1354,25 @@
               作者：${book.author || '未知'} <br>
               讀後感：${book.notes || "奴才陪我一齊睇晒成本書！雲端數據滿載！"}
             </p>
-            <div class="text-[10px] text-inkColor/60 font-extrabold border-t border-dashed border-inkColor/20 pt-2 mt-1 flex justify-between items-center">
+            <div class="text-[10px] text-inkColor/60 font-extrabold border-t border-dashed border-inkColor/20 pt-2 mt-1 flex justify-between items-center flex-wrap gap-1">
               <span>${dateDisplay}</span>
               <span>類別：${book.theme}</span>
+            </div>
+
+            <!-- 功能按鈕 Bar -->
+            <div class="postcard-action-bar border-t-2 border-dashed border-inkColor/10 pt-2 mt-2 flex gap-2 justify-end">
+              <button onclick="downloadPostcard('${cardId}', '${book.name}')" class="bg-amber-100 hover:bg-amber-200 text-inkColor px-2.5 py-1 rounded-xl sketch-border-sm text-[11px] font-black active:scale-95 transition-all">
+                💾 下載圖片
+              </button>
+              <button onclick="sharePostcard('${cardId}', '${book.name}')" class="bg-accentOrange hover:bg-amber-400 text-inkColor px-2.5 py-1 rounded-xl sketch-border-sm text-[11px] font-black active:scale-95 transition-all">
+                📤 分享
+              </button>
             </div>
           </div>
         `;
         container.appendChild(card);
       });
-    }
+    };
 
     window.showToast = function(text, icon = "🐱") {
       const toast = document.getElementById('toast');
@@ -1379,7 +1438,7 @@
 
         if (userDocSnap.exists()) {
           lockTitle.textContent = `解鎖《${CURRENT_OWNER}》書櫃`;
-          lockDesc.textContent = "請輸入你登記嘅 4 位數專專屬暗號 🔒";
+          lockDesc.textContent = "請輸入你登記嘅 4 位數專屬暗號 🔒";
           lockBtn.textContent = "🐾 驗證暗號解鎖";
         } else {
           lockTitle.textContent = `歡迎首次光臨！`;
