@@ -525,8 +525,7 @@
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
           await navigator.share({
-            title: `Zuzu 睇完咗《${bookName}》喇！🏆`,
-            text: `睇吓我同貓貓嘅成就明信片！🐾`,
+            text: `我睇完咗《${bookName}》喇！`,
             files: [file]
           });
           showToast("分享成功！", "🎉");
